@@ -17,11 +17,13 @@ defmodule Strava.Mixfile do
   end
 
   def application do
-    [applications: [:logger],
+    [applications: [:logger, :httpoison, :exjsx],
      mod: {Strava, []}]
   end
 
   defp deps do
-    [{:httpoison, "~> 0.8.1"}]
+    [{:httpoison, "~> 0.8.1"},
+     { :exjsx, "~> 3.2.0", app: false }]
+    # {:exvcr, "~> 0.7", only: :test}
   end
 end

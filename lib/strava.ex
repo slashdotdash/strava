@@ -25,7 +25,11 @@ defmodule Strava do
   Returns string
   """
   def process_url(endpoint) do
-    "https://www.strava.com/api/v3/#{endpoint}?access_token=#{access_token}" 
+    "https://www.strava.com/api/v3/" <> endpoint
+  end
+
+  def process_request_headers(headers) do
+    Dict.put headers, :Authorization, "Bearer #{access_token}"
   end
 
   @doc """
@@ -35,7 +39,7 @@ defmodule Strava do
   Returns Record or ArgumentError
   """
   def process_response_body(body) do
-    JSX.decode!(body, [{:labels, :atom}])
+    JSX.decode!(body)
   end
 
   @doc """

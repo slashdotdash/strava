@@ -23,8 +23,7 @@ defmodule Strava.Mixfile do
 
   defp deps do
     [{:httpoison, "~> 0.8.1"},
-     {:poison, "~> 2.0"}]
-     # { :exjsx, "~> 3.2.0", app: false }]
-    # {:exvcr, "~> 0.7", only: :test}
+     {:poison, "~> 2.0"},
+     {:exvcr, "~> 0.7", only: :test}]
   end
 end

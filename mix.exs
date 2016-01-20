@@ -11,19 +11,20 @@ defmodule Strava.Mixfile do
      elixir: "~> 1.2",
      name: "Strava",
      description: @description,
+     source_url: "https://github.com/slashdotdash/strava",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
   end
 
   def application do
-    [applications: [:logger, :httpoison, :exjsx],
-     mod: {Strava, []}]
+    [applications: [:logger, :httpoison]]
   end
 
   defp deps do
     [{:httpoison, "~> 0.8.1"},
-     { :exjsx, "~> 3.2.0", app: false }]
+     {:poison, "~> 2.0"}]
+     # { :exjsx, "~> 3.2.0", app: false }]
     # {:exvcr, "~> 0.7", only: :test}
   end
 end

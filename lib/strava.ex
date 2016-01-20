@@ -1,58 +1,26 @@
 defmodule Strava do
-  use Application
   use HTTPoison.Base
 
-  # See http://elixir-lang.org/docs/stable/elixir/Application.html
-  # for more information on OTP Applications
-  def start(_type, _args) do
-    import Supervisor.Spec, warn: false
-
-    children = [
-      # Define workers and child supervisors to be supervised
-      # worker(Strava.Worker, [arg1, arg2, arg3]),
-    ]
-
-    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Strava.Supervisor]
-    Supervisor.start_link(children, opts)
-  end
+  @endpoint "https://www.strava.com/api/v3/"
 
   @doc """
-  Creates the URL for the Strava API V3.
-  Args:
-    * endpoint - part of the API we're hitting
-  Returns string
+  Submit a request to the Strava API
   """
-  def process_url(endpoint) do
-    "https://www.strava.com/api/v3/" <> endpoint
+  def request(path, opts \\ []) do
+    Strava.get!(path)
+    |> parse(opts)
   end
 
-  def process_request_headers(headers) do
+  defp parse(response, opts) do
+    Poison.decode!(response.body, opts)
+  end
+
+  defp process_url(path) do
+    @endpoint <> path
+  end
+
+  defp process_request_headers(headers) do
     Dict.put headers, :Authorization, "Bearer #{access_token}"
-  end
-
-  @doc """
-  Converts the binary keys in our response to atoms.
-  Args:
-    * body - string binary response
-  Returns Record or ArgumentError
-  """
-  def process_response_body(body) do
-    JSX.decode!(body)
-  end
-
-  @doc """
-  Boilerplate code to make requests.
-  Args:
-    * endpoint - string requested API endpoint
-    * body - request body
-  Returns dict
-  """
-  def request(endpoint, body \\ []) do
-    # Strava.get!(endpoint, JSX.encode! body).body
-
-    Strava.get!(endpoint).body
   end
 
   @doc """

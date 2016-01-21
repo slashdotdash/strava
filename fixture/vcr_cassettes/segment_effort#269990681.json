@@ -1,0 +1,31 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/segment_efforts/269990681"
+    },
+    "response": {
+      "body": "{\"id\":269990681,\"resource_state\":3,\"name\":\"Losantiville Ave. \",\"activity\":{\"id\":8824341,\"resource_state\":1},\"athlete\":{\"id\":352429,\"resource_state\":1},\"elapsed_time\":181,\"moving_time\":181,\"start_date\":\"2012-05-16T21:37:06Z\",\"start_date_local\":\"2012-05-16T17:37:06Z\",\"distance\":1222.88,\"start_index\":63,\"end_index\":161,\"device_watts\":false,\"average_watts\":221.8,\"segment\":{\"id\":1821724,\"resource_state\":2,\"name\":\"Losantiville Ave. \",\"activity_type\":\"Ride\",\"distance\":1252.55,\"average_grade\":2.9,\"maximum_grade\":7.0,\"elevation_high\":241.4,\"elevation_low\":197.2,\"start_latlng\":[39.17577276475651,-84.4409234170657],\"end_latlng\":[39.18182336728943,-84.42900795497413],\"start_latitude\":39.17577276475651,\"start_longitude\":-84.4409234170657,\"end_latitude\":39.18182336728943,\"end_longitude\":-84.42900795497413,\"climb_category\":0,\"city\":\"Cincinnati\",\"state\":\"OH\",\"country\":\"United States\",\"private\":false,\"hazardous\":false,\"starred\":false},\"kom_rank\":null,\"pr_rank\":null,\"achievements\":[],\"athlete_segment_stats\":{\"effort_count\":329,\"pr_elapsed_time\":129,\"pr_date\":\"2014-06-17\"}}",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Thu, 21 Jan 2016 21:47:14 GMT",
+        "ETag": "\"c63073c7b03346fa3b603da9fc948bc8\"",
+        "Status": "200 OK",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "2,3",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "Content-Length": "1071",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

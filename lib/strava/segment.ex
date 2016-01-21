@@ -58,7 +58,14 @@ defmodule Strava.Segment do
 
   @doc """
   Retrieve details about a specific segment.
+
+  ## Example
+
+      Strava.Segment.retrieve(229781)
+
+  More info at: https://strava.github.io/api/v3/segments/#retrieve
   """
+  @spec retrieve(number) :: %Strava.Segment{}
   def retrieve(id) do
     Strava.request("segments/#{id}", as: %Strava.Segment{})
   end

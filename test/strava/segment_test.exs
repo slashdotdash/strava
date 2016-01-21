@@ -7,11 +7,10 @@ defmodule StravaTest.Segment do
   setup_all do
     HTTPoison.start
   end
-
+  
   setup do
     use_cassette "segment#229781" do
       segment = Strava.Segment.retrieve(229781)
-      IO.inspect segment
       {:ok, [segment: segment]}
     end
     

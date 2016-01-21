@@ -1,4 +1,4 @@
-defmodule StravaTest.Segment do
+defmodule Strava.SegmentTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
@@ -7,20 +7,55 @@ defmodule StravaTest.Segment do
   setup_all do
     HTTPoison.start
   end
-  
-  setup do
-    use_cassette "segment#229781" do
+
+  test "retrieve segment" do
+    use_cassette "segment/retrieve#229781" do
       segment = Strava.Segment.retrieve(229781)
-      {:ok, [segment: segment]}
+      
+      assert segment != nil
+      assert segment.name == "Hawk Hill"
     end
-    
   end
 
-  test "retrieve segment", %{segment: segment} do
-    assert segment != nil
+  test "list segment efforts" do
+    use_cassette "segment/list_efforts#229781" do
+      segment_efforts = Strava.Segment.list_efforts(229781)
+      
+      assert segment_efforts != nil
+      assert length(segment_efforts) == 30
+
+      [first_effort|_] = segment_efforts
+      assert first_effort.id == 1323785488
+      assert first_effort.name == "Hawk Hill"
+    end
   end
 
-  test "should populate segment", %{segment: segment} do
-    assert segment.name == "Hawk Hill"
+  test "list segment efforts, filtered by athlete" do
+    use_cassette "segment/list_efforts#229781.athlete" do
+      segment_efforts = Strava.Segment.list_efforts(229781, %{athlete_id: 5287})
+      
+      assert segment_efforts != nil
+      
+      Enum.each(segment_efforts, fn(segment_effort) -> 
+        assert segment_effort.name == "Hawk Hill"
+        assert segment_effort.athlete["id"] == 5287
+      end)
+    end
+  end
+
+  test "list segment efforts, filtered by start and end dates" do
+    use_cassette "segment/list_efforts#229781.date" do
+      segment_efforts = Strava.Segment.list_efforts(229781, %{
+        start_date_local: "2014-01-01T00:00:00Z", 
+        end_date_local: "2014-01-01T23:59:59Z"
+      })
+      
+      assert segment_efforts != nil
+      
+      Enum.each(segment_efforts, fn(segment_effort) -> 
+        assert segment_effort.name == "Hawk Hill"
+        assert String.slice(segment_effort.start_date_local, 0, 10) == "2014-01-01"
+      end)
+    end
   end
 end

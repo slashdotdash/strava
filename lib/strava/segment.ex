@@ -69,4 +69,30 @@ defmodule Strava.Segment do
   def retrieve(id) do
     Strava.request("segments/#{id}", as: %Strava.Segment{})
   end
+
+  @doc """
+  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range. 
+
+  ## Example
+
+      Strava.Segment.list_efforts(229781)
+
+  More info at: https://strava.github.io/api/v3/segments/#efforts
+  """
+  def list_efforts(id) do
+    Strava.request("segments/#{id}/all_efforts", as: [%Strava.SegmentEffort{}])
+  end
+
+  @doc """
+  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range. 
+
+  ## Example
+
+      Strava.Segment.list_efforts(229781, %{athlete_id: 5287})
+
+  More info at: https://strava.github.io/api/v3/segments/#efforts
+  """
+  def list_efforts(id, filters) do
+    Strava.request("segments/#{id}/all_efforts?#{URI.encode_query(filters)}", as: [%Strava.SegmentEffort{}])
+  end
 end

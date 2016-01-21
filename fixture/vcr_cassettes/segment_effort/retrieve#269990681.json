@@ -15,11 +15,13 @@
       "headers": {
         "Cache-Control": "must-revalidate, private, max-age=0",
         "Content-Type": "application/json; charset=UTF-8",
-        "Date": "Thu, 21 Jan 2016 21:47:14 GMT",
+        "Date": "Thu, 21 Jan 2016 22:04:03 GMT",
         "ETag": "\"c63073c7b03346fa3b603da9fc948bc8\"",
+        "Set-Cookie": "_strava3_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFVEkiJTQwN2E2NzYxNmQ0YjBjZjc3NDlkNDA5ODExYTkzYTEwBjsAVEkiEGNsZWFyX2NsaWNrBjsARlQ%3D--4231d9801d0095133efe61490b6911dba82d8924; domain=strava.com; path=/; HttpOnly",
         "Status": "200 OK",
         "X-RateLimit-Limit": "600,30000",
-        "X-RateLimit-Usage": "2,3",
+        "X-RateLimit-Usage": "1,8",
+        "X-Request-Id": "ec829b8c20303082160d948f8a6966f1",
         "X-UA-Compatible": "IE=Edge,chrome=1",
         "Content-Length": "1071",
         "Connection": "keep-alive"

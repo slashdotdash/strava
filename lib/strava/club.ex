@@ -29,8 +29,11 @@ defmodule Strava.Club do
 
   More info at: https://strava.github.io/api/v3/clubs/#get-details
   """
-  @spec retrieve(number) :: %Strava.Club{}
   def retrieve(id) do
     Strava.request("clubs/#{id}", as: %Strava.Club{})
+  end
+
+  def list_members(id, pagination) do
+    Strava.request("clubs/#{id}/members?#{URI.encode_query(pagination)}", as: [%Strava.Athlete.Summary{}])
   end
 end

@@ -9,7 +9,7 @@ defmodule Strava.ClubTest do
   end
 
   test "retrieve club" do
-    use_cassette "club/retrieve#1" do
+    use_cassette "club/retrieve#7289" do
       club = Strava.Club.retrieve(7289)
 
       assert club != nil
@@ -17,6 +17,15 @@ defmodule Strava.ClubTest do
       assert club.member_count == 193
       assert club.sport_type == "cycling"
       assert club.member_count == 193
+    end
+  end
+
+  test "list members" do
+    use_cassette "club/list_members#7289" do
+      members = Strava.Club.list_members(7289, %{per_page: 5})
+
+      assert members != nil
+      assert length(members) == 5
     end
   end
 end

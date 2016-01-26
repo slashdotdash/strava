@@ -1,0 +1,33 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/clubs/7289/members?per_page=5"
+    },
+    "response": {
+      "body": "[{\"id\":109563,\"username\":\"ntarmey\",\"resource_state\":2,\"firstname\":\"Nick\",\"lastname\":\"Tarmey (VCV)\",\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/109563/447785/1/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/109563/447785/1/large.jpg\",\"city\":\"Winchester\",\"state\":\"England\",\"country\":\"United Kingdom\",\"sex\":\"M\",\"friend\":null,\"follower\":null,\"premium\":false,\"created_at\":\"2011-07-14T01:44:39Z\",\"updated_at\":\"2016-01-04T14:10:24Z\",\"badge_type_id\":0},{\"id\":129806,\"username\":\"salden\",\"resource_state\":2,\"firstname\":\"Stewart\",\"lastname\":\"Alden\",\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/129806/897669/1/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/129806/897669/1/large.jpg\",\"city\":\"Eastleigh\",\"state\":\"Hampshire\",\"country\":\"United Kingdom\",\"sex\":\"M\",\"friend\":null,\"follower\":null,\"premium\":false,\"created_at\":\"2011-08-19T16:58:35Z\",\"updated_at\":\"2015-12-11T20:34:26Z\",\"badge_type_id\":0},{\"id\":156450,\"username\":\"yoshimi\",\"resource_state\":2,\"firstname\":\"Giles\",\"lastname\":\" Fisher\",\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/156450/230862/14/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/156450/230862/14/large.jpg\",\"city\":\"Winchester\",\"state\":\"\",\"country\":\"United Kingdom\",\"sex\":\"M\",\"friend\":null,\"follower\":null,\"premium\":true,\"created_at\":\"2011-10-15T05:59:45Z\",\"updated_at\":\"2016-01-25T20:19:57Z\",\"badge_type_id\":1},{\"id\":206296,\"username\":\"gkruger\",\"resource_state\":2,\"firstname\":\"Garth\",\"lastname\":\"Kruger (Vankru Cycling)\",\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/206296/398497/1/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/206296/398497/1/large.jpg\",\"city\":\"Chandler's Ford\",\"state\":\"England\",\"country\":\"United Kingdom\",\"sex\":\"M\",\"friend\":null,\"follower\":null,\"premium\":true,\"created_at\":\"2012-01-09T15:24:00Z\",\"updated_at\":\"2016-01-18T09:06:57Z\",\"badge_type_id\":1},{\"id\":225505,\"username\":\"adegamble\",\"resource_state\":2,\"firstname\":\"Adrian\",\"lastname\":\"Gamble\",\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/225505/57546/1/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/225505/57546/1/large.jpg\",\"city\":\"Winchester\",\"state\":\"Hampshire\",\"country\":\"United Kingdom\",\"sex\":\"M\",\"friend\":null,\"follower\":null,\"premium\":true,\"created_at\":\"2012-01-17T22:42:09Z\",\"updated_at\":\"2016-01-26T07:07:14Z\",\"badge_type_id\":1}]",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Tue, 26 Jan 2016 23:26:29 GMT",
+        "ETag": "\"990a93b22ab2bc38f2ad465c573f6d82\"",
+        "Set-Cookie": "_strava3_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFVEkiJTcwNjdiNzU0ZTI0NWI4ZDhhNzk4M2VlN2M1MTAwNjkyBjsAVEkiEGNsZWFyX2NsaWNrBjsARlQ%3D--bdaca88e0f0a8564ccc6079b825486f9301b92fb; domain=strava.com; path=/; HttpOnly",
+        "Status": "200 OK",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "2,21",
+        "X-Request-Id": "9d825211cda46d6a7856dc1ba7f158f2",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "transfer-encoding": "chunked",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

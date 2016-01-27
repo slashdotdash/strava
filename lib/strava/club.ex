@@ -36,4 +36,8 @@ defmodule Strava.Club do
   def list_members(id, pagination) do
     Strava.request("clubs/#{id}/members?#{URI.encode_query(pagination)}", as: [%Strava.Athlete.Summary{}])
   end
+
+  def stream_members(id) do
+    Strava.Paginator.stream(fn(pagination) -> list_members(id, pagination) end)
+  end
 end

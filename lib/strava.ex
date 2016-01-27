@@ -2,6 +2,7 @@ defmodule Strava do
   use HTTPoison.Base
 
   @endpoint "https://www.strava.com/api/v3/"
+  @max_page_size 200
 
   @doc """
   Submit a request to the Strava API
@@ -30,5 +31,9 @@ defmodule Strava do
   """
   def access_token do
     Application.get_env(:strava, :access_token) || System.get_env("STRAVA_ACCESS_TOKEN")
+  end
+
+  def max_page_size do
+    @max_page_size
   end
 end

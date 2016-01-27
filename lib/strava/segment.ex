@@ -79,8 +79,9 @@ defmodule Strava.Segment do
 
   More info at: https://strava.github.io/api/v3/segments/#efforts
   """
+  @spec retrieve(number) :: [%Strava.Segment{}]
   def list_efforts(id) do
-    Strava.request("segments/#{id}/all_efforts", as: [%Strava.SegmentEffort{}])
+    list_efforts_request(id)
   end
 
   @doc """
@@ -92,7 +93,40 @@ defmodule Strava.Segment do
 
   More info at: https://strava.github.io/api/v3/segments/#efforts
   """
+  @spec list_efforts(number, map) :: [%Strava.Segment{}]
   def list_efforts(id, filters) do
-    Strava.request("segments/#{id}/all_efforts?#{URI.encode_query(filters)}", as: [%Strava.SegmentEffort{}])
+    list_efforts_request(id, filters)    
+  end
+
+  @doc """
+  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range for a given page. 
+
+  ## Example
+
+      Strava.Segment.list_efforts(229781, %{athlete_id: 5287}, %{per_page: 10, page: 1})
+
+  More info at: https://strava.github.io/api/v3/segments/#efforts
+  """
+  @spec list_efforts(number, map, map) :: [%Strava.Segment{}]
+  def list_efforts(id, filters, pagination) do
+    list_efforts_request(id, filters, pagination)
+  end
+
+  @doc """
+  Create a stream of segment efforts, for a given segment, filtered by athlete and/or a date range. 
+
+  ## Example
+
+      Strava.Segment.stream_efforts(229781)
+
+  More info at: https://strava.github.io/api/v3/segments/#efforts
+  """
+  @spec stream_efforts(number, map) :: Enumerable.t
+  def stream_efforts(id, filters \\ %{}) do
+    Strava.Paginator.stream(fn(pagination) -> list_efforts(id, filters, pagination) end)
+  end
+
+  defp list_efforts_request(id, filters \\ %{}, pagination \\ %{}) do
+    Strava.request("segments/#{id}/all_efforts?#{URI.encode_query(Map.merge(filters, pagination))}", as: [%Strava.SegmentEffort{}])
   end
 end

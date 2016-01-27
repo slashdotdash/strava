@@ -58,4 +58,22 @@ defmodule Strava.SegmentTest do
       end)
     end
   end
+
+  test "stream segment efforts, filtered by start and end dates" do
+    use_cassette "segment/stream_efforts#229781.date" do
+      segment_efforts = Strava.Segment.stream_efforts(229781, %{
+        start_date_local: "2014-01-01T00:00:00Z", 
+        end_date_local: "2014-01-01T23:59:59Z"
+      })
+      |> Stream.take(5) 
+      |> Enum.to_list
+      
+      assert length(segment_efforts) == 5
+
+      Enum.each(segment_efforts, fn(segment_effort) -> 
+        assert segment_effort.name == "Hawk Hill"
+        assert String.slice(segment_effort.start_date_local, 0, 10) == "2014-01-01"
+      end)
+    end
+  end
 end

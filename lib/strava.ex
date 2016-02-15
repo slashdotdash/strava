@@ -25,12 +25,29 @@ defmodule Strava do
   end
 
   @doc """
+  Gets the Strava API Client ID from :strava, :client_id application env or STRAVA_CLIENT_ID from system ENV
+  """
+  def client_id do
+    Application.get_env(:strava, :client_id) || System.get_env("STRAVA_CLIENT_ID")    
+  end
+  
+  @doc """
+  Gets the Strava API Client Secret from :strava, :client_secret application env or STRAVA_CLIENT_SECRET from system ENV
+  """
+  def client_secret do
+    Application.get_env(:strava, :client_secret) || System.get_env("STRAVA_CLIENT_SECRET")    
+  end
+
+  @doc """
   Gets the Strava API access token from :strava, :access_token application env or STRAVA_ACCESS_TOKEN from system ENV
   Any registered Strava user can obtain an access_token by first creating an application at https://strava.com/developers
-  Returns binary
   """
   def access_token do
     Application.get_env(:strava, :access_token) || System.get_env("STRAVA_ACCESS_TOKEN")
+  end
+
+  def redirect_uri do
+    Application.get_env(:strava, :redirect_uri) || System.get_env("STRAVA_REDIRECT_URI")
   end
 
   def max_page_size do

@@ -18,12 +18,18 @@ defmodule Strava.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :httpoison]]
+    [applications: [
+      :logger, 
+      :httpoison,
+      :oauth2
+      ]
+    ]
   end
 
   defp deps do
     [{:httpoison, "~> 0.8.1"},
-     {:poison, "~> 2.0"},
+     {:oauth2, "~> 0.5.0"},    
+     {:poison, "~> 2.0", override: true},
      {:exvcr, "~> 0.7", only: :test}]
   end
 end

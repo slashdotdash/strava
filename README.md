@@ -1,10 +1,8 @@
 # Strava
 
-Elixir wrapper for the [Strava API](https://strava.github.io/api/) (v3).
+Elixir wrapper for the [Strava API](https://strava.github.io/api/) (V3).
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
   1. Add strava to your list of dependencies in `mix.exs`:
 

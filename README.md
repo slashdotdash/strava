@@ -8,15 +8,19 @@ All calls to the Strava API require an `access_token` defining the athlete and a
 
   1. Add strava to your list of dependencies in `mix.exs`:
 
-        def deps do
-          [{:strava, "~> 0.0.1"}]
-        end
+  ```elixir
+  def deps do
+    [{:strava, "~> 0.0.1"}]
+  end
+  ```
 
   2. Ensure strava is started before your application:
 
-        def application do
-          [applications: [:strava]]
-        end
+  ```elixir
+  def application do
+    [applications: [:strava]]
+  end
+  ```
 
 ## Usage
 

@@ -20,7 +20,7 @@ defmodule Strava.Mixfile do
 
   def application do
     [applications: [
-      :logger, 
+      :logger,
       :httpoison,
       :oauth2
       ]
@@ -30,8 +30,8 @@ defmodule Strava.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.8.1"},
-      {:oauth2, "~> 0.5.0"},    
-      {:poison, "~> 2.0", override: true},
+      {:oauth2, github: "scrogson/oauth2"},
+      {:poison, "~> 2.1"},
       {:exvcr, "~> 0.7", only: :test}
     ]
   end

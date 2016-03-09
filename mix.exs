@@ -29,10 +29,12 @@ defmodule Strava.Mixfile do
 
   defp deps do
     [
+      {:ex_doc, "~> 0.11.4", only: :dev},
+      {:exvcr, "~> 0.7", only: :test},
       {:httpoison, "~> 0.8.1"},
+      {:markdown, github: "devinus/markdown", only: :dev},
       {:oauth2, github: "scrogson/oauth2"},
-      {:poison, "~> 2.1"},
-      {:exvcr, "~> 0.7", only: :test}
+      {:poison, "~> 2.1"}
     ]
   end
 

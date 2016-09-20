@@ -29,19 +29,19 @@ defmodule Strava.Mixfile do
 
   defp deps do
     [
-      {:ex_doc, "~> 0.11.4", only: :dev},
-      {:exvcr, "~> 0.7", only: :test},
-      {:httpoison, "~> 0.8.1"},
+      {:ex_doc, "~> 0.13", only: :dev},
+      {:exvcr, "~> 0.8", only: :test},
+      {:httpoison, "~> 0.9"},
       {:markdown, github: "devinus/markdown", only: :dev},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:oauth2, github: "scrogson/oauth2"},
-      {:poison, "~> 2.1"}
+      {:oauth2, "~> 0.7"},
+      {:poison, "~> 2.2"}
     ]
   end
 
   defp package do
     [
-     files: ["lib", "priv", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
+     files: ["lib", "mix.exs", "README*", "LICENSE*"],
      maintainers: ["Ben Smith"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/slashdotdash/strava",

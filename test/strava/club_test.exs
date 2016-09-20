@@ -14,9 +14,8 @@ defmodule Strava.ClubTest do
 
       assert club != nil
       assert club.name == "VC Venta"
-      assert club.member_count == 193
+      assert club.member_count > 1
       assert club.sport_type == "cycling"
-      assert club.member_count == 193
     end
   end
 
@@ -40,7 +39,7 @@ defmodule Strava.ClubTest do
     use_cassette "club/stream_members#7289", match_requests_on: [:query]  do
       member_stream = Strava.Club.stream_members(7289)
 
-      assert Enum.count(member_stream) == 193
+      assert Enum.count(member_stream) > 1
     end
   end
 end

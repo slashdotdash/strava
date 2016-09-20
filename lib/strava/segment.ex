@@ -71,7 +71,7 @@ defmodule Strava.Segment do
   end
 
   @doc """
-  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range. 
+  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range.
 
   ## Example
 
@@ -85,7 +85,7 @@ defmodule Strava.Segment do
   end
 
   @doc """
-  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range. 
+  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range.
 
   ## Example
 
@@ -95,11 +95,11 @@ defmodule Strava.Segment do
   """
   @spec list_efforts(number, map) :: [%Strava.Segment{}]
   def list_efforts(id, filters) do
-    list_efforts_request(id, filters)    
+    list_efforts_request(id, filters)
   end
 
   @doc """
-  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range for a given page. 
+  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range for a given page.
 
   ## Example
 
@@ -113,7 +113,7 @@ defmodule Strava.Segment do
   end
 
   @doc """
-  Create a stream of segment efforts, for a given segment, filtered by athlete and/or a date range. 
+  Create a stream of segment efforts, for a given segment, filtered by athlete and/or a date range.
 
   ## Example
 
@@ -127,6 +127,8 @@ defmodule Strava.Segment do
   end
 
   defp list_efforts_request(id, filters \\ %{}, pagination \\ %{}) do
-    Strava.request("segments/#{id}/all_efforts?#{URI.encode_query(Map.merge(filters, pagination))}", as: [%Strava.SegmentEffort{}])
+    "segments/#{id}/all_efforts?#{URI.encode_query(Map.merge(filters, pagination))}"
+    |> Strava.request(as: [%Strava.SegmentEffort{}])
+    |> Enum.map(&Strava.SegmentEffort.parse/1)
   end
 end

@@ -7,7 +7,7 @@ defmodule Strava.Mixfile do
 
   def project do
     [app: :strava,
-     version: "0.0.1",
+     version: "0.0.2",
      elixir: "~> 1.2",
      name: "Strava",
      description: @description,
@@ -33,6 +33,7 @@ defmodule Strava.Mixfile do
       {:exvcr, "~> 0.7", only: :test},
       {:httpoison, "~> 0.8.1"},
       {:markdown, github: "devinus/markdown", only: :dev},
+      {:mix_test_watch, "~> 0.2", only: :dev},
       {:oauth2, github: "scrogson/oauth2"},
       {:poison, "~> 2.1"}
     ]

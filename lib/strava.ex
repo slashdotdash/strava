@@ -3,6 +3,7 @@ defmodule Strava do
 
   @endpoint "https://www.strava.com/api/v3/"
   @max_page_size 200
+  @default_delay_between_requests_in_milliseconds 1_000
 
   @doc """
   Submit a request to the Strava API
@@ -28,14 +29,14 @@ defmodule Strava do
   Gets the Strava API Client ID from :strava, :client_id application env or STRAVA_CLIENT_ID from system ENV
   """
   def client_id do
-    Application.get_env(:strava, :client_id) || System.get_env("STRAVA_CLIENT_ID")    
+    Application.get_env(:strava, :client_id) || System.get_env("STRAVA_CLIENT_ID")
   end
-  
+
   @doc """
   Gets the Strava API Client Secret from :strava, :client_secret application env or STRAVA_CLIENT_SECRET from system ENV
   """
   def client_secret do
-    Application.get_env(:strava, :client_secret) || System.get_env("STRAVA_CLIENT_SECRET")    
+    Application.get_env(:strava, :client_secret) || System.get_env("STRAVA_CLIENT_SECRET")
   end
 
   @doc """
@@ -52,5 +53,9 @@ defmodule Strava do
 
   def max_page_size do
     @max_page_size
+  end
+
+  def delay_between_requests_in_milliseconds do
+    Application.get_env(:strava, :delay_between_requests_in_milliseconds) || @default_delay_between_requests_in_milliseconds
   end
 end

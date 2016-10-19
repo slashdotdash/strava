@@ -4,7 +4,7 @@ defmodule Strava.Auth do
   """
   use OAuth2.Strategy
 
-  def client do
+  def new do
     OAuth2.Client.new([
       strategy: __MODULE__,
       client_id: Strava.client_id,
@@ -27,22 +27,28 @@ defmodule Strava.Auth do
       returned to your application, useful if the authentication is done from various points in an app
   """
   def authorize_url!(params \\ []) do
-    client()
+    new
     |> put_param(:response_type, "code")
     |> OAuth2.Client.authorize_url!(params)
   end
 
   # you can pass options to the underlying http library via `options` parameter
   def get_token!(params \\ [], headers \\ [], options \\ []) do
-    OAuth2.Client.get_token!(client(), params, headers, options)
+    OAuth2.Client.get_token!(new, params, headers, options)
   end
 
-  # Strategy Callbacks
+  # strategy callbacks
 
+  @doc """
+  Builds the URL to the authorization endpoint.
+  """
   def authorize_url(client, params) do
     OAuth2.Strategy.AuthCode.authorize_url(client, params)
   end
 
+  @doc """
+  Builds the URL to token endpoint.
+  """
   def get_token(client, params, headers) do
     client
     |> put_header("Accept", "application/json")

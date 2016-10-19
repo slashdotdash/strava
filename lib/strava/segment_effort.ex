@@ -7,7 +7,7 @@ defmodule Strava.SegmentEffort do
   More info: https://strava.github.io/api/v3/efforts/
   """
 
-  @type t :: %Strava.SegmentEffort {
+  @type t :: %__MODULE__{
     id: integer,
     resource_state: integer,
     name: String.t,
@@ -15,8 +15,8 @@ defmodule Strava.SegmentEffort do
     athlete: Strava.Athlete.Meta.t,
     elapsed_time: integer,
     moving_time: integer,
-    start_date: NaiveDateTime.t,
-    start_date_local: NaiveDateTime.t,
+    start_date: NaiveDateTime.t | String.t,
+    start_date_local: NaiveDateTime.t | String.t,
     distance: float,
     start_index: integer,
     end_index: integer,

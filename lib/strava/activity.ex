@@ -7,7 +7,7 @@ defmodule Strava.Activity do
   More info: https://strava.github.io/api/v3/activities/
   """
 
-  @type t :: %Strava.Activity{
+  @type t :: %__MODULE__{
     id: integer,
     resource_state: integer,
     external_id: String.t,
@@ -22,8 +22,8 @@ defmodule Strava.Activity do
     elev_high: float,
     elev_low: float,
     type: String.t,
-    start_date: NaiveDateTime.t,
-    start_date_local: NaiveDateTime.t,
+    start_date: NaiveDateTime.t | String.t,
+    start_date_local: NaiveDateTime.t | String.t,
     timezone: String.t,
     start_latlng: list(number),
     end_latlng: list(number),
@@ -33,7 +33,7 @@ defmodule Strava.Activity do
     athlete_count: integer,
     photo_count: integer,
     total_photo_count: integer,
-    photos: Strava.Activity.Photo.Summary.t,
+    photos: Strava.Activity.Photo.Summary.t | nil,
     map: map,
     trainer: boolean,
     commute: boolean,
@@ -60,7 +60,7 @@ defmodule Strava.Activity do
     calories: float,
     suffer_score: integer,
     has_kudoed: boolean,
-    segment_efforts: list(Strava.SegmentEffort.t),
+    segment_efforts: list(Strava.SegmentEffort.t) | nil,
     splits_metric: list(map),
     splits_standard: list(map),
     best_efforts: list(map)
@@ -126,7 +126,7 @@ defmodule Strava.Activity do
   ]
 
   defmodule Meta do
-    @type t :: %Strava.Activity.Meta{
+    @type t :: %__MODULE__{
       id: integer,
       resource_state: integer
     }
@@ -148,7 +148,8 @@ defmodule Strava.Activity do
   """
   @spec retrieve(integer) :: Strava.Activity.t
   def retrieve(id) do
-    Strava.request("activities/#{id}", as: %Strava.Activity{})
+    "activities/#{id}"
+    |> Strava.request(as: %Strava.Activity{})
     |> parse
   end
 
@@ -178,7 +179,7 @@ defmodule Strava.Activity do
       start_date_local: parse_date(start_date_local)
     }
   end
-      
+
   @spec parse_photos(Strava.Activity.t) :: Strava.Activity.t
   defp parse_photos(activity)
   defp parse_photos(%Strava.Activity{photos: nil} = activity), do: activity
@@ -190,7 +191,7 @@ defmodule Strava.Activity do
 
   @spec parse_segment_efforts(Strava.Activity.t) :: Strava.Activity.t
   defp parse_segment_efforts(activity)
-    defp parse_segment_efforts(%Strava.Activity{segment_efforts: nil} = activity), do: activity
+  defp parse_segment_efforts(%Strava.Activity{segment_efforts: nil} = activity), do: activity
   defp parse_segment_efforts(%Strava.Activity{segment_efforts: segment_efforts} = activity) do
     %Strava.Activity{activity |
       segment_efforts: Enum.map(segment_efforts, fn segment_effort ->

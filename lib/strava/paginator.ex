@@ -13,6 +13,7 @@ defmodule Strava.Paginator do
     :status
   ]
 
+  @spec stream((Strava.Pagination.t -> Enum.t), integer, integer, integer) :: Enum.t
   def stream(request, per_page \\ Strava.max_page_size, first_page \\ 1, delay_between_requests_in_milliseconds \\ Strava.delay_between_requests_in_milliseconds) do
     Stream.resource(
       fn -> %Strava.Paginator{per_page: per_page, page: first_page, request_delay: delay_between_requests_in_milliseconds} end,
@@ -26,7 +27,7 @@ defmodule Strava.Paginator do
   defp fetch_page(%Strava.Paginator{per_page: per_page, page: page} = pagination, request) do
     sleep_between_requests(pagination)
 
-    response = request.(%{per_page: per_page, page: page})
+    response = apply(request, [%Strava.Pagination{per_page: per_page, page: page}])
 
     case length(response) do
       ^per_page ->

@@ -6,15 +6,15 @@ All calls to the Strava API require an `access_token` defining the athlete and a
 
 ## Installation
 
-  1. Add strava to your list of dependencies in `mix.exs`:
+  1. Add `strava` to your list of dependencies in `mix.exs`:
 
   ```elixir
   def deps do
-    [{:strava, "~> 0.0.1"}]
+    [{:strava, "~> 0.1"}]
   end
   ```
 
-  2. Ensure strava is started before your application:
+  2. Ensure `strava` is included in your applications:
 
   ```elixir
   def application do
@@ -39,51 +39,59 @@ config :strava,
   redirect_uri: "<redirect url>"
 ```
 
-#### Clubs
+### Clubs
+
+#### Retrieve a club
 
 ```elixir
-# retrieve a club
 club = Strava.Club.retrieve(7289)
 ```
 
-```elixir
-# list club members
-members = Strava.Club.list_members(7289, %{per_page: 20, page: 1})
-```
+#### List club members
 
 ```elixir
-# stream club members
+members = Strava.Club.list_members(7289, %Strava.Pagination{per_page: 20, page: 1})
+```
+
+#### Stream club members
+
+```elixir
 member_stream = Strava.Club.stream_members(7289)
 |> Enum.to_list
 ```
 
-#### Segments
+### Segments
+
+#### Retrieve a segment
 
 ```elixir
-# retrieve a segment
 segment = Strava.Segment.retrieve(229781)
 ```
 
+#### List segment efforts
+
 ```elixir
-# list segment efforts
 segment_efforts = Strava.Segment.list_efforts(229781)
 ```
 
+#### List segment efforts filtered by athlete
+
 ```elixir
-# list segment efforts, filtered by athlete
 segment_efforts = Strava.Segment.list_efforts(229781, %{athlete_id: 5287})
 ```
 
+#### List segment efforts filtered by start and end dates
+
 ```elixir
-# list segment efforts, filtered by start and end dates
 segment_efforts = Strava.Segment.list_efforts(229781, %{
   start_date_local: "2014-01-01T00:00:00Z",
   end_date_local: "2014-01-01T23:59:59Z"
 })
 ```
 
+#### Stream segment efforts filtered by start and end dates
+
 ```elixir
-# stream segment efforts, filtered by start and end dates
 segment_efforts = Strava.Segment.stream_efforts(229781, %{
   start_date_local: "2014-01-01T00:00:00Z",
   end_date_local: "2014-01-01T23:59:59Z"
@@ -91,10 +99,11 @@ segment_efforts = Strava.Segment.stream_efforts(229781, %{
 |> Enum.to_list
 ```
 
-#### Segment efforts
+### Segment efforts
+
+#### Retrieve segment effort
 
 ```elixir
-# retrieve segment effort
 segment_effort = Strava.SegmentEffort.retrieve(269990681)
 ```
 
@@ -110,8 +119,20 @@ config :strava,
   access_token: "<access token>"
 ```
 
-and run: 
+and run:
 
 ```
 $ mix test
 ```
+
+## Contributing
+
+Pull requests to contribute new or improved features, and extend documentation are most welcome.
+
+Please follow the existing coding conventions, or refer to the Elixir style guide.
+
+You should include unit tests to cover any changes.
+
+### Contributors
+
+- [Eric Thomas](https://github.com/et)

@@ -11,11 +11,9 @@ defmodule Strava.Util do
       iex> Strava.Util.parse_date("2012-05-16T21:37:06Z")
       ~N[2012-05-16 21:37:06]
   """
-
-  @spec parse_date(nil) :: nil
+  @spec parse_date(String.t) :: NativeDateTime.t | String.t
+  def parse_date(date)
   def parse_date(nil), do: nil
-
-  @spec parse_date(String.t) :: NativeDateTime.t
   def parse_date(date) do
     case NaiveDateTime.from_iso8601(date) do
       {:ok, date} -> date

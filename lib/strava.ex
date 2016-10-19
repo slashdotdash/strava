@@ -9,7 +9,8 @@ defmodule Strava do
   Submit a request to the Strava API
   """
   def request(path, opts \\ []) do
-    Strava.get!(path)
+    path
+    |> Strava.get!
     |> parse(opts)
   end
 

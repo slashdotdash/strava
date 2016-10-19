@@ -6,6 +6,24 @@ defmodule Strava.Athlete do
   """
 
   defmodule Summary do
+    @type t :: %__MODULE__{
+      id: integer,
+      resource_state: integer,
+      firstname: String.t,
+      lastname: String.t,
+      profile_medium: String.t,
+      profile: String.t,
+      city: String.t,
+      state: String.t,
+      country: String.t,
+      sex: String.t,
+      friend: String.t,
+      follower: String.t,
+      premium: boolean,
+      created_at: NaiveDateTime.t | String.t,
+      updated_at: NaiveDateTime.t | String.t
+    }
+
     defstruct [
       :id,
       :resource_state,
@@ -23,10 +41,14 @@ defmodule Strava.Athlete do
       :created_at,
       :updated_at
     ]
+
+    def parse(%Strava.Athlete.Summary{} = athlete) do
+      athlete
+    end
   end
 
   defmodule Meta do
-    @type t :: %Strava.Athlete.Meta {
+    @type t :: %__MODULE__{
       id: integer,
       resource_state: integer
     }

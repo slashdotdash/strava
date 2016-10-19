@@ -7,7 +7,7 @@ defmodule Strava.Activity.Photo do
   """
 
   defmodule Summary do
-    @type t :: %Strava.Activity.Photo.Summary{
+    @type t :: %__MODULE__{
       count: integer,
       primary: Strava.Activity.Photo.Primary.t
     }
@@ -28,7 +28,7 @@ defmodule Strava.Activity.Photo do
   end
 
   defmodule Primary do
-    @type t :: %Strava.Activity.Photo.Primary{
+    @type t :: %__MODULE__{
       id: integer,
       source: integer,
       unique_id: String.t,

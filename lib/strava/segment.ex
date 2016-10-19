@@ -3,7 +3,7 @@ defmodule Strava.Segment do
   Segments are specific sections of road. Athletes’ times are compared on these segments and leaderboards are created.
   https://strava.github.io/api/v3/segments/
   """
-  @type t :: %Strava.Segment{
+  @type t :: %__MODULE__{
     id: number,
     resource_state: number,
     name: String.t,
@@ -66,7 +66,7 @@ defmodule Strava.Segment do
 
   More info at: https://strava.github.io/api/v3/segments/#retrieve
   """
-  @spec retrieve(number) :: %Strava.Segment{}
+  @spec retrieve(integer) :: Strava.Segment.t
   def retrieve(id) do
     Strava.request("segments/#{id}", as: %Strava.Segment{})
   end
@@ -80,7 +80,7 @@ defmodule Strava.Segment do
 
   More info at: https://strava.github.io/api/v3/segments/#efforts
   """
-  @spec list_efforts(number) :: [%Strava.Segment{}]
+  @spec list_efforts(integer) :: list(Strava.Segment.t)
   def list_efforts(id) do
     list_efforts_request(id)
   end
@@ -94,7 +94,7 @@ defmodule Strava.Segment do
 
   More info at: https://strava.github.io/api/v3/segments/#efforts
   """
-  @spec list_efforts(number, map) :: [%Strava.Segment{}]
+  @spec list_efforts(integer, map) :: list(Strava.Segment.t)
   def list_efforts(id, filters) do
     list_efforts_request(id, filters)
   end
@@ -104,11 +104,11 @@ defmodule Strava.Segment do
 
   ## Example
 
-      Strava.Segment.list_efforts(229781, %{athlete_id: 5287}, %{per_page: 10, page: 1})
+      Strava.Segment.list_efforts(229781, %{athlete_id: 5287}, %Strava.Pagination{per_page: 10, page: 1})
 
   More info at: https://strava.github.io/api/v3/segments/#efforts
   """
-  @spec list_efforts(number, map, map) :: [%Strava.Segment{}]
+  @spec list_efforts(integer, map, Strava.Pagination.t) :: list(Strava.Segment.t)
   def list_efforts(id, filters, pagination) do
     list_efforts_request(id, filters, pagination)
   end
@@ -122,14 +122,26 @@ defmodule Strava.Segment do
 
   More info at: https://strava.github.io/api/v3/segments/#efforts
   """
-  @spec stream_efforts(number, map) :: Enumerable.t
+  @spec stream_efforts(integer, map) :: Enum.t
   def stream_efforts(id, filters \\ %{}) do
-    Strava.Paginator.stream(fn(pagination) -> list_efforts(id, filters, pagination) end)
+    Strava.Paginator.stream(fn pagination -> list_efforts(id, filters, pagination) end)
   end
 
-  defp list_efforts_request(id, filters \\ %{}, pagination \\ %{}) do
-    "segments/#{id}/all_efforts?#{URI.encode_query(Map.merge(filters, pagination))}"
+  @spec list_efforts_request(integer) :: list(Strava.Segment.t)
+  @spec list_efforts_request(integer, map) :: list(Strava.Segment.t)
+  @spec list_efforts_request(integer, map, Strava.Pagination.t) :: list(Strava.Segment.t)
+  defp list_efforts_request(id, filters \\ %{}, pagination \\ %Strava.Pagination{}) do
+    "segments/#{id}/all_efforts?#{query_string(filters, pagination)}"
     |> Strava.request(as: [%Strava.SegmentEffort{}])
     |> Enum.map(&Strava.SegmentEffort.parse/1)
+  end
+
+  @spec query_string(map, Strava.Pagination.t) :: binary
+  defp query_string(filters, pagination) do
+    pagination
+    |> Map.from_struct
+    |> Enum.filter(fn {_, v} -> v != nil end)
+    |> Enum.into(filters)
+    |> URI.encode_query
   end
 end

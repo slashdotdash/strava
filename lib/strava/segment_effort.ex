@@ -1,4 +1,6 @@
 defmodule Strava.SegmentEffort do
+  import Strava.Util, only: [parse_date: 1]
+
   @moduledoc """
   A segment effort represents an athlete’s attempt at a segment. It can also be thought of as a portion of a ride that covers a segment.
 
@@ -58,13 +60,5 @@ defmodule Strava.SegmentEffort do
       start_date: parse_date(start_date),
       start_date_local: parse_date(start_date_local)
     }
-  end
-
-  defp parse_date(nil), do: nil
-  defp parse_date(date) do
-    case NaiveDateTime.from_iso8601(date) do
-      {:ok, date} -> date
-      {:error, _} -> date
-    end
   end
 end

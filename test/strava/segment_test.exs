@@ -41,7 +41,7 @@ defmodule Strava.SegmentTest do
 
       Enum.each(segment_efforts, fn(segment_effort) ->
         assert segment_effort.name == "Hawk Hill"
-        assert segment_effort.athlete["id"] == 5287
+        assert segment_effort.athlete.id == 5287
       end)
     end
   end

@@ -6,6 +6,31 @@ defmodule Strava.SegmentEffort do
 
   More info: https://strava.github.io/api/v3/efforts/
   """
+
+  @type t :: %Strava.SegmentEffort {
+    id: integer,
+    resource_state: integer,
+    name: String.t,
+    activity: Strava.Activity.Meta.t,
+    athlete: Strava.Athlete.Meta.t,
+    elapsed_time: integer,
+    moving_time: integer,
+    start_date: NaiveDateTime.t,
+    start_date_local: NaiveDateTime.t,
+    distance: float,
+    start_index: integer,
+    end_index: integer,
+    average_cadence: float,
+    average_watts: float,
+    device_watts: boolean,
+    average_heartrate: float,
+    max_heartrate: integer,
+    segment: Strava.Segment.t,
+    kom_rank: integer,
+    pr_rank: integer,
+    hidden: boolean
+  }
+
   defstruct [
     :id,
     :resource_state,
@@ -39,7 +64,7 @@ defmodule Strava.SegmentEffort do
 
   More info at: https://strava.github.io/api/v3/efforts/#retrieve
   """
-  @spec retrieve(number) :: %Strava.SegmentEffort{}
+  @spec retrieve(integer) :: Strava.SegmentEffort.t
   def retrieve(id) do
     "segment_efforts/#{id}"
     |> Strava.request(as: %Strava.SegmentEffort{})
@@ -47,18 +72,27 @@ defmodule Strava.SegmentEffort do
   end
 
   @doc """
-  Parse the dates in the segment effort to naive date time structs
+  Parse the dates and segment in the segment effort
   """
-  @spec parse(%Strava.SegmentEffort{}) :: %Strava.SegmentEffort{}
+  @spec parse(Strava.SegmentEffort.t) :: Strava.SegmentEffort.t
   def parse(%Strava.SegmentEffort{} = segment_effort) do
     segment_effort
     |> parse_dates
+    |> parse_segment
   end
 
+  @spec parse_dates(Strava.SegmentEffort.t) :: Strava.SegmentEffort.t
   defp parse_dates(%Strava.SegmentEffort{start_date: start_date, start_date_local: start_date_local} = segment_effort) do
     %Strava.SegmentEffort{segment_effort |
       start_date: parse_date(start_date),
       start_date_local: parse_date(start_date_local)
+    }
+  end
+
+  @spec parse_segment(Strava.SegmentEffort.t) :: Strava.SegmentEffort.t
+  defp parse_segment(%Strava.SegmentEffort{segment: segment} = segment_effort) do
+    %Strava.SegmentEffort{segment_effort |
+      segment: struct(Strava.Segment, segment)
     }
   end
 end

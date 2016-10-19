@@ -7,34 +7,34 @@ defmodule Strava.Activity do
   More info: https://strava.github.io/api/v3/activities/
   """
 
-  @type t :: %Strava.Activity {
-    id: number,
-    resource_state: number,
+  @type t :: %Strava.Activity{
+    id: integer,
+    resource_state: integer,
     external_id: String.t,
-    upload_id: number,
-    #athlete:
+    upload_id: integer,
+    athlete: Strava.Athlete.Meta.t,
     name: String.t,
     description: String.t,
-    distance: number,
-    moving_time: number,
-    elapsed_time: number,
-    total_elevation_gain: number,
-    elev_high: number,
-    elev_low: number,
+    distance: float,
+    moving_time: integer,
+    elapsed_time: integer,
+    total_elevation_gain: float,
+    elev_high: float,
+    elev_low: float,
     type: String.t,
-    start_date: String.t,
-    start_date_local: String.t,
+    start_date: NaiveDateTime.t,
+    start_date_local: NaiveDateTime.t,
     timezone: String.t,
     start_latlng: list(number),
     end_latlng: list(number),
-    achievement_count: number,
-    kudos_count: number,
-    comment_count: number,
-    athlete_count: number,
-    photo_count: number,
-    total_photo_count: number,
-    # photos:
-    # map:
+    achievement_count: integer,
+    kudos_count: integer,
+    comment_count: integer,
+    athlete_count: integer,
+    photo_count: integer,
+    total_photo_count: integer,
+    photos: Strava.Activity.Photo.Summary.t,
+    map: map,
     trainer: boolean,
     commute: boolean,
     manual: boolean,
@@ -42,28 +42,28 @@ defmodule Strava.Activity do
     device_name: String.t,
     embed_token: String.t,
     flagged: boolean,
-    workout_type: number,
+    workout_type: integer,
     gear_id: String.t,
-    # gear:
-    average_speed: number,
-    max_speed: number,
-    average_cadence: number,
-    average_temp: number,
-    average_watts: number,
-    max_watts: number,
-    weighted_average_watts: number,
-    kilojoules: number,
+    gear: map,
+    average_speed: float,
+    max_speed: float,
+    average_cadence: float,
+    average_temp: float,
+    average_watts: float,
+    max_watts: integer,
+    weighted_average_watts: integer,
+    kilojoules: float,
     device_watts: boolean,
     has_heartrate: boolean,
-    average_heartrate: number,
-    max_heartrate: number,
-    calories: number,
-    suffer_score: number,
+    average_heartrate: float,
+    max_heartrate: integer,
+    calories: float,
+    suffer_score: integer,
     has_kudoed: boolean,
-    # segment_efforts:
-    # splits_metric:
-    # splits_standard:
-    # best_efforts:
+    segment_efforts: list(Strava.SegmentEffort.t),
+    splits_metric: list(map),
+    splits_standard: list(map),
+    best_efforts: list(map)
   }
 
   defstruct [
@@ -71,7 +71,7 @@ defmodule Strava.Activity do
     :resource_state,
     :external_id,
     :upload_id,
-    # :athlete,
+    :athlete,
     :name,
     :description,
     :distance,
@@ -92,8 +92,8 @@ defmodule Strava.Activity do
     :athlete_count,
     :photo_count,
     :total_photo_count,
-    # :photos,
-    # :map,
+    :photos,
+    :map,
     :trainer,
     :commute,
     :manual,
@@ -103,7 +103,7 @@ defmodule Strava.Activity do
     :flagged,
     :workout_type,
     :gear_id,
-    # :gear,
+    :gear,
     :average_speed,
     :max_speed,
     :average_cadence,
@@ -119,11 +119,23 @@ defmodule Strava.Activity do
     :calories,
     :suffer_score,
     :has_kudoed,
-    # :segment_efforts,
-    # :splits_metric,
-    # :splits_standard,
-    # :best_efforts,
+    :segment_efforts,
+    :splits_metric,
+    :splits_standard,
+    :best_efforts
   ]
+
+  defmodule Meta do
+    @type t :: %Strava.Activity.Meta{
+      id: integer,
+      resource_state: integer
+    }
+
+    defstruct [
+      :id,
+      :resource_state
+    ]
+  end
 
   @doc """
   Retrieve details about a specific activity.
@@ -134,25 +146,56 @@ defmodule Strava.Activity do
 
   More info at: https://strava.github.io/api/v3/activities/#get-details
   """
-  @spec retrieve(number) :: %Strava.Activity{}
+  @spec retrieve(integer) :: Strava.Activity.t
   def retrieve(id) do
     Strava.request("activities/#{id}", as: %Strava.Activity{})
     |> parse
   end
 
   @doc """
-  Parse the dates in the activity to naive date time structs
+  Parse the athlete, dates, photos and segment efforts in the activity
   """
-  @spec parse(%Strava.Activity{}) :: %Strava.Activity{}
+  @spec parse(Strava.Activity.t) :: Strava.Activity.t
   def parse(%Strava.Activity{} = activity) do
     activity
+    |> parse_athlete
     |> parse_dates
+    |> parse_photos
+    |> parse_segment_efforts
   end
 
+  @spec parse_athlete(Strava.Activity.t) :: Strava.Activity.t
+  defp parse_athlete(%Strava.Activity{athlete: athlete} = activity) do
+    %Strava.Activity{activity |
+      athlete: struct(Strava.Athlete.Meta, athlete)
+    }
+  end
+
+  @spec parse_dates(Strava.Activity.t) :: Strava.Activity.t
   defp parse_dates(%Strava.Activity{start_date: start_date, start_date_local: start_date_local} = activity) do
     %Strava.Activity{activity |
       start_date: parse_date(start_date),
       start_date_local: parse_date(start_date_local)
+    }
+  end
+      
+  @spec parse_photos(Strava.Activity.t) :: Strava.Activity.t
+  defp parse_photos(activity)
+  defp parse_photos(%Strava.Activity{photos: nil} = activity), do: activity
+  defp parse_photos(%Strava.Activity{photos: photos} = activity) do
+    %Strava.Activity{activity |
+      photos: Strava.Activity.Photo.Summary.parse(struct(Strava.Activity.Photo.Summary, photos))
+    }
+  end
+
+  @spec parse_segment_efforts(Strava.Activity.t) :: Strava.Activity.t
+  defp parse_segment_efforts(activity)
+    defp parse_segment_efforts(%Strava.Activity{segment_efforts: nil} = activity), do: activity
+  defp parse_segment_efforts(%Strava.Activity{segment_efforts: segment_efforts} = activity) do
+    %Strava.Activity{activity |
+      segment_efforts: Enum.map(segment_efforts, fn segment_effort ->
+        Strava.SegmentEffort.parse(struct(Strava.SegmentEffort, segment_effort))
+      end)
     }
   end
 end

@@ -14,7 +14,7 @@ defmodule Strava do
   end
 
   defp parse(response, opts) do
-    Poison.decode!(response.body, opts)
+    Poison.decode!(response.body, opts ++ [keys: :atoms])
   end
 
   defp process_url(path) do

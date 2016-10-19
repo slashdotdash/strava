@@ -3,7 +3,7 @@ defmodule Strava.Segment do
   Segments are specific sections of road. Athletes’ times are compared on these segments and leaderboards are created.
   https://strava.github.io/api/v3/segments/
   """
-  @type t :: %Strava.Segment {
+  @type t :: %Strava.Segment{
     id: number,
     resource_state: number,
     name: String.t,
@@ -29,6 +29,7 @@ defmodule Strava.Segment do
     hazardous: boolean,
     star_count: number
   }
+
   defstruct [
     :id,
     :resource_state,

@@ -17,6 +17,7 @@ defmodule Strava.SegmentEffortTest do
       assert segment_effort.elapsed_time == 181
       assert segment_effort.start_date == ~N[2012-05-16 21:37:06]
       assert segment_effort.start_date_local == ~N[2012-05-16 17:37:06]
+      assert segment_effort.segment.name == "Losantiville Ave. "
     end
   end
 end

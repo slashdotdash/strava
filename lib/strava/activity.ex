@@ -1,4 +1,6 @@
 defmodule Strava.Activity do
+  import Strava.Util, only: [parse_date: 1]
+
   @moduledoc """
   Activities are the base object for Strava runs, rides, swims etc.
 
@@ -20,8 +22,8 @@ defmodule Strava.Activity do
     elev_high: number,
     elev_low: number,
     type: String.t,
-    # start_date: String.t,
-    # start_date_local: String.t,
+    start_date: String.t,
+    start_date_local: String.t,
     timezone: String.t,
     start_latlng: list(number),
     end_latlng: list(number),
@@ -79,8 +81,8 @@ defmodule Strava.Activity do
     :elev_high,
     :elev_low,
     :type,
-    # :start_date,
-    # :start_date_local,
+    :start_date,
+    :start_date_local,
     :timezone,
     :start_latlng,
     :end_latlng,
@@ -135,5 +137,22 @@ defmodule Strava.Activity do
   @spec retrieve(number) :: %Strava.Activity{}
   def retrieve(id) do
     Strava.request("activities/#{id}", as: %Strava.Activity{})
+    |> parse
+  end
+
+  @doc """
+  Parse the dates in the activity to naive date time structs
+  """
+  @spec parse(%Strava.Activity{}) :: %Strava.Activity{}
+  def parse(%Strava.Activity{} = activity) do
+    activity
+    |> parse_dates
+  end
+
+  defp parse_dates(%Strava.Activity{start_date: start_date, start_date_local: start_date_local} = activity) do
+    %Strava.Activity{activity |
+      start_date: parse_date(start_date),
+      start_date_local: parse_date(start_date_local)
+    }
   end
 end

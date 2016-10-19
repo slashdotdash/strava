@@ -79,7 +79,7 @@ defmodule Strava.Segment do
 
   More info at: https://strava.github.io/api/v3/segments/#efforts
   """
-  @spec retrieve(number) :: [%Strava.Segment{}]
+  @spec list_efforts(number) :: [%Strava.Segment{}]
   def list_efforts(id) do
     list_efforts_request(id)
   end

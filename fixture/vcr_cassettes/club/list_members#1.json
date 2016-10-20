@@ -1,0 +1,32 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/clubs/1/members?page=1&per_page=5"
+    },
+    "response": {
+      "body": "[{\"id\":603896,\"username\":\"mattrob\",\"resource_state\":2,\"firstname\":\" Matt\",\"lastname\":\"Robins\\u262en\",\"city\":\"San Francisco\",\"state\":\"California\",\"country\":\"United States\",\"sex\":\"M\",\"premium\":true,\"created_at\":\"2012-06-09T02:07:45Z\",\"updated_at\":\"2016-10-20T06:55:05Z\",\"badge_type_id\":4,\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/603896/149179/9/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/603896/149179/9/large.jpg\",\"friend\":null,\"follower\":null},{\"id\":4722,\"username\":\"aforth\",\"resource_state\":2,\"firstname\":\"aaron\",\"lastname\":\"forth\",\"city\":\"San Francisco\",\"state\":\"CA\",\"country\":\"United States\",\"sex\":\"M\",\"premium\":true,\"created_at\":\"2010-04-15T13:43:07Z\",\"updated_at\":\"2016-10-14T23:25:48Z\",\"badge_type_id\":4,\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/4722/114453/1/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/4722/114453/1/large.jpg\",\"friend\":null,\"follower\":null},{\"id\":81378,\"username\":\"simekadam\",\"resource_state\":2,\"firstname\":\"Adam\",\"lastname\":\"Simek\",\"city\":\"San Francisco\",\"state\":\"California\",\"country\":\"United States\",\"sex\":\"M\",\"premium\":true,\"created_at\":\"2011-06-19T06:07:23Z\",\"updated_at\":\"2016-10-20T04:07:18Z\",\"badge_type_id\":4,\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/81378/178091/6/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/81378/178091/6/large.jpg\",\"friend\":null,\"follower\":null},{\"id\":337699,\"username\":\"adrianocastro\",\"resource_state\":2,\"firstname\":\"Adriano\",\"lastname\":\"Castro\",\"city\":\"San Francisco\",\"state\":\"CA\",\"country\":\"United States\",\"sex\":\"M\",\"premium\":true,\"created_at\":\"2012-03-21T10:11:36Z\",\"updated_at\":\"2016-10-20T05:34:55Z\",\"badge_type_id\":4,\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/337699/83553/2/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/337699/83553/2/large.jpg\",\"friend\":null,\"follower\":null},{\"id\":5541381,\"username\":\"grubb_alan\",\"resource_state\":2,\"firstname\":\"Alan\",\"lastname\":\"Grubb\",\"city\":\"San Francisco\",\"state\":\"California\",\"country\":\"United States\",\"sex\":\"M\",\"premium\":false,\"created_at\":\"2014-07-07T15:22:49Z\",\"updated_at\":\"2016-10-12T14:35:27Z\",\"badge_type_id\":4,\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/5541381/1775193/2/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/5541381/1775193/2/large.jpg\",\"friend\":null,\"follower\":null}]",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Thu, 20 Oct 2016 09:10:17 GMT",
+        "ETag": "\"6ac35392b022165a5cefcfc228328d03\"",
+        "Status": "200 OK",
+        "X-FRAME-OPTIONS": "DENY",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "32,32",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "Content-Length": "2509",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

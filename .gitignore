@@ -4,5 +4,4 @@
 /doc
 erl_crash.dump
 *.ez
-/fixture/vcr_cassettes
 /config/test.secret.exs

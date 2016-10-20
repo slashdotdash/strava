@@ -82,7 +82,7 @@ defmodule Strava.Segment do
   """
   @spec list_efforts(integer) :: list(Strava.Segment.t)
   def list_efforts(id) do
-    list_efforts_request(id)
+    list_efforts_request(id, %{}, %Strava.Pagination{})
   end
 
   @doc """
@@ -96,7 +96,7 @@ defmodule Strava.Segment do
   """
   @spec list_efforts(integer, map) :: list(Strava.Segment.t)
   def list_efforts(id, filters) do
-    list_efforts_request(id, filters)
+    list_efforts_request(id, filters, %Strava.Pagination{})
   end
 
   @doc """
@@ -122,15 +122,14 @@ defmodule Strava.Segment do
 
   More info at: https://strava.github.io/api/v3/segments/#efforts
   """
+  @spec stream_efforts(integer) :: Enum.t
   @spec stream_efforts(integer, map) :: Enum.t
   def stream_efforts(id, filters \\ %{}) do
-    Strava.Paginator.stream(fn pagination -> list_efforts(id, filters, pagination) end)
+    Strava.Paginator.stream(fn pagination -> list_efforts_request(id, filters, pagination) end)
   end
 
-  @spec list_efforts_request(integer) :: list(Strava.Segment.t)
-  @spec list_efforts_request(integer, map) :: list(Strava.Segment.t)
   @spec list_efforts_request(integer, map, Strava.Pagination.t) :: list(Strava.Segment.t)
-  defp list_efforts_request(id, filters \\ %{}, pagination \\ %Strava.Pagination{}) do
+  defp list_efforts_request(id, filters, pagination) do
     "segments/#{id}/all_efforts?#{query_string(filters, pagination)}"
     |> Strava.request(as: [%Strava.SegmentEffort{}])
     |> Enum.map(&Strava.SegmentEffort.parse/1)

@@ -6,6 +6,13 @@ defmodule Strava.Paginator do
   More info: https://strava.github.io/api/#pagination
   """
 
+  @type t :: %__MODULE__{
+    per_page: integer,
+    page: integer,
+    request_delay: integer,
+    status: atom
+  }
+
   defstruct [
     :per_page,
     :page,
@@ -13,7 +20,7 @@ defmodule Strava.Paginator do
     :status
   ]
 
-  @spec stream((Strava.Pagination.t -> Enum.t), integer, integer, integer) :: Enum.t
+  @spec stream((Strava.Pagination.t -> list), integer, integer, integer) :: Enum.t
   def stream(request, per_page \\ Strava.max_page_size, first_page \\ 1, delay_between_requests_in_milliseconds \\ Strava.delay_between_requests_in_milliseconds) do
     Stream.resource(
       fn -> %Strava.Paginator{per_page: per_page, page: first_page, request_delay: delay_between_requests_in_milliseconds} end,
@@ -42,14 +49,10 @@ defmodule Strava.Paginator do
     end
   end
 
-  defp sleep_between_requests(%Strava.Paginator{page: 1}) do
-    # no sleep
-  end
-
-  defp sleep_between_requests(%Strava.Paginator{request_delay: 0}) do
-    # no-op
-  end
-
+  @spec sleep_between_requests(Strava.Paginator.t) :: :ok
+  defp sleep_between_requests(pagination)
+  defp sleep_between_requests(%Strava.Paginator{page: 1}), do: :ok
+  defp sleep_between_requests(%Strava.Paginator{request_delay: 0}), do: :ok
   defp sleep_between_requests(%Strava.Paginator{request_delay: delay_between_requests_in_milliseconds}) do
     :timer.sleep(delay_between_requests_in_milliseconds)
   end

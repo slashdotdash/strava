@@ -4,6 +4,10 @@ Elixir wrapper for the [Strava API](https://strava.github.io/api/) (V3).
 
 All calls to the Strava API require an `access_token` defining the athlete and application making the call. Any registered Strava user can obtain an `access_token` by first creating an application at [strava.com/developers](http://www.strava.com/developers).
 
+MIT License
+
+[![Build Status](https://travis-ci.org/slashdotdash/strava.svg?branch=master)](https://travis-ci.org/slashdotdash/strava)
+
 ## Installation
 
   1. Add `strava` to your list of dependencies in `mix.exs`:

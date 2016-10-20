@@ -8,4 +8,10 @@ config :exvcr, [
   response_headers_blacklist: ["Set-Cookie", "X-Request-Id"]
 ]
 
-import_config "test.secret.exs"
+config :strava,
+  access_token: "<<access_token>>",
+  delay_between_requests_in_milliseconds: 0
+
+if File.exists?("config/test.secret.exs") do
+  import_config "test.secret.exs"
+end

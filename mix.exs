@@ -19,7 +19,7 @@ defmodule Strava.Mixfile do
       :logger,
       :httpoison,
       :oauth2,
-      :poison
+      :poison,
       ]
     ]
   end
@@ -39,8 +39,8 @@ Elixir wrapper for the Strava API (V3)
       {:httpoison, "~> 0.9"},
       {:markdown, github: "devinus/markdown", only: :dev},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:oauth2, "~> 0.8", override: true},
-      {:poison, "~> 3.0", override: true}
+      {:oauth2, "~> 0.8"},
+      {:poison, "~> 3.0"},
     ]
   end
 

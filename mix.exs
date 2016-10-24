@@ -3,7 +3,7 @@ defmodule Strava.Mixfile do
 
   def project do
     [app: :strava,
-     version: "0.1.0",
+     version: "0.2.0",
      elixir: "~> 1.3",
      name: "Strava",
      description: description,
@@ -39,8 +39,8 @@ Elixir wrapper for the Strava API (V3)
       {:httpoison, "~> 0.9"},
       {:markdown, github: "devinus/markdown", only: :dev},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:oauth2, "~> 0.8"},
-      {:poison, "~> 3.0"}
+      {:oauth2, "~> 0.8", override: true},
+      {:poison, "~> 3.0", override: true}
     ]
   end
 

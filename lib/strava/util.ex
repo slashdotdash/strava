@@ -20,4 +20,16 @@ defmodule Strava.Util do
       {:error, _} -> date
     end
   end
+
+  @spec struct_from_map(map, term) :: struct
+  def struct_from_map(map, destination) do
+    map = for {key, val} <- map, into: %{} do
+      cond do
+        is_atom(key) -> {key, val}
+        true -> {String.to_atom(key), val}
+      end
+    end
+
+    struct(destination, map)
+  end
 end

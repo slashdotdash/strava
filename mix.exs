@@ -34,12 +34,12 @@ Elixir wrapper for the Strava API (V3)
     [
       {:credo, "~> 0.4", only: :dev},
       {:dialyxir, "~> 0.3.5", only: [:dev]},
-      {:ex_doc, "~> 0.13", only: :dev},
+      {:ex_doc, "~> 0.14", only: :dev},
       {:exvcr, "~> 0.8", only: :test},
       {:httpoison, "~> 0.9"},
       {:markdown, github: "devinus/markdown", only: :dev},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:oauth2, "~> 0.7"},
+      {:oauth2, "~> 0.8"},
       {:poison, "~> 3.0"}
     ]
   end

@@ -111,6 +111,14 @@ segment_efforts = Strava.Segment.stream_efforts(229781, %{
 segment_effort = Strava.SegmentEffort.retrieve(269990681)
 ```
 
+### Activities
+
+#### Retrieve an activity
+
+```elixir
+activity = Strava.Activity.retrieve(746805584)
+```
+
 ## Testing
 
 To run the entire test suite, create a file called `config/test.secret.exs` with the following:

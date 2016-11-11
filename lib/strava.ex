@@ -1,4 +1,12 @@
 defmodule Strava do
+  @moduledoc """
+  Provides access to Strava’s V3 API.
+
+  The Strava V3 API is a publicly available interface allowing developers access to the rich Strava dataset.
+
+  More info: http://strava.github.io/api/
+  """
+
   use HTTPoison.Base
 
   @endpoint "https://www.strava.com/api/v3/"

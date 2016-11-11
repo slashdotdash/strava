@@ -1,11 +1,11 @@
 defmodule Strava.Activity do
-  import Strava.Util, only: [parse_date: 1]
-
   @moduledoc """
   Activities are the base object for Strava runs, rides, swims etc.
 
   More info: https://strava.github.io/api/v3/activities/
   """
+
+  import Strava.Util, only: [parse_date: 1]
 
   @type t :: %__MODULE__{
     id: integer,
@@ -144,7 +144,7 @@ defmodule Strava.Activity do
 
       Strava.Activity.retrieve(746805584)
 
-  More info at: https://strava.github.io/api/v3/activities/#get-details
+  More info: https://strava.github.io/api/v3/activities/#get-details
   """
   @spec retrieve(integer) :: Strava.Activity.t
   def retrieve(id) do

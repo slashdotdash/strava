@@ -62,7 +62,7 @@ defmodule Strava.Club do
 
       Strava.Club.retrieve(1)
 
-  More info at: https://strava.github.io/api/v3/clubs/#get-details
+  More info: https://strava.github.io/api/v3/clubs/#get-details
   """
   @spec retrieve(integer) :: Strava.Club.t
   def retrieve(id) do

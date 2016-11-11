@@ -3,31 +3,35 @@ defmodule Strava.Segment do
   Segments are specific sections of road. Athletes’ times are compared on these segments and leaderboards are created.
   https://strava.github.io/api/v3/segments/
   """
+
+  import Strava.Util, only: [parse_date: 1]
+
   @type t :: %__MODULE__{
     id: number,
     resource_state: number,
     name: String.t,
     activity_type: String.t,
     distance: number,
-    average_grade: number,
-    maximum_grade: number,
-    elevation_high: number,
-    elevation_low: number,
-    start_latlng: list(number),
-    end_latlng: list(number),
-    climb_category: number,
+    average_grade: float,
+    maximum_grade: float,
+    elevation_high: float,
+    elevation_low: float,
+    start_latlng: list(float),
+    end_latlng: list(float),
+    climb_category: integer,
     city: String.t,
     state: String.t,
     country: String.t,
     private: boolean,
     starred: boolean,
-    created_at: String.t,
-    updated_at: String.t,
-    total_elevation_gain: number,
-    effort_count: number,
-    athlete_count: number,
+    created_at: NaiveDateTime.t | String.t,
+    updated_at: NaiveDateTime.t | String.t,
+    total_elevation_gain: float,
+    map: Strava.Segment.Map.t,
+    effort_count: integer,
+    athlete_count: integer,
     hazardous: boolean,
-    star_count: number
+    star_count: integer
   }
 
   defstruct [
@@ -51,6 +55,7 @@ defmodule Strava.Segment do
     :created_at,
     :updated_at,
     :total_elevation_gain,
+    :map,
     :effort_count,
     :athlete_count,
     :hazardous,
@@ -64,11 +69,13 @@ defmodule Strava.Segment do
 
       Strava.Segment.retrieve(229781)
 
-  More info at: https://strava.github.io/api/v3/segments/#retrieve
+  More info: https://strava.github.io/api/v3/segments/#retrieve
   """
   @spec retrieve(integer) :: Strava.Segment.t
   def retrieve(id) do
-    Strava.request("segments/#{id}", as: %Strava.Segment{})
+    "segments/#{id}"
+    |> Strava.request(as: %Strava.Segment{})
+    |> parse
   end
 
   @doc """
@@ -78,7 +85,7 @@ defmodule Strava.Segment do
 
       Strava.Segment.list_efforts(229781)
 
-  More info at: https://strava.github.io/api/v3/segments/#efforts
+  More info: https://strava.github.io/api/v3/segments/#efforts
   """
   @spec list_efforts(integer) :: list(Strava.Segment.t)
   def list_efforts(id) do
@@ -92,7 +99,7 @@ defmodule Strava.Segment do
 
       Strava.Segment.list_efforts(229781, %{athlete_id: 5287})
 
-  More info at: https://strava.github.io/api/v3/segments/#efforts
+  More info: https://strava.github.io/api/v3/segments/#efforts
   """
   @spec list_efforts(integer, map) :: list(Strava.Segment.t)
   def list_efforts(id, filters) do
@@ -106,7 +113,7 @@ defmodule Strava.Segment do
 
       Strava.Segment.list_efforts(229781, %{athlete_id: 5287}, %Strava.Pagination{per_page: 10, page: 1})
 
-  More info at: https://strava.github.io/api/v3/segments/#efforts
+  More info: https://strava.github.io/api/v3/segments/#efforts
   """
   @spec list_efforts(integer, map, Strava.Pagination.t) :: list(Strava.Segment.t)
   def list_efforts(id, filters, pagination) do
@@ -120,7 +127,7 @@ defmodule Strava.Segment do
 
       Strava.Segment.stream_efforts(229781)
 
-  More info at: https://strava.github.io/api/v3/segments/#efforts
+  More info: https://strava.github.io/api/v3/segments/#efforts
   """
   @spec stream_efforts(integer) :: Enum.t
   @spec stream_efforts(integer, map) :: Enum.t
@@ -142,5 +149,30 @@ defmodule Strava.Segment do
     |> Enum.filter(fn {_, v} -> v != nil end)
     |> Enum.into(filters)
     |> URI.encode_query
+  end
+
+  @doc """
+  Parse the map and dates in the segment
+  """
+  @spec parse(Strava.Segment.t) :: Strava.Segment.t
+  def parse(%Strava.Segment{} = segment) do
+    segment
+    |> parse_map
+    |> parse_dates
+  end
+
+  @spec parse_map(Strava.Segment.t) :: Strava.Segment.t
+  defp parse_map(%Strava.Segment{map: map} = segment) do
+    %Strava.Segment{segment |
+      map: struct(Strava.Segment.Map, map)
+    }
+  end
+
+  @spec parse_dates(Strava.Segment.t) :: Strava.Segment.t
+  defp parse_dates(%Strava.Segment{created_at: created_at, updated_at: updated_at} = segment) do
+    %Strava.Segment{segment |
+      created_at: parse_date(created_at),
+      updated_at: parse_date(updated_at),
+    }
   end
 end

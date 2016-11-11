@@ -62,7 +62,7 @@ defmodule Strava.SegmentEffort do
 
       Strava.SegmentEffort.retrieve(269990681)
 
-  More info at: https://strava.github.io/api/v3/efforts/#retrieve
+  More info: https://strava.github.io/api/v3/efforts/#retrieve
   """
   @spec retrieve(integer) :: Strava.SegmentEffort.t
   def retrieve(id) do

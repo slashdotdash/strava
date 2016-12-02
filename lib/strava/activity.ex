@@ -147,9 +147,9 @@ defmodule Strava.Activity do
   More info: https://strava.github.io/api/v3/activities/#get-details
   """
   @spec retrieve(integer) :: Strava.Activity.t
-  def retrieve(id) do
+  def retrieve(id, client \\ Strava.Client.new) do
     "activities/#{id}"
-    |> Strava.request(as: %Strava.Activity{})
+    |> Strava.request(client, as: %Strava.Activity{})
     |> parse
   end
 

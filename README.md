@@ -14,7 +14,7 @@ MIT License
 
   ```elixir
   def deps do
-    [{:strava, "~> 0.1"}]
+    [{:strava, "~> 0.3"}]
   end
   ```
 
@@ -61,7 +61,7 @@ members = Strava.Club.list_members(7289, %Strava.Pagination{per_page: 20, page: 
 
 ```elixir
 member_stream = Strava.Club.stream_members(7289)
-|> Enum.to_list
+member_list = member_stream |> Enum.to_list
 ```
 
 ### Segments
@@ -118,6 +118,55 @@ segment_effort = Strava.SegmentEffort.retrieve(269990681)
 ```elixir
 activity = Strava.Activity.retrieve(746805584)
 ```
+
+### Client
+
+The Strava API allows an application to make requests on the  behalf of an authenticated user by using an `access_token` unique to that user.
+
+Each of the above API functions supports providing an `Strava.Client` with a configured access token.
+
+```elixir
+client = Strava.Client.new("<access_token>>")
+club = Strava.Club.retrieve(1, client)
+```
+
+### OAuth support
+
+You can use Strava as an authentication provider with the OAuth2 strategy provided. Use `Strava.Auth.authorize_url!/1` to generate the Strava URL to redirect unauthenticated users to. After the user has successfully authenticated with Strava you can use `Strava.Auth.get_token!` to then access their summary details and their unique access token.
+
+An example Phoenix authentication controller is shown below:
+
+```elixir
+defmodule Example.AuthController do
+  use Example.Web, :controller
+
+  def index(conn, _params) do
+    redirect conn, external: Strava.Auth.authorize_url!(scope: "public")
+  end
+
+  def delete(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> redirect(to: "/")
+  end
+
+  @doc """
+  This action is reached via `/auth/callback` and is the the callback URL that Strava will redirect the user back to with a `code` that will be used to request an access token.
+  The access token will then be used to access protected resources on behalf of the user.
+  """
+  def callback(conn, %{"code" => code}) do
+    client = Strava.Auth.get_token!(code: code)
+    athlete = Strava.Auth.get_athlete!(client)
+
+    conn
+      |> put_session(:current_athlete, athlete)
+      |> put_session(:access_token, client.token.access_token)
+      |> redirect(to: "/")
+  end
+end
+```
+
+With the `access_token` tracked against the user's session you can make requests to the Strava API on their behalf. Use `Strava.Client.new(access_token)` to create a client to use with each request for that user.
 
 ## Testing
 

@@ -29,7 +29,7 @@ defmodule Strava.Paginator do
     )
   end
 
-  defp fetch_page(%Strava.Paginator{status: :halt} = pagination, _) do {:halt, pagination} end
+  defp fetch_page(%Strava.Paginator{status: :halt} = pagination, _request) do {:halt, pagination} end
 
   defp fetch_page(%Strava.Paginator{per_page: per_page, page: page} = pagination, request) do
     sleep_between_requests(pagination)

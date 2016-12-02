@@ -71,39 +71,26 @@ defmodule Strava.Segment do
 
   More info: https://strava.github.io/api/v3/segments/#retrieve
   """
-  @spec retrieve(integer) :: Strava.Segment.t
-  def retrieve(id) do
+  @spec retrieve(integer, Strava.Client.t) :: Strava.Segment.t
+  def retrieve(id, client \\ Strava.Client.new) do
     "segments/#{id}"
-    |> Strava.request(as: %Strava.Segment{})
+    |> Strava.request(client, as: %Strava.Segment{})
     |> parse
   end
 
   @doc """
-  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range.
+  Retrieve an array of segment efforts, for a given segment, optionally filtered by athlete and/or a date range.
 
   ## Example
 
       Strava.Segment.list_efforts(229781)
-
-  More info: https://strava.github.io/api/v3/segments/#efforts
-  """
-  @spec list_efforts(integer) :: list(Strava.Segment.t)
-  def list_efforts(id) do
-    list_efforts_request(id, %{}, %Strava.Pagination{})
-  end
-
-  @doc """
-  Retrieve an array of segment efforts, for a given segment, filtered by athlete and/or a date range.
-
-  ## Example
-
       Strava.Segment.list_efforts(229781, %{athlete_id: 5287})
 
   More info: https://strava.github.io/api/v3/segments/#efforts
   """
-  @spec list_efforts(integer, map) :: list(Strava.Segment.t)
-  def list_efforts(id, filters) do
-    list_efforts_request(id, filters, %Strava.Pagination{})
+  @spec list_efforts(integer, map, Strava.Client.t) :: list(Strava.Segment.t)
+  def list_efforts(id, filters \\ %{}, client \\ Strava.Client.new) do
+    list_efforts_request(id, filters, %Strava.Pagination{}, client)
   end
 
   @doc """
@@ -111,13 +98,13 @@ defmodule Strava.Segment do
 
   ## Example
 
-      Strava.Segment.list_efforts(229781, %{athlete_id: 5287}, %Strava.Pagination{per_page: 10, page: 1})
+      Strava.Segment.paginate_efforts(229781, %{athlete_id: 5287}, %Strava.Pagination{per_page: 10, page: 1})
 
   More info: https://strava.github.io/api/v3/segments/#efforts
   """
-  @spec list_efforts(integer, map, Strava.Pagination.t) :: list(Strava.Segment.t)
-  def list_efforts(id, filters, pagination) do
-    list_efforts_request(id, filters, pagination)
+  @spec paginate_efforts(integer, map, Strava.Pagination.t, Strava.Client.t) :: list(Strava.Segment.t)
+  def paginate_efforts(id, filters, pagination, client \\ Strava.Client.new) do
+    list_efforts_request(id, filters, pagination, client)
   end
 
   @doc """
@@ -129,16 +116,15 @@ defmodule Strava.Segment do
 
   More info: https://strava.github.io/api/v3/segments/#efforts
   """
-  @spec stream_efforts(integer) :: Enum.t
-  @spec stream_efforts(integer, map) :: Enum.t
-  def stream_efforts(id, filters \\ %{}) do
-    Strava.Paginator.stream(fn pagination -> list_efforts_request(id, filters, pagination) end)
+  @spec stream_efforts(integer, map, Strava.Client.t) :: Enum.t
+  def stream_efforts(id, filters \\ %{}, client \\ Strava.Client.new) do
+    Strava.Paginator.stream(fn pagination -> paginate_efforts(id, filters, pagination, client) end)
   end
 
-  @spec list_efforts_request(integer, map, Strava.Pagination.t) :: list(Strava.Segment.t)
-  defp list_efforts_request(id, filters, pagination) do
+  @spec list_efforts_request(integer, map, Strava.Pagination.t, Strava.Client.t) :: list(Strava.Segment.t)
+  defp list_efforts_request(id, filters, pagination, client) do
     "segments/#{id}/all_efforts?#{query_string(filters, pagination)}"
-    |> Strava.request(as: [%Strava.SegmentEffort{}])
+    |> Strava.request(client, as: [%Strava.SegmentEffort{}])
     |> Enum.map(&Strava.SegmentEffort.parse/1)
   end
 

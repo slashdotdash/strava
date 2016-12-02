@@ -16,9 +16,9 @@ defmodule Strava do
   @doc """
   Submit a request to the Strava API
   """
-  def request(path, opts \\ []) do
+  def request(path, %Strava.Client{access_token: access_token}, opts \\ []) do
     path
-    |> Strava.get!
+    |> Strava.get!(%{"Authorization" => "Bearer #{access_token}"})
     |> parse(opts)
   end
 
@@ -28,10 +28,6 @@ defmodule Strava do
 
   defp process_url(path) do
     @endpoint <> path
-  end
-
-  defp process_request_headers(headers) do
-    Dict.put headers, :Authorization, "Bearer #{access_token}"
   end
 
   @doc """

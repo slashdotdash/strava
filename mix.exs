@@ -3,7 +3,7 @@ defmodule Strava.Mixfile do
 
   def project do
     [app: :strava,
-     version: "0.2.1",
+     version: "0.3.0",
      elixir: "~> 1.3",
      name: "Strava",
      description: description,

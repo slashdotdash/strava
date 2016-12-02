@@ -64,10 +64,10 @@ defmodule Strava.SegmentEffort do
 
   More info: https://strava.github.io/api/v3/efforts/#retrieve
   """
-  @spec retrieve(integer) :: Strava.SegmentEffort.t
-  def retrieve(id) do
+  @spec retrieve(integer, Strava.Client.t) :: Strava.SegmentEffort.t
+  def retrieve(id, client \\ Strava.Client.new) do
     "segment_efforts/#{id}"
-    |> Strava.request(as: %Strava.SegmentEffort{})
+    |> Strava.request(client, as: %Strava.SegmentEffort{})
     |> parse
   end
 

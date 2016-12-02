@@ -60,25 +60,36 @@ defmodule Strava.Club do
 
   ## Example
 
-      Strava.Club.retrieve(1)
+      club = Strava.Club.retrieve(1)
+      club = Strava.Club.retrieve(1, Strava.Client.new("<access_token>>"))
 
   More info: https://strava.github.io/api/v3/clubs/#get-details
   """
-  @spec retrieve(integer) :: Strava.Club.t
-  def retrieve(id) do
-    Strava.request("clubs/#{id}", as: %Strava.Club{})
+  @spec retrieve(integer, Strava.Client.t) :: Strava.Club.t
+  def retrieve(id, client \\ Strava.Client.new) do
+    Strava.request("clubs/#{id}", client, as: %Strava.Club{})
   end
 
-  @spec list_members(integer, Strava.Pagination.t) :: list(Strava.Athlete.Summary.t)
-  def list_members(id, pagination) do
+  @doc """
+  Retrieve summary information about members of a specific club. Pagination is supported.
+
+  ## Example
+
+      members = Strava.Club.list_members(1, %Strava.Pagination{per_page: 200, page: 1})
+      members = Strava.Club.list_members(1, %Strava.Pagination{per_page: 200, page: 1}, Strava.Client.new("<access_token>>"))
+
+  More info: http://strava.github.io/api/v3/clubs/#get-members
+  """
+  @spec list_members(integer, Strava.Pagination.t, Strava.Client.t) :: list(Strava.Athlete.Summary.t)
+  def list_members(id, pagination, client \\ Strava.Client.new) do
     "clubs/#{id}/members?#{URI.encode_query(Map.from_struct(pagination))}"
-    |> Strava.request(as: [%Strava.Athlete.Summary{}])
+    |> Strava.request(client, as: [%Strava.Athlete.Summary{}])
     |> Enum.map(&Strava.Athlete.Summary.parse/1)
   end
 
-  @spec stream_members(integer) :: Enumerable.t
-  def stream_members(id) do
-    Strava.Paginator.stream(fn pagination -> list_members(id, pagination) end)
+  @spec stream_members(integer, Strava.Client.t) :: Enumerable.t
+  def stream_members(id, client \\ Strava.Client.new) do
+    Strava.Paginator.stream(fn pagination -> list_members(id, pagination, client) end)
   end
 
   defmodule Summary do

@@ -126,13 +126,15 @@ The Strava API allows an application to make requests on the  behalf of an authe
 Each of the above API functions supports providing an `Strava.Client` with a configured access token.
 
 ```elixir
-client = Strava.Client.new("<access_token>>")
+client = Strava.Client.new("<access_token>")
 club = Strava.Club.retrieve(1, client)
 ```
 
 ### OAuth support
 
-You can use Strava as an authentication provider with the OAuth2 strategy provided. Use `Strava.Auth.authorize_url!/1` to generate the Strava URL to redirect unauthenticated users to. After the user has successfully authenticated with Strava you can use `Strava.Auth.get_token!` to then access their summary details and their unique access token.
+You can use Strava as an authentication provider with the OAuth2 strategy provided. Use `Strava.Auth.authorize_url!/1` to generate the Strava URL to redirect unauthenticated users to.
+
+After the user has successfully authenticated with Strava you can use `Strava.Auth.get_token!` to access their summary details and unique access token.
 
 An example Phoenix authentication controller is shown below:
 

@@ -21,7 +21,7 @@ defmodule Strava.ClubTest do
   end
 
   test "list members" do
-    use_cassette "club/list_members#1" do
+    use_cassette "club/list_members#1", match_requests_on: [:query] do
       members = Strava.Club.list_members(1, %Strava.Pagination{per_page: 5, page: 1})
 
       assert length(members) == 5
@@ -29,7 +29,7 @@ defmodule Strava.ClubTest do
   end
 
   test "list members by page" do
-    use_cassette "club/list_members#1.page#3" do
+    use_cassette "club/list_members#1.page#3", match_requests_on: [:query] do
       members = Strava.Club.list_members(1, %Strava.Pagination{per_page: 200, page: 3})
 
       assert members == []

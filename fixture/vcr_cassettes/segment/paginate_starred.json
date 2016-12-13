@@ -1,0 +1,32 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/segments/starred?page=1&per_page=5"
+    },
+    "response": {
+      "body": "[{\"id\":626528,\"resource_state\":2,\"name\":\"Little Switzerland\",\"activity_type\":\"Ride\",\"distance\":2424.28,\"average_grade\":4.4,\"maximum_grade\":10.0,\"elevation_high\":163.4,\"elevation_low\":57.8,\"start_latlng\":[51.0221918206662,-0.950097357854247],\"end_latlng\":[51.035027615726,-0.963002387434244],\"start_latitude\":51.0221918206662,\"start_longitude\":-0.950097357854247,\"end_latitude\":51.035027615726,\"end_longitude\":-0.963002387434244,\"climb_category\":1,\"city\":\"Petersfield\",\"state\":\"Hampshire\",\"country\":\"United Kingdom\",\"private\":false,\"hazardous\":false,\"starred\":true,\"pr_time\":499,\"athlete_pr_effort\":{\"id\":9865622111,\"elapsed_time\":499,\"distance\":2357.8,\"start_date\":\"2015-10-11T09:18:23Z\",\"start_date_local\":\"2015-10-11T10:18:23Z\",\"is_kom\":false},\"starred_date\":\"2015-10-11T13:24:05Z\"}]",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Tue, 13 Dec 2016 10:47:13 GMT",
+        "ETag": "\"1bc3af515dd83439b373183bf6679775\"",
+        "Status": "200 OK",
+        "X-FRAME-OPTIONS": "DENY",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "1,2",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "Content-Length": "3789",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

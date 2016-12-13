@@ -115,4 +115,45 @@ defmodule Strava.SegmentTest do
       end)
     end
   end
+
+  describe "starred segments" do
+    test "list starred segments" do
+      use_cassette "segment/list_starred" do
+        starred_segments = Strava.Segment.list_starred()
+
+        assert starred_segments != nil
+        assert length(starred_segments) > 0
+
+        first_segment = hd(starred_segments)
+        assert first_segment.name != ""
+        assert first_segment.id > 0
+      end
+    end
+
+    test "paginate starred segments" do
+      use_cassette "segment/paginate_starred" do
+        starred_segments = Strava.Segment.paginate_starred(%Strava.Pagination{per_page: 5, page: 1})
+
+        assert starred_segments != nil
+        assert length(starred_segments) <= 5
+
+        first_segment = hd(starred_segments)
+        assert first_segment.name != ""
+        assert first_segment.id > 0
+      end
+    end
+
+    test "stream starred segments" do
+      use_cassette "segment/stream_starred" do
+        starred_segments = Strava.Segment.stream_starred() |> Enum.to_list
+
+        assert starred_segments != nil
+        assert length(starred_segments) > 0
+
+        first_segment = hd(starred_segments)
+        assert first_segment.name != ""
+        assert first_segment.id > 0
+      end
+    end
+  end
 end

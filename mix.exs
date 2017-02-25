@@ -6,12 +6,12 @@ defmodule Strava.Mixfile do
      version: "0.3.1",
      elixir: "~> 1.3",
      name: "Strava",
-     description: description,
-     package: package,
+     description: description(),
+     package: package(),
      source_url: "https://github.com/slashdotdash/strava",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps()]
   end
 
   def application do

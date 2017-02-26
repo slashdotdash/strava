@@ -31,7 +31,7 @@ defmodule Strava.Auth do
     returned to your application, useful if the authentication is done from various points in an app
   """
   def authorize_url!(params \\ []) do
-    new
+    new()
     |> put_param(:response_type, "code")
     |> OAuth2.Client.authorize_url!(params)
   end
@@ -45,7 +45,7 @@ defmodule Strava.Auth do
   You can pass options to the underlying http library via `options` parameter
   """
   def get_token!(params \\ [], headers \\ []) do
-    OAuth2.Client.get_token!(new, params, headers)
+    OAuth2.Client.get_token!(new(), params, headers)
   end
 
   @doc """

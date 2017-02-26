@@ -99,6 +99,22 @@ defmodule Strava.Athlete do
     |> parse
   end
 
+  @doc """
+  Retrieve an athlete's totals and stats.
+
+  ## Example
+
+      Strava.Athlete.stats(5324239)
+
+  More info: http://strava.github.io/api/v3/athlete/#stats
+  """
+  @spec stats(integer) :: Strava.Athlete.Stats.t
+  def stats(id, client \\ Strava.Client.new) do
+    "athletes/#{id}/stats"
+    |> Strava.request(client, as: %Strava.Athlete.Stats{})
+    |> Strava.Athlete.Stats.parse
+  end
+
   @spec parse(Strava.Athlete.t) :: Strava.Athlete.t
   def parse(%Strava.Athlete{} = athlete) do
     athlete

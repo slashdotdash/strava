@@ -67,6 +67,54 @@ defmodule Strava.Athlete do
     :shoes,
   ]
 
+  @doc """
+  Retrieve details about the current athlete.
+
+  ## Example
+
+      Strava.Athlete.retrieve_current()
+
+  More info: http://strava.github.io/api/v3/athlete/#get-details
+  """
+  @spec retrieve_current :: Strava.Athlete.t
+  def retrieve_current(client \\ Strava.Client.new) do
+    "athlete"
+    |> Strava.request(client, as: %Strava.Athlete{})
+    |> parse
+  end
+
+  @doc """
+  Retrieve details about an athlete by ID.
+
+  ## Example
+
+      Strava.Athlete.retrieve(5324239)
+
+  More info: http://strava.github.io/api/v3/athlete/#get-another-details
+  """
+  @spec retrieve(integer) :: Strava.Athlete.t
+  def retrieve(id, client \\ Strava.Client.new) do
+    "athletes/#{id}"
+    |> Strava.request(client, as: %Strava.Athlete{})
+    |> parse
+  end
+
+  @doc """
+  Retrieve an athlete's totals and stats.
+
+  ## Example
+
+      Strava.Athlete.stats(5324239)
+
+  More info: http://strava.github.io/api/v3/athlete/#stats
+  """
+  @spec stats(integer) :: Strava.Athlete.Stats.t
+  def stats(id, client \\ Strava.Client.new) do
+    "athletes/#{id}/stats"
+    |> Strava.request(client, as: %Strava.Athlete.Stats{})
+    |> Strava.Athlete.Stats.parse
+  end
+
   @spec parse(Strava.Athlete.t) :: Strava.Athlete.t
   def parse(%Strava.Athlete{} = athlete) do
     athlete

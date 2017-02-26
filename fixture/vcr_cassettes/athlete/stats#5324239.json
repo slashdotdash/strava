@@ -1,0 +1,32 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/athletes/5324239/stats"
+    },
+    "response": {
+      "body": "{\"biggest_ride_distance\":50988.8,\"biggest_climb_elevation_gain\":105.78399999999999,\"recent_ride_totals\":{\"count\":62,\"distance\":353002.1004638672,\"moving_time\":65167,\"elapsed_time\":121101,\"elevation_gain\":828.9218559265137,\"achievement_count\":4},\"recent_run_totals\":{\"count\":18,\"distance\":137554.69989013672,\"moving_time\":48143,\"elapsed_time\":51084,\"elevation_gain\":677.329873085022,\"achievement_count\":66},\"recent_swim_totals\":{\"count\":0,\"distance\":0.0,\"moving_time\":0,\"elapsed_time\":0,\"elevation_gain\":0.0,\"achievement_count\":0},\"ytd_ride_totals\":{\"count\":125,\"distance\":745028,\"moving_time\":136875,\"elapsed_time\":238632,\"elevation_gain\":1572},\"ytd_run_totals\":{\"count\":37,\"distance\":250465,\"moving_time\":87866,\"elapsed_time\":92564,\"elevation_gain\":1243},\"ytd_swim_totals\":{\"count\":0,\"distance\":0,\"moving_time\":0,\"elapsed_time\":0,\"elevation_gain\":0},\"all_ride_totals\":{\"count\":1561,\"distance\":11347820,\"moving_time\":1958818,\"elapsed_time\":3689415,\"elevation_gain\":22703},\"all_run_totals\":{\"count\":255,\"distance\":1869273,\"moving_time\":657666,\"elapsed_time\":720892,\"elevation_gain\":8748},\"all_swim_totals\":{\"count\":0,\"distance\":0,\"moving_time\":0,\"elapsed_time\":0,\"elevation_gain\":0}}",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Sat, 25 Feb 2017 20:58:03 GMT",
+        "ETag": "\"17792e8990b3f4a991a61a9b8ebc67a9\"",
+        "Status": "200 OK",
+        "X-FRAME-OPTIONS": "DENY",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "2,11",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "Content-Length": "1182",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

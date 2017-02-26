@@ -12,7 +12,7 @@ defmodule Strava.AuthTest do
   end
 
   test "get athlete from access token" do
-    athlete = Strava.Auth.get_athlete!(access_token)
+    athlete = Strava.Auth.get_athlete!(access_token())
 
     assert athlete.id == 227615
     assert athlete.firstname == "John"

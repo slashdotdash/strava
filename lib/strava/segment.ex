@@ -27,7 +27,7 @@ defmodule Strava.Segment do
     created_at: NaiveDateTime.t | String.t,
     updated_at: NaiveDateTime.t | String.t,
     total_elevation_gain: float,
-    map: Strava.Segment.Map.t,
+    map: Strava.Map.t,
     effort_count: integer,
     athlete_count: integer,
     hazardous: boolean,
@@ -200,7 +200,7 @@ defmodule Strava.Segment do
   defp parse_map(%Strava.Segment{map: nil} = segment), do: segment
   defp parse_map(%Strava.Segment{map: map} = segment) do
     %Strava.Segment{segment |
-      map: struct(Strava.Segment.Map, map)
+      map: struct(Strava.Map, map)
     }
   end
 

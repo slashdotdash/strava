@@ -51,7 +51,7 @@ config :strava,
 club = Strava.Club.retrieve(7289)
 ```
 
-#### List club members
+#### List club members
 
 ```elixir
 members = Strava.Club.list_members(7289, %Strava.Pagination{per_page: 20, page: 1})
@@ -119,7 +119,7 @@ segment_effort = Strava.SegmentEffort.retrieve(269990681)
 activity = Strava.Activity.retrieve(746805584)
 ```
 
-### Client
+### Client
 
 The Strava API allows an application to make requests on the  behalf of an authenticated user by using an `access_token` unique to that user.
 

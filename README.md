@@ -128,7 +128,7 @@ activities = Strava.Activity.list_athlete_activities(Strava.Pagination{per_page:
 #### List activities for current authenticated athlete after a given datetime
 
 ```elixir
-activities = Strava.Activity.list_athlete_activities(Strava.Pagination{per_page: 50, page: 1}. %{after: "2017-04-20T00:00:12Z"})
+activities = Strava.Activity.list_athlete_activities(Strava.Pagination{per_page: 50, page: 1}, %{after: "2017-04-20T00:00:12Z"})
 ```
 
 ### Client

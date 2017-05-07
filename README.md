@@ -119,6 +119,18 @@ segment_effort = Strava.SegmentEffort.retrieve(269990681)
 activity = Strava.Activity.retrieve(746805584)
 ```
 
+#### List activities for current authenticated athlete
+
+```elixir
+activities = Strava.Activity.list_athlete_activities(Strava.Pagination{per_page: 50, page: 1})
+```
+
+#### List activities for current authenticated athlete after a given datetime
+
+```elixir
+activities = Strava.Activity.list_athlete_activities(Strava.Pagination{per_page: 50, page: 1}. %{after: "2017-04-20T00:00:12Z"})
+```
+
 ### Client
 
 The Strava API allows an application to make requests on the  behalf of an authenticated user by using an `access_token` unique to that user.

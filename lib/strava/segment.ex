@@ -165,25 +165,16 @@ defmodule Strava.Segment do
 
   @spec list_efforts_request(integer, map, Strava.Pagination.t, Strava.Client.t) :: list(Strava.SegmentEffort.t)
   defp list_efforts_request(id, filters, pagination, client) do
-    "segments/#{id}/all_efforts?#{query_string(pagination, filters)}"
+    "segments/#{id}/all_efforts?#{Strava.Util.query_string(pagination, filters)}"
     |> Strava.request(client, as: [%Strava.SegmentEffort{}])
     |> Enum.map(&Strava.SegmentEffort.parse/1)
   end
 
   @spec list_starred_request(Strava.Pagination.t, Strava.Client.t) :: list(Strava.Segment.t)
   defp list_starred_request(pagination, client) do
-    "segments/starred?#{query_string(pagination)}"
+    "segments/starred?#{Strava.Util.query_string(pagination)}"
     |> Strava.request(client, as: [%Strava.Segment{}])
     |> Enum.map(&Strava.Segment.parse/1)
-  end
-
-  @spec query_string(Strava.Pagination.t, map) :: binary
-  defp query_string(pagination, filters \\ %{}) do
-    pagination
-    |> Map.from_struct
-    |> Enum.filter(fn {_, v} -> v != nil end)
-    |> Enum.into(filters)
-    |> URI.encode_query
   end
 
   @doc """

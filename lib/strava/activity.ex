@@ -137,22 +137,6 @@ defmodule Strava.Activity do
     ]
   end
 
-  defmodule Pagination do
-    @type t :: %__MODULE__{
-      page: integer,
-      per_page: integer,
-      before: NaiveDateTime.t | String.t,
-      after: NaiveDateTime.t | String.t
-    } | Strava.Pagination.t
-
-    defstruct [
-      :page,
-      :per_page,
-      :before,
-      :after
-    ]
-  end
-
   @doc """
   Retrieve details about a specific activity.
 
@@ -180,9 +164,9 @@ defmodule Strava.Activity do
 
   More info: https://strava.github.io/api/v3/activities/#get-activities
   """
-  @spec list_athlete_activities(Strava.Activity.Pagination.t, Strava.Client.t) :: list(Strava.Activity.t)
-  def list_athlete_activities(pagination, client \\ Strava.Client.new) do
-    "athlete/activities?#{URI.encode_query(Map.from_struct(pagination))}"
+  @spec list_athlete_activities(Strava.Pagination.t, map, Strava.Client.t) :: list(Strava.Activity.t)
+  def list_athlete_activities(pagination, filters \\ %{}, client \\ Strava.Client.new) do
+    "athlete/activities?#{Strava.Util.query_string(pagination, filters)}"
     |> Strava.request(client, as: [%Strava.Activity{}])
     |> Enum.map(&Strava.Activity.parse/1)
   end
@@ -232,5 +216,14 @@ defmodule Strava.Activity do
         Strava.SegmentEffort.parse(struct(Strava.SegmentEffort, segment_effort))
       end)
     }
+  end
+
+  @spec query_string(Strava.Pagination.t, map) :: binary
+  defp query_string(pagination, filters \\ %{}) do
+    pagination
+    |> Map.from_struct
+    |> Enum.filter(fn {_, v} -> v != nil end)
+    |> Enum.into(filters)
+    |> URI.encode_query
   end
 end

@@ -15,13 +15,13 @@
       "headers": {
         "Cache-Control": "must-revalidate, private, max-age=0",
         "Content-Type": "application/json; charset=UTF-8",
-        "Date": "Sun, 07 May 2017 01:57:49 GMT",
+        "Date": "Sun, 07 May 2017 02:13:58 GMT",
         "ETag": "\"f2c8bb937af05ec3951047555f9e59c0\"",
         "Status": "200 OK",
         "Strava-Athlete-Upload-Version": "426f9df79b704570a444c162f9b3c486",
         "X-FRAME-OPTIONS": "DENY",
         "X-RateLimit-Limit": "600,30000",
-        "X-RateLimit-Usage": "3,6",
+        "X-RateLimit-Usage": "3,12",
         "X-UA-Compatible": "IE=Edge,chrome=1",
         "Content-Length": "6707",
         "Connection": "keep-alive"

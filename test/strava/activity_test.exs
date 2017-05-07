@@ -38,7 +38,7 @@ defmodule Strava.ActivityTest do
 
   test "list activities before date" do
     use_cassette "activity/list_athlete_activities#1.before#1", match_requests_on: [:query] do
-      activities = Strava.Activity.list_athlete_activities(%Strava.Activity.Pagination{per_page: 1, page: 1, after: "2017-04-20T00:00:12Z"})
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 1, page: 1}, %{before: "2010-04-20T00:00:12Z"})
 
       assert activities == []
     end

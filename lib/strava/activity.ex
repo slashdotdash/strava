@@ -160,7 +160,7 @@ defmodule Strava.Activity do
 
       activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 200, page: 1})
       activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 200, page: 1}, Strava.Client.new("<access_token>>"))
-      activities = Strava.Activity.list_athlete_activities(%Strava.Activity.Pagination{before: "2017-04-20T00:00:12Z"})
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 200, page: 1}, {before: "2017-04-20T00:00:12Z"})
 
   More info: https://strava.github.io/api/v3/activities/#get-activities
   """

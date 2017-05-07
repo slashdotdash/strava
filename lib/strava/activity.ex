@@ -154,6 +154,24 @@ defmodule Strava.Activity do
   end
 
   @doc """
+  Retrieve a list of activities for the authenticated user. Pagination is supported.
+
+  ## Example
+
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 200, page: 1})
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 200, page: 1}, Strava.Client.new("<access_token>>"))
+      activities = Strava.Activity.list_athlete_activities(%Strava.Activity.Pagination{before: "2017-04-20T00:00:12Z"})
+
+  More info: https://strava.github.io/api/v3/activities/#get-activities
+  """
+  @spec list_athlete_activities(Strava.Pagination.t, map, Strava.Client.t) :: list(Strava.Activity.t)
+  def list_athlete_activities(pagination, filters \\ %{}, client \\ Strava.Client.new) do
+    "athlete/activities?#{Strava.Util.query_string(pagination, filters)}"
+    |> Strava.request(client, as: [%Strava.Activity{}])
+    |> Enum.map(&Strava.Activity.parse/1)
+  end
+
+  @doc """
   Parse the athlete, dates, photos and segment efforts in the activity
   """
   @spec parse(Strava.Activity.t) :: Strava.Activity.t
@@ -198,5 +216,14 @@ defmodule Strava.Activity do
         Strava.SegmentEffort.parse(struct(Strava.SegmentEffort, segment_effort))
       end)
     }
+  end
+
+  @spec query_string(Strava.Pagination.t, map) :: binary
+  defp query_string(pagination, filters \\ %{}) do
+    pagination
+    |> Map.from_struct
+    |> Enum.filter(fn {_, v} -> v != nil end)
+    |> Enum.into(filters)
+    |> URI.encode_query
   end
 end

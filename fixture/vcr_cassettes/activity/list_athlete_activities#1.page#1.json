@@ -1,0 +1,33 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/athlete/activities?page=10&per_page=200"
+    },
+    "response": {
+      "body": "[]",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Sun, 07 May 2017 02:13:58 GMT",
+        "ETag": "\"d751713988987e9331980363e24189ce\"",
+        "Status": "200 OK",
+        "Strava-Athlete-Upload-Version": "426f9df79b704570a444c162f9b3c486",
+        "X-FRAME-OPTIONS": "DENY",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "4,13",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "Content-Length": "2",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

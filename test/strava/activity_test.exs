@@ -19,4 +19,28 @@ defmodule Strava.ActivityTest do
       assert activity.start_date_local == ~N[2016-10-16 08:07:07]
     end
   end
+
+  test "list athlete activities" do
+    use_cassette "activity/list_athlete_activities#1" do
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 5, page: 1})
+
+      assert length(activities) == 5
+    end
+  end
+
+  test "list activities by page" do
+    use_cassette "activity/list_athlete_activities#1.page#1", match_requests_on: [:query] do
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 200, page: 10})
+
+      assert activities == []
+    end
+  end
+
+  test "list activities before date" do
+    use_cassette "activity/list_athlete_activities#1.before#1", match_requests_on: [:query] do
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 1, page: 1}, %{before: "2010-04-20T00:00:12Z"})
+
+      assert activities == []
+    end
+  end
 end

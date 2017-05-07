@@ -201,3 +201,4 @@ You should include unit tests to cover any changes.
 - [Eric Thomas](https://github.com/et)
 - [Kerry Buckley](https://github.com/kerryb)
 - [Paweł Koniarski](https://github.com/lewapkon)
+- [Ross Kaffenberger](https://github.com/rossta)

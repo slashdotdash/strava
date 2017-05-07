@@ -137,6 +137,22 @@ defmodule Strava.Activity do
     ]
   end
 
+  defmodule Pagination do
+    @type t :: %__MODULE__{
+      page: integer,
+      per_page: integer,
+      before: NaiveDateTime.t | String.t,
+      after: NaiveDateTime.t | String.t
+    } | Strava.Pagination.t
+
+    defstruct [
+      :page,
+      :per_page,
+      :before,
+      :after
+    ]
+  end
+
   @doc """
   Retrieve details about a specific activity.
 
@@ -151,6 +167,24 @@ defmodule Strava.Activity do
     "activities/#{id}"
     |> Strava.request(client, as: %Strava.Activity{})
     |> parse
+  end
+
+  @doc """
+  Retrieve a list of activities for the authenticated user. Pagination is supported.
+
+  ## Example
+
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 200, page: 1})
+      activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 200, page: 1}, Strava.Client.new("<access_token>>"))
+      activities = Strava.Activity.list_athlete_activities(%Strava.Activity.Pagination{before: "2017-04-20T00:00:12Z"})
+
+  More info: https://strava.github.io/api/v3/activities/#get-activities
+  """
+  @spec list_athlete_activities(Strava.Activity.Pagination.t, Strava.Client.t) :: list(Strava.Activity.t)
+  def list_athlete_activities(pagination, client \\ Strava.Client.new) do
+    "athlete/activities?#{URI.encode_query(Map.from_struct(pagination))}"
+    |> Strava.request(client, as: [%Strava.Activity{}])
+    |> Enum.map(&Strava.Activity.parse/1)
   end
 
   @doc """

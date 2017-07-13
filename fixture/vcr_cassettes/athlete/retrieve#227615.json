@@ -1,0 +1,32 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/athletes/227615"
+    },
+    "response": {
+      "body": "{\"id\":227615,\"username\":\"john_applestrava\",\"resource_state\":2,\"firstname\":\"Emily\",\"lastname\":\"Parker\",\"city\":\"San Francisco\",\"state\":\"CA\",\"country\":\"United States\",\"sex\":\"M\",\"premium\":false,\"created_at\":\"2012-01-18T18:20:37Z\",\"updated_at\":\"2015-07-23T06:01:48Z\",\"badge_type_id\":0,\"profile_medium\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/227615/41555/4/medium.jpg\",\"profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/227615/41555/4/large.jpg\",\"friend\":null,\"follower\":null}",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Thu, 13 Jul 2017 13:11:06 GMT",
+        "ETag": "\"e6f95fd10333594b7f473d68ae12225b\"",
+        "Status": "200 OK",
+        "X-FRAME-OPTIONS": "DENY",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "8,8",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "Content-Length": "502",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

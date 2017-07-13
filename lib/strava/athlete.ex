@@ -131,6 +131,8 @@ defmodule Strava.Athlete do
   end
 
   @spec parse_clubs(Strava.Athlete.t) :: Strava.Athlete.t
+  defp parse_clubs(athlete)
+  defp parse_clubs(%Strava.Athlete{clubs: nil} = athlete), do: athlete
   defp parse_clubs(%Strava.Athlete{clubs: clubs} = athlete) do
     %Strava.Athlete{athlete |
       clubs: Enum.map(clubs, fn club -> struct_from_map(club, Strava.Club.Summary) end),

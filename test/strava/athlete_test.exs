@@ -22,7 +22,7 @@ defmodule Strava.AthleteTest do
 
   test "retrieve athlete by ID" do
     use_cassette "athlete/retrieve#5324239" do
-      athlete = Strava.Athlete.retrieve 5324239
+      athlete = Strava.Athlete.retrieve(5324239)
 
       refute is_nil athlete
       assert athlete.firstname == "Kerry"
@@ -31,9 +31,21 @@ defmodule Strava.AthleteTest do
     end
   end
 
+  test "retrieve another athlete by ID" do
+    use_cassette "athlete/retrieve#227615" do
+      athlete = Strava.Athlete.retrieve(227615)
+
+      refute is_nil athlete
+      assert athlete.firstname == "Emily"
+      assert athlete.lastname == "Parker"
+      assert athlete.city == "San Francisco"
+      assert athlete.country == "United States"
+    end
+  end
+
   test "retrieve athlete stats" do
     use_cassette "athlete/stats#5324239" do
-      stats = Strava.Athlete.stats 5324239
+      stats = Strava.Athlete.stats(5324239)
 
       refute is_nil stats
       assert_in_delta stats.biggest_ride_distance, 50988.8, 0.1

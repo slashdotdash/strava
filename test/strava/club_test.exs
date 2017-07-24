@@ -43,4 +43,12 @@ defmodule Strava.ClubTest do
       assert Enum.count(member_stream) > 1
     end
   end
+
+  test "list activities by page" do
+    use_cassette "club/list_activities#299657", match_requests_on: [:query]  do
+      activities = Strava.Club.list_activities(299657, %Strava.Pagination{per_page: 10, page: 3})
+
+      assert Enum.count(activities) == 10
+    end
+  end
 end

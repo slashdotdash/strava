@@ -71,6 +71,23 @@ defmodule Strava.Club do
   end
 
   @doc """
+  Retrieve the recent activities performed by members of a specific club. The authenticated athlete must be a member of the club.
+
+  ## Example
+
+  club = Strava.Club.list_activities(1, %Strava.Pagination{per_page: 200, page: 1})
+  club = Strava.Club.list_activities(1, %Strava.Pagination{per_page: 200, page: 1}, Strava.Client.new("<access_token>>"))
+
+  More info: http://strava.github.io/api/v3/clubs/#get-activities
+  """
+  @spec list_activities(integer, Strava.Pagination.t, Strava.Client.t) :: list(Strava.Activity.t)
+  def list_activities(id, pagination, client \\ Strava.Client.new) do
+    "clubs/#{id}/activities?#{URI.encode_query(Map.from_struct(pagination))}"
+    |> Strava.request(client, as: [%Strava.Activity{}])
+    |> Enum.map(&Strava.Activity.parse/1)
+  end
+
+  @doc """
   Retrieve summary information about members of a specific club. Pagination is supported.
 
   ## Example

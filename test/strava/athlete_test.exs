@@ -74,4 +74,28 @@ defmodule Strava.AthleteTest do
       assert stats.all_swim_totals.distance == 0
     end
   end
+
+  test "retrieve an athlete's friends" do
+    use_cassette "athlete/friends#5324239" do
+      friends = Strava.Athlete.friends "5324239"
+
+      refute is_nil friends
+      assert length(friends) == 115
+      friend = friends |> List.first
+      assert friend.firstname == "Ben"
+      assert friend.lastname == "Paddock"
+    end
+  end
+
+  test "retrieve an athlete's followers" do
+    use_cassette "athlete/followers#5324239" do
+      followers = Strava.Athlete.followers "5324239"
+
+      refute is_nil followers
+      assert length(followers) == 109
+      follower = followers |> List.first
+      assert follower.firstname == "Abigail"
+      assert follower.lastname == "Canham"
+    end
+  end
 end

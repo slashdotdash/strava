@@ -115,6 +115,38 @@ defmodule Strava.Athlete do
     |> Strava.Athlete.Stats.parse
   end
 
+  @doc """
+  Retrieve an athlete's friends.
+
+  ## Example
+
+      Strava.Athlete.friends(5324239)
+
+  More info: http://strava.github.io/api/v3/follow/
+  """
+  @spec friends(integer) :: Strava.Athlete.Stats.t
+  def friends(id, client \\ Strava.Client.new) do
+    "athletes/#{id}/friends"
+    |> Strava.request(client, as: [%Strava.Athlete{}])
+    |> Enum.map(&Strava.Athlete.parse/1)
+  end
+
+  @doc """
+  Retrieve an athlete's followers.
+
+  ## Example
+
+      Strava.Athlete.followers(5324239)
+
+  More info: http://strava.github.io/api/v3/follow/
+  """
+  @spec followers(integer) :: Strava.Athlete.Stats.t
+  def followers(id, client \\ Strava.Client.new) do
+    "athletes/#{id}/followers"
+    |> Strava.request(client, as: [%Strava.Athlete{}])
+    |> Enum.map(&Strava.Athlete.parse/1)
+  end
+
   @spec parse(Strava.Athlete.t) :: Strava.Athlete.t
   def parse(%Strava.Athlete{} = athlete) do
     athlete

@@ -186,6 +186,7 @@ defmodule Strava.Athlete do
       friend: String.t,
       follower: String.t,
       premium: boolean,
+      email: String.t,
       created_at: NaiveDateTime.t | String.t,
       updated_at: NaiveDateTime.t | String.t,
     }
@@ -204,6 +205,7 @@ defmodule Strava.Athlete do
       :friend,
       :follower,
       :premium,
+      :email,
       :created_at,
       :updated_at,
     ]

@@ -49,7 +49,7 @@ defmodule Strava.Auth do
   end
 
   @doc """
-  Parse the detailed representation of the current athlete from the OAuth2 access token contained inside the client.
+  Parse the summary representation of the current athlete from the OAuth2 access token contained inside the client.
   """
   def get_athlete!(client)
   def get_athlete!(%OAuth2.Client{token: access_token}), do: get_athlete!(access_token)
@@ -60,8 +60,8 @@ defmodule Strava.Auth do
   def get_athlete!(access_token)
   def get_athlete!(%OAuth2.AccessToken{other_params: other_params}) do
     other_params["athlete"]
-    |> struct_from_map(Strava.Athlete)
-    |> Strava.Athlete.parse
+    |> struct_from_map(Strava.Athlete.Summary)
+    |> Strava.Athlete.Summary.parse()
   end
 
   # strategy callbacks

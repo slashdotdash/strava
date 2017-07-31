@@ -12,15 +12,12 @@ defmodule Strava.AuthTest do
   end
 
   test "get athlete from access token" do
-    athlete = Strava.Auth.get_athlete!(access_token())
+     athlete = Strava.Auth.get_athlete!(access_token())
 
     assert athlete.id == 227615
     assert athlete.firstname == "John"
     assert athlete.lastname == "Applestrava"
     assert athlete.sex == "M"
-
-    assert length(athlete.clubs) == 1
-    assert hd(athlete.clubs).name == "Example Club"
   end
 
   # Example token response taken from Strava's API docs
@@ -42,36 +39,9 @@ defmodule Strava.AuthTest do
         "friend" => nil,
         "follower" => nil,
         "premium" => true,
+        "email" => "john@applestrava.com",
         "created_at" => "2008-01-01T17:44:00Z",
         "updated_at" => "2013-09-04T20:00:50Z",
-        "follower_count" => 273,
-        "friend_count" => 19,
-        "mutual_friend_count" => 0,
-        "date_preference" => "%m/%d/%Y",
-        "measurement_preference" => "feet",
-        "email" => "john@applestrava.com",
-        "clubs" => [
-          %{
-            "city" => "City",
-            "country" => "United Kingdom",
-            "cover_photo" => nil,
-            "cover_photo_small" => nil,
-            "featured" => false,
-            "id" => 1234,
-            "member_count" => 10,
-            "name" => "Example Club",
-            "private" => false,
-            "profile" => "https://example.com/large.jpg",
-            "profile_medium" => "https://example.com/medium.jpg",
-            "resource_state" => 2,
-            "sport_type" => "cycling",
-            "state" => "England",
-            "url" => "example-club",
-            "verified" => false
-          }
-        ],
-        "bikes" => [],
-        "shoes" => [],
       }
     })
   end

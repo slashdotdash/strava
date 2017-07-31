@@ -7,8 +7,10 @@ defmodule Strava.AuthTest do
   @tag :skip
   test "get token from code" do
     token = Strava.Auth.get_token!(code: "<<code>>")
+    athlete = Strava.Auth.get_athlete!(token)
 
     assert token != nil
+    assert athlete != nil
   end
 
   test "get athlete from access token" do

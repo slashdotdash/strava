@@ -156,4 +156,19 @@ defmodule Strava.SegmentTest do
       end
     end
   end
+
+  describe "exploring segments" do
+    test "explore" do
+      use_cassette "segment/explore" do
+        explored_segments = Strava.Segment.explore([37.821362,-122.505373,37.842038,-122.465977])
+
+        assert explored_segments != nil
+        assert length(explored_segments) > 0
+
+        first_segment = hd(explored_segments)
+        assert first_segment.name != ""
+        assert first_segment.id > 0
+      end
+    end
+  end
 end

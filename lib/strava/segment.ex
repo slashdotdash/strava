@@ -163,6 +163,29 @@ defmodule Strava.Segment do
     Strava.Paginator.stream(fn pagination -> paginate_efforts(id, filters, pagination, client) end)
   end
 
+  @doc """
+  Finds segments within a given area
+
+  ## Example
+
+  [sw_lat, sw_lon, ne_lat, ne_lon] =
+  [37.821362,-122.505373,37.842038,-122.465977]
+
+  Strava.Segment.explore([sw_lat, sw_lon, ne_lat, ne_lon])
+
+  Strava.Segment.explore([sw_lat, sw_lon, ne_lat, ne_lon], %{activity_type: "running"})
+
+  More info: http://strava.github.io/api/v3/segments/#explore
+  """
+  @spec explore(list(float), map, Strava.Client.t) :: list(Strava.Segment.t)
+  def explore([_s, _w, _n, _e] = bounds, filters \\ %{}, client \\ Strava.Client.new) do
+    optional_params = if Enum.empty?(filters), do: "", else: "&" <> URI.encode_query(filters)
+    %{segments: segments} =
+      "segments/explore?bounds=#{Enum.join(bounds, ",")}#{optional_params}"
+      |> Strava.request(client, as: %{segments: [%Strava.Segment{}]})
+    segments
+  end
+
   @spec list_efforts_request(integer, map, Strava.Pagination.t, Strava.Client.t) :: list(Strava.SegmentEffort.t)
   defp list_efforts_request(id, filters, pagination, client) do
     "segments/#{id}/all_efforts?#{Strava.Util.query_string(pagination, filters)}"

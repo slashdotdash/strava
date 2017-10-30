@@ -20,11 +20,11 @@ MIT License
 
   ```elixir
   def deps do
-    [{:strava, "~> 0.3"}]
+    [{:strava, "~> 0.4"}]
   end
   ```
 
-  2. Ensure `strava` is included in your applications:
+  2. For Elixir 1.3 and earlier *only*, ensure `strava` is included in your applications:
 
   ```elixir
   def application do
@@ -67,7 +67,7 @@ members = Strava.Club.list_members(7289, %Strava.Pagination{per_page: 20, page: 
 
 ```elixir
 member_stream = Strava.Club.stream_members(7289)
-member_list = member_stream |> Enum.to_list
+member_list = member_stream |> Enum.to_list()
 ```
 
 ### Segments
@@ -102,11 +102,12 @@ segment_efforts = Strava.Segment.list_efforts(229781, %{
 #### Stream segment efforts filtered by start and end dates
 
 ```elixir
-segment_efforts = Strava.Segment.stream_efforts(229781, %{
-  start_date_local: "2014-01-01T00:00:00Z",
-  end_date_local: "2014-01-01T23:59:59Z"
-})
-|> Enum.to_list
+segment_efforts =
+  Strava.Segment.stream_efforts(229781, %{
+    start_date_local: "2014-01-01T00:00:00Z",
+    end_date_local: "2014-01-01T23:59:59Z"
+  })
+  |> Enum.to_list()
 ```
 
 ### Segment efforts
@@ -216,6 +217,7 @@ You should include unit tests to cover any changes.
 
 ### Contributors
 
+- [Dave Shah](https://github.com/daveshah)
 - [Eric Thomas](https://github.com/et)
 - [Kerry Buckley](https://github.com/kerryb)
 - [Mathieu Fosse](https://github.com/pointcom)

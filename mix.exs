@@ -1,17 +1,23 @@
 defmodule Strava.Mixfile do
   use Mix.Project
 
+  @version "0.4.1"
+
   def project do
-    [app: :strava,
-     version: "0.4.0",
-     elixir: "~> 1.5",
-     name: "Strava",
-     description: description(),
-     package: package(),
-     source_url: "https://github.com/slashdotdash/strava",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :strava,
+      version: @version,
+      elixir: "~> 1.5",
+      name: "Strava",
+      deps: deps(),
+      description: description(),
+      package: package(),
+      docs: docs(),
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      consolidate_protocols: Mix.env == :prod,
+      source_url: "https://github.com/slashdotdash/strava",
+   ]
   end
 
   def application do
@@ -26,21 +32,29 @@ defmodule Strava.Mixfile do
 
   defp description do
 """
-Elixir wrapper for the Strava API (V3)
+Elixir wrapper for the Strava API (V3).
 """
   end
 
   defp deps do
     [
-      {:credo, "~> 0.5", only: :dev},
-      {:dialyxir, "~> 0.4", only: [:dev]},
-      {:ex_doc, "~> 0.14", only: :dev},
-      {:exvcr, "~> 0.8", only: :test},
-      {:httpoison, "~> 0.10"},
+      {:credo, "~> 0.8", only: :dev},
+      {:dialyxir, "~> 0.5", only: [:dev]},
+      {:ex_doc, "~> 0.18", only: :dev},
+      {:exvcr, "~> 0.9", only: :test},
+      {:httpoison, "~> 0.13"},
       {:markdown, github: "devinus/markdown", only: :dev},
-      {:mix_test_watch, "~> 0.2", only: :dev},
-      {:oauth2, "~> 0.8"},
-      {:poison, "~> 3.0"},
+      {:mix_test_watch, "~> 0.5", only: :dev},
+      {:oauth2, "~> 0.9"},
+      {:poison, "~> 3.1"},
+    ]
+  end
+
+  defp docs do
+    [
+      main: "Strava",
+      canonical: "http://hexdocs.pm/strava",
+      source_ref: "v#{@version}",
     ]
   end
 

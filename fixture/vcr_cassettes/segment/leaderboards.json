@@ -1,0 +1,32 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/segments/229781/leaderboard?"
+    },
+    "response": {
+      "body": "{\"effort_count\":29139,\"entry_count\":29139,\"neighborhood_count\":1,\"kom_type\":\"kom\",\"entries\":[{\"athlete_name\":\"Robbie Chrisman\",\"athlete_id\":780468,\"athlete_gender\":\"M\",\"average_hr\":null,\"average_watts\":496.8,\"distance\":2659.2,\"elapsed_time\":346,\"moving_time\":346,\"start_date\":\"2016-02-11T15:37:43Z\",\"start_date_local\":\"2016-02-11T07:37:43Z\",\"activity_id\":491060978,\"effort_id\":11784864068,\"rank\":1,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/780468/543835/2/large.jpg\"},{\"athlete_name\":\"Phil Gaimon\",\"athlete_id\":6188,\"athlete_gender\":\"M\",\"average_hr\":null,\"average_watts\":526.2,\"distance\":2656.2,\"elapsed_time\":346,\"moving_time\":346,\"start_date\":\"2017-03-06T21:03:19Z\",\"start_date_local\":\"2017-03-06T13:03:19Z\",\"activity_id\":890302818,\"effort_id\":21681782084,\"rank\":1,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/6188/4376038/3/large.jpg\"},{\"athlete_name\":\"Jim Whimpey\",\"athlete_id\":123529,\"athlete_gender\":\"M\",\"average_hr\":190.5,\"average_watts\":460.8,\"distance\":2659.9,\"elapsed_time\":360,\"moving_time\":360,\"start_date\":\"2013-03-29T13:49:35Z\",\"start_date_local\":\"2013-03-29T06:49:35Z\",\"activity_id\":46320211,\"effort_id\":25697264284,\"rank\":3,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/123529/15953/2/large.jpg\"},{\"athlete_name\":\"niels knipp\",\"athlete_id\":2343109,\"athlete_gender\":\"M\",\"average_hr\":178.2,\"average_watts\":439.7,\"distance\":2647.4,\"elapsed_time\":365,\"moving_time\":365,\"start_date\":\"2016-02-08T22:06:54Z\",\"start_date_local\":\"2016-02-08T14:06:54Z\",\"activity_id\":489141716,\"effort_id\":11739799326,\"rank\":4,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/2343109/2299299/3/large.jpg\"},{\"athlete_name\":\"Matthew Wiebe\",\"athlete_id\":360684,\"athlete_gender\":\"M\",\"average_hr\":149.5,\"average_watts\":436.5,\"distance\":2613.6,\"elapsed_time\":369,\"moving_time\":369,\"start_date\":\"2016-10-04T13:26:33Z\",\"start_date_local\":\"2016-10-04T06:26:33Z\",\"activity_id\":734140762,\"effort_id\":18004293039,\"rank\":5,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/360684/1578992/6/large.jpg\"},{\"athlete_name\":\"Kevin Gottlieb\",\"athlete_id\":1843013,\"athlete_gender\":\"M\",\"average_hr\":167.1,\"average_watts\":466.2,\"distance\":2622.2,\"elapsed_time\":371,\"moving_time\":371,\"start_date\":\"2015-08-13T16:55:26Z\",\"start_date_local\":\"2015-08-13T09:55:26Z\",\"activity_id\":368193005,\"effort_id\":8793309462,\"rank\":6,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/1843013/1197044/1/large.jpg\"},{\"athlete_name\":\"Chris Zappalà\",\"athlete_id\":11673,\"athlete_gender\":\"M\",\"average_hr\":null,\"average_watts\":368.3,\"distance\":2705.8,\"elapsed_time\":374,\"moving_time\":374,\"start_date\":\"2012-02-23T14:50:16Z\",\"start_date_local\":\"2012-02-23T06:50:16Z\",\"activity_id\":4431903,\"effort_id\":83383918,\"rank\":7,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/11673/4352/10/large.jpg\"},{\"athlete_name\":\"Jesse Miller-Smith\",\"athlete_id\":8676,\"athlete_gender\":\"M\",\"average_hr\":null,\"average_watts\":448.7,\"distance\":2657.8,\"elapsed_time\":384,\"moving_time\":384,\"start_date\":\"2012-11-10T19:24:32Z\",\"start_date_local\":\"2012-11-10T11:24:32Z\",\"activity_id\":27827221,\"effort_id\":500150283,\"rank\":8,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/8676/153439/1/large.jpg\"},{\"athlete_name\":\"Byron Anson \",\"athlete_id\":78508,\"athlete_gender\":\"M\",\"average_hr\":null,\"average_watts\":454.2,\"distance\":2658.3,\"elapsed_time\":384,\"moving_time\":384,\"start_date\":\"2017-05-02T13:26:27Z\",\"start_date_local\":\"2017-05-02T06:26:27Z\",\"activity_id\":967652156,\"effort_id\":23701975217,\"rank\":8,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/78508/2343014/16/large.jpg\"},{\"athlete_name\":\"Chris Phipps\",\"athlete_id\":7109,\"athlete_gender\":\"M\",\"average_hr\":163.5,\"average_watts\":380.5,\"distance\":2635.0,\"elapsed_time\":385,\"moving_time\":385,\"start_date\":\"2015-09-20T17:59:15Z\",\"start_date_local\":\"2015-09-20T10:59:15Z\",\"activity_id\":396552626,\"effort_id\":9503997540,\"rank\":10,\"neighborhood_index\":0,\"athlete_profile\":\"https://dgalywyr863hv.cloudfront.net/pictures/athletes/7109/6863695/1/large.jpg\"}]}",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Tue, 31 Oct 2017 00:06:41 GMT",
+        "ETag": "\"a541f15ecd52d8c00b22a5960f2316d6\"",
+        "Status": "200 OK",
+        "X-FRAME-OPTIONS": "DENY",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "1,1",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "Content-Length": "4363",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

@@ -186,6 +186,22 @@ defmodule Strava.Segment do
     segments
   end
 
+  @doc """
+  Returns a leaderboard: the ranking of athletes on specific segments.
+
+  ## Example
+
+  Strava.Segment.leaderboard(segment.id)
+
+  Strava.Segment.leaderboard(segment.id, %{date_range: 'this_month', age_group: '35_44'})
+
+  More info: http://strava.github.io/api/v3/segments/#leaderboard
+  """
+  def leaderboard(id, filters \\ %{}, pagination \\ %Strava.Pagination{}, client \\ Strava.Client.new) do
+    "segments/#{id}/leaderboard?#{Strava.Util.query_string(pagination, filters)}"
+    |> Strava.request(client, as: %Strava.SegmentLeaderboard{})
+  end
+
   @spec list_efforts_request(integer, map, Strava.Pagination.t, Strava.Client.t) :: list(Strava.SegmentEffort.t)
   defp list_efforts_request(id, filters, pagination, client) do
     "segments/#{id}/all_efforts?#{Strava.Util.query_string(pagination, filters)}"

@@ -157,6 +157,18 @@ defmodule Strava.SegmentTest do
     end
   end
 
+  describe "Segment leaderboards" do
+    test "leaderboard" do
+      use_cassette "segment/leaderboards" do
+        leaderboard = Strava.Segment.leaderboard(229781)
+
+        assert leaderboard != nil
+        assert leaderboard.entry_count > 0
+        assert length(leaderboard.entries) > 0
+      end
+    end
+  end
+
   describe "exploring segments" do
     test "explore" do
       use_cassette "segment/explore" do

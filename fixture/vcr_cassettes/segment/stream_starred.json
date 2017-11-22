@@ -28,5 +28,35 @@
       "status_code": 200,
       "type": "ok"
     }
+  },
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "<<access_key>>"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://www.strava.com/api/v3/segments/starred?page=2&per_page=200"
+    },
+    "response": {
+      "body": "[]",
+      "headers": {
+        "Cache-Control": "must-revalidate, private, max-age=0",
+        "Content-Type": "application/json; charset=UTF-8",
+        "Date": "Tue, 13 Dec 2016 10:48:47 GMT",
+        "ETag": "\"d751713988987e9331980363e24189ce\"",
+        "Status": "200 OK",
+        "X-FRAME-OPTIONS": "DENY",
+        "X-RateLimit-Limit": "600,30000",
+        "X-RateLimit-Usage": "3,4",
+        "X-UA-Compatible": "IE=Edge,chrome=1",
+        "Content-Length": "2",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
   }
 ]

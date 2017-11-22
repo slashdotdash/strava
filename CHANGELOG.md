@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.5.0
+
+### Bug fixes
+
+- Fix pagination issue where returned page size is not equal to requested size even when that page is not the last. See the following note from Strava's [pagination](https://strava.github.io/api/#pagination) API documentation:
+
+    > Note that in certain cases, the number of items returned in the response may be lower than the requested page size, even when that page is not the last. If you need to fully go through the full set of results, prefer iterating until an empty page is returned.
+
 ## v0.4.1
 
 ### Enhancements

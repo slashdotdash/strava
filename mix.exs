@@ -1,7 +1,7 @@
 defmodule Strava.Mixfile do
   use Mix.Project
 
-  @version "0.4.1"
+  @version "0.5.0"
 
   def project do
     [
@@ -21,11 +21,9 @@ defmodule Strava.Mixfile do
   end
 
   def application do
-    [applications: [
-      :logger,
-      :httpoison,
-      :oauth2,
-      :poison,
+    [
+      extra_applications: [
+        :logger,
       ]
     ]
   end

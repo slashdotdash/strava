@@ -2,8 +2,6 @@ defmodule Strava.AthleteTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-  doctest Strava.Athlete
-
   setup_all do
     HTTPoison.start
   end

@@ -2,8 +2,6 @@ defmodule Strava.RouteTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-  doctest Strava.Route
-
   setup_all do
     HTTPoison.start
   end

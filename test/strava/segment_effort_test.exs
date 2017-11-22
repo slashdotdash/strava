@@ -2,8 +2,6 @@ defmodule Strava.SegmentEffortTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-  doctest Strava.SegmentEffort
-
   setup_all do
     HTTPoison.start
   end

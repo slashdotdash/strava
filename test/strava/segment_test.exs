@@ -2,8 +2,6 @@ defmodule Strava.SegmentTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-  doctest Strava.Segment
-
   setup_all do
     HTTPoison.start
   end
@@ -101,11 +99,11 @@ defmodule Strava.SegmentTest do
     use_cassette "segment/stream_efforts#229781.date2", match_requests_on: [:query] do
       segment_efforts = Strava.Segment.stream_efforts(229781, %{
         start_date_local: "2016-01-01T00:00:00Z",
-        end_date_local: "2016-01-31T23:59:59Z"
+        end_date_local: "2016-01-02T23:59:59Z"
       })
       |> Enum.to_list
 
-      assert length(segment_efforts) > 0
+      assert length(segment_efforts) > 200
 
       Enum.each(segment_efforts, fn(segment_effort) ->
         assert segment_effort.name == "Hawk Hill"
@@ -131,7 +129,7 @@ defmodule Strava.SegmentTest do
     end
 
     test "paginate starred segments" do
-      use_cassette "segment/paginate_starred" do
+      use_cassette "segment/paginate_starred", match_requests_on: [:query] do
         starred_segments = Strava.Segment.paginate_starred(%Strava.Pagination{per_page: 5, page: 1})
 
         assert starred_segments != nil
@@ -144,7 +142,7 @@ defmodule Strava.SegmentTest do
     end
 
     test "stream starred segments" do
-      use_cassette "segment/stream_starred" do
+      use_cassette "segment/stream_starred", match_requests_on: [:query] do
         starred_segments = Strava.Segment.stream_starred() |> Enum.to_list
 
         assert starred_segments != nil
@@ -159,7 +157,7 @@ defmodule Strava.SegmentTest do
 
   describe "Segment leaderboards" do
     test "leaderboard" do
-      use_cassette "segment/leaderboards" do
+      use_cassette "segment/leaderboards", match_requests_on: [:query] do
         leaderboard = Strava.Segment.leaderboard(229781)
 
         assert leaderboard != nil
@@ -171,7 +169,7 @@ defmodule Strava.SegmentTest do
 
   describe "exploring segments" do
     test "explore" do
-      use_cassette "segment/explore" do
+      use_cassette "segment/explore", match_requests_on: [:query] do
         explored_segments = Strava.Segment.explore([37.821362,-122.505373,37.842038,-122.465977])
 
         assert explored_segments != nil

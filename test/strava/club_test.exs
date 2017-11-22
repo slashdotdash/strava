@@ -2,8 +2,6 @@ defmodule Strava.ClubTest do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-  doctest Strava.Club
-
   setup_all do
     HTTPoison.start
   end

@@ -1,8 +1,6 @@
 defmodule Strava.PaginatorTest do
   use ExUnit.Case, async: false
 
-  doctest Strava.Paginator
-
   test "paginate empty list" do
     stream = Strava.Paginator.stream(fn _ -> [] end)
 
@@ -14,6 +12,7 @@ defmodule Strava.PaginatorTest do
     stream = Strava.Paginator.stream(fn pagination ->
       case pagination do
         %Strava.Pagination{page: 1} -> [1, 2, 3, 4]
+        %Strava.Pagination{page: 2} -> []
         _ -> raise "should not call"
         end
     end, 5)
@@ -26,7 +25,8 @@ defmodule Strava.PaginatorTest do
     stream = Strava.Paginator.stream(fn pagination ->
       case pagination do
         %Strava.Pagination{page: 1} -> [1, 2, 3, 4, 5]
-        _  -> []
+        %Strava.Pagination{page: 2} -> []
+        _ -> raise "should not call"
         end
     end, 5)
 
@@ -39,6 +39,7 @@ defmodule Strava.PaginatorTest do
       case pagination do
         %Strava.Pagination{page: 1} -> [1, 2, 3, 4, 5]
         %Strava.Pagination{page: 2} -> [6, 7, 8, 9]
+        %Strava.Pagination{page: 3} -> []
         _ -> raise "should not call"
         end
     end, 5)

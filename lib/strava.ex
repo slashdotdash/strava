@@ -19,15 +19,21 @@ defmodule Strava do
   """
   def request(path, %Strava.Client{access_token: access_token}, opts \\ []) do
     path
-    |> Strava.get!(%{"Authorization" => "Bearer #{access_token}"})
+    |> Strava.get!(%{"Authorization" => "Bearer #{access_token}"}, request_opts())
     |> parse(opts)
+  end
+
+  defp request_opts do
+    [
+      timeout: timeout(),
+      recv_timeout: recv_timeout(),
+    ]
   end
 
   defp parse(response, opts),
     do: Poison.decode!(response.body, opts ++ [keys: :atoms])
 
-  defp process_url(path),
-    do: @endpoint <> path
+  defp process_url(path), do: @endpoint <> path
 
   @doc """
   Gets the Strava API Client ID from :strava, :client_id application
@@ -59,10 +65,16 @@ defmodule Strava do
     Application.get_env(:strava, :redirect_uri) || System.get_env("STRAVA_REDIRECT_URI")
   end
 
-  def max_page_size,
-    do: @max_page_size
+  # Timeout to establish a connection, in milliseconds. Default is 8,000ms.
+  defp timeout, do: Application.get_env(:strava, :timeout, 8_000)
+
+  # Timeout used when receiving a connection. Default is 5,000ms.
+  defp recv_timeout, do: Application.get_env(:strava, :recv_timeout, 5_000)
+
+  def max_page_size, do: @max_page_size
 
   def delay_between_requests_in_milliseconds do
-    Application.get_env(:strava, :delay_between_requests_in_milliseconds) || @default_delay_between_requests_in_milliseconds
+    Application.get_env(:strava, :delay_between_requests_in_milliseconds) ||
+      @default_delay_between_requests_in_milliseconds
   end
 end

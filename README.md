@@ -20,7 +20,7 @@ MIT License
 
   ```elixir
   def deps do
-    [{:strava, "~> 0.4"}]
+    [{:strava, "~> 0.6"}]
   end
   ```
 

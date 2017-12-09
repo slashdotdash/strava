@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.6.0
+
+### Enhancements
+
+- Allow `:timeout` and `:recv_timeout` to be configured in environment config for all Strava API requests:
+
+    ```elixir
+    config :strava,
+      timeout: 8_000,
+      recv_timeout: 5_000
+    ```
+
+  - `:timeout` - used to establish a connection, in milliseconds (default is 8,000ms).
+  - `:recv_timeout` - used when receiving a connection (default is 5,000ms).
+
 ## v0.5.0
 
 ### Bug fixes

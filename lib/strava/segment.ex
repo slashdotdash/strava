@@ -187,11 +187,9 @@ defmodule Strava.Segment do
     Enum.map(segments, &convert_from_summary/1)
   end
 
-  @doc """
-  The endpoint for `explore` returns a segment summary, which doesn't have the same fields.
-  Most notably, it returns the average grade as `avg_grade` rather than the `average_grade`
-  used by the `retrieve` endpoint.
-  """
+  # The endpoint for `explore` returns a segment summary, which doesn't have the same fields.
+  # Most notably, it returns the average grade as `avg_grade` rather than the `average_grade`
+  # used by the `retrieve` endpoint.
   @spec convert_from_summary(map) :: list(Strava.Segment.t)
   defp convert_from_summary(%{} = segment_summary) do
     summary = Map.put(segment_summary, :average_grade, segment_summary.avg_grade)

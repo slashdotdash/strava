@@ -49,12 +49,6 @@ defmodule Strava.Util do
     struct(destination, map)
   end
 
-  @spec query_string_no_pagination(map) :: binary
-  def query_string_no_pagination(filters) do
-    filters
-    |> URI.encode_query
-  end
-
   @spec query_string(Strava.Pagination.t, map) :: binary
   def query_string(pagination, filters \\ %{}) do
     pagination
@@ -63,4 +57,11 @@ defmodule Strava.Util do
     |> Enum.into(filters)
     |> URI.encode_query
   end
+
+  @spec query_string_no_pagination(map) :: binary
+  def query_string_no_pagination(filters) do
+    filters
+    |> URI.encode_query
+  end
+
 end

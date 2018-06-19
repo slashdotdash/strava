@@ -18,6 +18,25 @@ defmodule Strava.ActivityTest do
     end
   end
 
+  test "retrieve activity with filter" do
+    use_cassette "activity/retrieve#1632425533#include_all" do
+      activity = Strava.Activity.retrieve(1632425533, %{include_all_efforts: true})
+
+      assert activity != nil
+      assert activity.name == "Morning Ride"
+      assert length(activity.segment_efforts) == 14
+    end
+
+    use_cassette "activity/retrieve#1632425533#dont_include_all" do
+      activity = Strava.Activity.retrieve(1632425533)
+
+      assert activity != nil
+      assert activity.name == "Morning Ride"
+      assert length(activity.segment_efforts) == 9
+    end
+
+  end
+
   test "list athlete activities" do
     use_cassette "activity/list_athlete_activities#1" do
       activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 5, page: 1})

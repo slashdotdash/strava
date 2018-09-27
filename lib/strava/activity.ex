@@ -143,12 +143,13 @@ defmodule Strava.Activity do
   ## Example
 
       Strava.Activity.retrieve(746805584)
+      Strava.Activity.retrieve(746805584, %{include_all_efforts: true})
 
   More info: https://strava.github.io/api/v3/activities/#get-details
   """
-  @spec retrieve(integer) :: Strava.Activity.t
-  def retrieve(id, client \\ Strava.Client.new) do
-    "activities/#{id}"
+  @spec retrieve(integer, map, Strava.Client.t) :: Strava.Activity.t
+  def retrieve(id, filters \\ %{}, client \\ Strava.Client.new) do
+    "activities/#{id}?#{Strava.Util.query_string_no_pagination(filters)}"
     |> Strava.request(client, as: %Strava.Activity{})
     |> parse
   end
@@ -216,5 +217,6 @@ defmodule Strava.Activity do
         Strava.SegmentEffort.parse(struct(Strava.SegmentEffort, segment_effort))
       end)
     }
-  end  
+  end
+
 end

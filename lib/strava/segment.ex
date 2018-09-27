@@ -175,16 +175,29 @@ defmodule Strava.Segment do
 
   Strava.Segment.explore([sw_lat, sw_lon, ne_lat, ne_lon], %{activity_type: "running"})
 
-  More info: http://strava.github.io/api/v3/segments/#explore
+  More info: https://developers.strava.com/docs/reference/#api-Segments-exploreSegments
   """
   @spec explore(list(float), map, Strava.Client.t) :: list(Strava.Segment.t)
   def explore([_s, _w, _n, _e] = bounds, filters \\ %{}, client \\ Strava.Client.new) do
     optional_params = if Enum.empty?(filters), do: "", else: "&" <> URI.encode_query(filters)
     %{segments: segments} =
       "segments/explore?bounds=#{Enum.join(bounds, ",")}#{optional_params}"
-      |> Strava.request(client, as: %{segments: [%Strava.Segment{}]})
-    segments
+      |> Strava.request(client, as: %{segments: [%Strava.Segment{}] ++ [:avg_grade]})
+
+    Enum.map(segments, &convert_from_summary/1)
   end
+
+  # The endpoint for `explore` returns a segment summary, which doesn't have the same fields.
+  # Most notably, it returns the average grade as `avg_grade` rather than the `average_grade`
+  # used by the `retrieve` endpoint.
+  @spec convert_from_summary(map) :: list(Strava.Segment.t)
+  defp convert_from_summary(%{} = segment_summary) do
+    summary = Map.put(segment_summary, :average_grade, segment_summary.avg_grade)
+    |> Map.delete(:avg_grade)
+
+    struct(Strava.Segment, summary)
+  end
+
 
   @doc """
   Returns a leaderboard: the ranking of athletes on specific segments.

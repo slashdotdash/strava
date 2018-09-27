@@ -178,6 +178,8 @@ defmodule Strava.SegmentTest do
         first_segment = hd(explored_segments)
         assert first_segment.name != ""
         assert first_segment.id > 0
+        assert first_segment.average_grade != nil
+        assert first_segment.average_grade > 0
       end
     end
   end

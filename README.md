@@ -197,8 +197,7 @@ To run the entire test suite, create a file called `config/test.secret.exs` with
 # config/test.secret.exs
 use Mix.Config
 
-config :strava,
-  access_token: "<access token>"
+config :strava, access_token: "<access token>"
 ```
 
 and run:

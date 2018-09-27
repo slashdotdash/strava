@@ -7,15 +7,15 @@ defmodule Strava.Auth do
   import Strava.Util, only: [struct_from_map: 2]
 
   def new do
-    OAuth2.Client.new([
+    OAuth2.Client.new(
       strategy: __MODULE__,
-      client_id: Strava.client_id,
-      client_secret: Strava.client_secret,
-      redirect_uri: Strava.redirect_uri,
+      client_id: Strava.client_id(),
+      client_secret: Strava.client_secret(),
+      redirect_uri: Strava.redirect_uri(),
       site: "https://www.strava.com",
       authorize_url: "https://www.strava.com/oauth/authorize",
       token_url: "https://www.strava.com/oauth/token"
-    ])
+    )
   end
 
   @doc """
@@ -58,6 +58,7 @@ defmodule Strava.Auth do
   Parse the detailed representation of the current athlete from the OAuth2 access token.
   """
   def get_athlete!(access_token)
+
   def get_athlete!(%OAuth2.AccessToken{other_params: other_params}) do
     other_params["athlete"]
     |> struct_from_map(Strava.Athlete.Summary)
@@ -79,9 +80,19 @@ defmodule Strava.Auth do
   Retrieve an access token given the specified validation code.
   """
   def get_token(client, params, headers) do
+    {code, params} = Keyword.pop(params, :code, client.params["code"])
+
+    unless code do
+      raise OAuth2.Error, reason: "Missing required key `code` for `#{inspect(__MODULE__)}`"
+    end
+
     client
-    |> put_header("Accept", "application/json")
+    |> put_param(:code, code)
+    |> put_param(:client_id, client.client_id)
+    |> put_param(:redirect_uri, client.redirect_uri)
     |> put_param(:client_secret, client.client_secret)
-    |> OAuth2.Strategy.AuthCode.get_token(params, headers)
+    |> merge_params(params)
+    |> put_header("Accept", "application/json")
+    |> put_headers(headers)
   end
 end

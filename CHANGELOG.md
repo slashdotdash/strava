@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.7.0
+
+- Activity retrieve filters ([#24](https://github.com/slashdotdash/strava/pull/24)).
+- Average grade should be returned on Segment.explore
+([#23](https://github.com/slashdotdash/strava/pull/23)).
+- Remove `grant_type` param from OAuth token exchange.
+
+  > On October 15, 2018 the Strava API team will release a refresh token OAuth 2.0 implementation. This date marks the beginning of a migration period during which any requests with a grant_type header will be routed to new authorization logic for refresh tokens, while requests without a grant_type will use the older, existing logic. Both paths will be open for the duration of the migration period, after which the old logic will be deprecated and removed. Rest assured, we will keep both systems working in parallel for a lengthy period.
+
 ## v0.6.0
 
 ### Enhancements

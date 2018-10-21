@@ -1,0 +1,65 @@
+defmodule {{moduleName}}.{{classname}} do
+  @moduledoc """
+  API calls for all endpoints tagged `{{baseName}}`.
+  """
+
+  alias {{moduleName}}.Connection
+  import {{moduleName}}.RequestBuilder
+
+{{#operations}}
+  {{#operation}}
+
+  @doc """
+  {{#summary}}
+  {{summary}}
+  {{/summary}}
+  {{#notes}}
+  {{notes}}
+  {{/notes}}
+
+  ## Parameters
+
+  - connection ({{moduleName}}.Connection): Connection to server
+{{#requiredParams}}
+  - {{#underscored}}{{paramName}}{{/underscored}} ({{dataType}}): {{description}}
+{{/requiredParams}}
+  - opts (KeywordList): [optional] Optional parameters
+{{#optionalParams}}
+    - {{#underscored}}:{{paramName}}{{/underscored}} ({{dataType}}): {{description}}
+{{/optionalParams}}
+  ## Returns
+
+  {:ok, {{#isListContainer}}[%{{returnBaseType}}{}, ...]{{/isListContainer}}{{#isMapContainer}}%{}{{/isMapContainer}}{{^returnType}}%{}{{/returnType}}{{#returnSimpleType}}%{{#returnType}}{{#isMapContainer}}{{/isMapContainer}}{{{moduleName}}}.Model.{{{returnType}}}{{/returnType}}{}{{/returnSimpleType}}} on success
+  {:error, info} on failure
+  """
+  {{{typespec}}}
+  def {{#underscored}}{{{operationId}}}{{/underscored}}(connection, {{#requiredParams}}{{#underscored}}{{{paramName}}}{{/underscored}}, {{/requiredParams}}{{^hasOptionalParams}}_{{/hasOptionalParams}}opts \\ []) do
+{{#optionalParams}}
+{{#-first}}
+    optional_params = %{
+{{/-first}}
+      :{{baseName}} => {{#isBodyParam}}:body{{/isBodyParam}}{{#isFormParam}}:form{{/isFormParam}}{{#isQueryParam}}:query{{/isQueryParam}}{{#isHeaderParam}}:headers{{/isHeaderParam}}{{#hasMore}},{{/hasMore}}
+{{#-last}}
+    }
+{{/-last}}
+{{/optionalParams}}
+    %{}
+    |> method(:{{#underscored}}{{httpMethod}}{{/underscored}})
+    |> url("{{replacedPathName}}")
+{{#requiredParams}}
+{{^isPathParam}}
+    |> add_param({{#isBodyParam}}:body{{/isBodyParam}}{{#isFormParam}}{{#isMultipart}}{{#isFile}}:file{{/isFile}}{{^isFile}}:form{{/isFile}}{{/isMultipart}}{{^isMultipart}}:form{{/isMultipart}}{{/isFormParam}}{{#isQueryParam}}:query{{/isQueryParam}}{{#isHeaderParam}}:headers{{/isHeaderParam}}, :{{baseName}}, {{#underscored}}{{paramName}}{{/underscored}})
+{{/isPathParam}}
+{{/requiredParams}}
+{{#optionalParams}}
+{{#-first}}
+    |> add_optional_params(optional_params, opts)
+{{/-first}}
+{{/optionalParams}}
+    |> Enum.into([])
+    |> (&Connection.request(connection, &1)).()
+    |> decode({{decodedStruct}})
+  end
+  {{/operation}}
+{{/operations}}
+end

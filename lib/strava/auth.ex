@@ -4,8 +4,6 @@ defmodule Strava.Auth do
   """
   use OAuth2.Strategy
 
-  import Strava.Util, only: [struct_from_map: 2]
-
   def new do
     OAuth2.Client.new(
       strategy: __MODULE__,
@@ -22,13 +20,35 @@ defmodule Strava.Auth do
   Returns the authorize url based on the client configuration.
 
   - approval_prompt: string optional
-    "force" or "auto", use "force" to always show the authorization prompt even if the user has already authorized the current application, default is "auto"
+    "force" or "auto", use "force" to always show the authorization prompt even
+    if the user has already authorized the current application, default is "auto"
 
   - scope: string optional
-    comma delimited string of "view_private" and/or "write", leave blank for read-only permissions.
+
+    Requested scopes, as a comma delimited string, e.g. "activity:read_all,activity:write".
+    Applications should request only the scopes required for the application to function normally.
+
+      - `read` - read public segments, public routes, public profile data,
+        public posts, public events, club feeds, and leaderboards
+      - `read_all` - read private routes, private segments, and private events
+        for the user
+      - `profile:read_all` - read all profile information even if the user has
+        set their profile visibility to Followers or Only You
+      - `profile:write` - update the user's weight and Functional Threshold
+        Power (FTP), and access to star or unstar segments on their behalf
+      - `activity:read` - read the user's activity data for activities that
+        are visible to Everyone and Followers, excluding privacy zone data
+      - `activity:read_all` - the same access as activity:read, plus privacy
+        zone data and access to read the user's activities with visibility set
+        to Only You
+      - `activity:write` - access to create manual activities and uploads, and
+        access to edit any activities that are visible to the app, based on
+        activity read access level
 
   - state: string optional
-    returned to your application, useful if the authentication is done from various points in an app
+    returned to your application, useful if the authentication is done from
+    various points in an app
+
   """
   def authorize_url!(params \\ []) do
     new()
@@ -49,23 +69,18 @@ defmodule Strava.Auth do
   end
 
   @doc """
-  Parse the summary representation of the current athlete from the OAuth2 access token contained inside the client.
+  Parse the detailed representation of the current athlete from the OAuth2
+  client or access token.
   """
-  def get_athlete!(client)
+  def get_athlete!(client_or_access_token)
+
   def get_athlete!(%OAuth2.Client{token: access_token}), do: get_athlete!(access_token)
 
-  @doc """
-  Parse the detailed representation of the current athlete from the OAuth2 access token.
-  """
-  def get_athlete!(access_token)
-
-  def get_athlete!(%OAuth2.AccessToken{other_params: other_params}) do
-    other_params["athlete"]
-    |> struct_from_map(Strava.Athlete.Summary)
-    |> Strava.Athlete.Summary.parse()
+  def get_athlete!(%OAuth2.AccessToken{other_params: %{"athlete" => athlete}}) do
+    Poison.Decode.transform(athlete, %{:as => %Strava.DetailedAthlete{}})
   end
 
-  # strategy callbacks
+  # OAuth2 strategy callbacks
 
   @doc """
   The authorization URL endpoint of the provider.

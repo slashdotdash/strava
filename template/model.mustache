@@ -1,4 +1,4 @@
-{{#models}}{{#model}}defmodule {{moduleName}}.Model.{{classname}} do
+{{#models}}{{#model}}defmodule {{moduleName}}.{{classname}} do
   @moduledoc """
   {{description}}
   """
@@ -15,14 +15,14 @@
   }
 end
 
-defimpl Poison.Decoder, for: {{moduleName}}.Model.{{classname}} do
+defimpl Poison.Decoder, for: {{moduleName}}.{{classname}} do
 {{#hasComplexVars}}
   import {{moduleName}}.Deserializer
   def decode(value, options) do
     value
     {{#vars}}
     {{^isPrimitiveType}}
-    {{#datatype}}|> deserialize(:{{baseName}}, {{#isListContainer}}:list, {{moduleName}}.Model.{{items.datatype}}{{/isListContainer}}{{#isMapContainer}}:map, {{moduleName}}.Model.{{items.datatype}}{{/isMapContainer}}{{#isDate}}:date, nil{{/isDate}}{{#isDateTime}}:date, nil{{/isDateTime}}{{^isDate}}{{^isDateTime}}{{^isMapContainer}}{{^isListContainer}}:struct, {{moduleName}}.Model.{{dataType}}{{/isListContainer}}{{/isMapContainer}}{{/isDateTime}}{{/isDate}}, options)
+    {{#datatype}}|> deserialize(:{{baseName}}, {{#isListContainer}}:list, {{moduleName}}.{{items.datatype}}{{/isListContainer}}{{#isMapContainer}}:map, {{moduleName}}.{{items.datatype}}{{/isMapContainer}}{{#isDate}}:date, nil{{/isDate}}{{#isDateTime}}:date, nil{{/isDateTime}}{{^isDate}}{{^isDateTime}}{{^isMapContainer}}{{^isListContainer}}:struct, {{moduleName}}.{{dataType}}{{/isListContainer}}{{/isMapContainer}}{{/isDateTime}}{{/isDate}}, options)
     {{/datatype}}
     {{/isPrimitiveType}}
     {{#isDateTime}}

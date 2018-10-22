@@ -8,7 +8,8 @@ defmodule Strava.UtilTest do
   end
 
   test "query string no pagination" do
-    assert Util.query_string_no_pagination(%{test_param: 76, second_param: 4}) == "second_param=4&test_param=76"
+    assert Util.query_string_no_pagination(%{test_param: 76, second_param: 4}) ==
+             "second_param=4&test_param=76"
   end
 
   test "query string" do

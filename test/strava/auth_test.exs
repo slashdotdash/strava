@@ -1,14 +1,12 @@
 defmodule Strava.AuthTest do
   use ExUnit.Case, async: false
 
-  # manual test to verify token exchange, provide a valid code to run
+  # Manual test to verify token exchange, provide a valid code to run
   @tag :manual
   test "get token from code" do
     token = Strava.Auth.get_token!(code: "<<code>>")
-    athlete = Strava.Auth.get_athlete!(token)
 
-    assert token != nil
-    assert athlete != nil
+    assert %Strava.DetailedAthlete{} = Strava.Auth.get_athlete!(token)
   end
 
   test "get athlete from access token" do

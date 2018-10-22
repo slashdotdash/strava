@@ -1,7 +1,11 @@
 language: elixir
 
+cache:
+  directories:
+  - fixture
+
 elixir:
-  - 1.5.2
+  - 1.7.3
 
 otp_release:
-  - 20.1
+  - 21.0

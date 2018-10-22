@@ -1,6 +1,8 @@
 # Strava
 
-Elixir wrapper for the [Strava API](https://strava.github.io/api/) (V3).
+Elixir wrapper for the [Strava API](https://developers.strava.com/) (V3).
+
+Client was generated from the [Strava API Swagger definition](https://developers.strava.com/docs/#client-code) using the [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
 All calls to the Strava API require an `access_token` defining the athlete and application making the call. Any registered Strava user can obtain an `access_token` by first creating an application at [strava.com/developers](http://www.strava.com/developers).
 
@@ -21,14 +23,6 @@ MIT License
   ```elixir
   def deps do
     [{:strava, "~> 0.6"}]
-  end
-  ```
-
-  2. For Elixir 1.3 and earlier *only*, ensure `strava` is included in your applications:
-
-  ```elixir
-  def application do
-    [applications: [:strava]]
   end
   ```
 
@@ -54,7 +48,7 @@ config :strava,
 #### Retrieve a club
 
 ```elixir
-club = Strava.Club.retrieve(7289)
+{:ok, club} = Strava.Club.retrieve(7289)
 ```
 
 #### List club members

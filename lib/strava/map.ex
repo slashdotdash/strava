@@ -7,16 +7,16 @@ defmodule Strava.Map do
   """
 
   @type t :: %__MODULE__{
-    id: String.t,
-    polyline: String.t,
-    summary_polyline: String.t,
-    resource_state: integer,
-  }
+          id: String.t(),
+          polyline: String.t(),
+          summary_polyline: String.t(),
+          resource_state: integer
+        }
 
   defstruct [
     :id,
     :polyline,
     :summary_polyline,
-    :resource_state,
+    :resource_state
   ]
 end

@@ -4,36 +4,7 @@ defmodule Strava do
 
   The Strava V3 API is a publicly available interface allowing developers access
   to the rich Strava dataset.
-
-  More info: http://strava.github.io/api/
   """
-
-  use HTTPoison.Base
-
-  @endpoint "https://www.strava.com/api/v3/"
-  @max_page_size 200
-  @default_delay_between_requests_in_milliseconds 1_000
-
-  @doc """
-  Submit a request to the Strava API
-  """
-  def request(path, %Strava.Client{access_token: access_token}, opts \\ []) do
-    path
-    |> Strava.get!(%{"Authorization" => "Bearer #{access_token}"}, request_opts())
-    |> parse(opts)
-  end
-
-  defp request_opts do
-    [
-      timeout: timeout(),
-      recv_timeout: recv_timeout(),
-    ]
-  end
-
-  defp parse(response, opts),
-    do: Poison.decode!(response.body, opts ++ [keys: :atoms])
-
-  defp process_url(path), do: @endpoint <> path
 
   @doc """
   Gets the Strava API Client ID from :strava, :client_id application
@@ -65,16 +36,18 @@ defmodule Strava do
     Application.get_env(:strava, :redirect_uri) || System.get_env("STRAVA_REDIRECT_URI")
   end
 
-  # Timeout to establish a connection, in milliseconds. Default is 8,000ms.
-  defp timeout, do: Application.get_env(:strava, :timeout, 8_000)
+  @doc """
+  Timeout to establish a connection, in milliseconds. Default is 8,000ms.
+  """
+  def connect_timeout, do: Application.get_env(:strava, :connect_timeout, 8_000)
 
-  # Timeout used when receiving a connection. Default is 5,000ms.
-  defp recv_timeout, do: Application.get_env(:strava, :recv_timeout, 5_000)
+  @doc """
+  Timeout used when receiving a connection. Default is 5,000ms.
+  """
+  def recv_timeout, do: Application.get_env(:strava, :recv_timeout, 5_000)
 
-  def max_page_size, do: @max_page_size
+  def max_page_size, do: Application.get_env(:strava, :max_page_size, 200)
 
-  def delay_between_requests_in_milliseconds do
-    Application.get_env(:strava, :delay_between_requests_in_milliseconds) ||
-      @default_delay_between_requests_in_milliseconds
-  end
+  def delay_between_requests_in_milliseconds,
+    do: Application.get_env(:strava, :delay_between_requests_in_milliseconds, 1_000)
 end

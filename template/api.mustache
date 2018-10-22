@@ -3,7 +3,7 @@ defmodule {{moduleName}}.{{classname}} do
   API calls for all endpoints tagged `{{baseName}}`.
   """
 
-  alias {{moduleName}}.Connection
+  alias {{moduleName}}.Client
   import {{moduleName}}.RequestBuilder
 
 {{#operations}}
@@ -19,7 +19,7 @@ defmodule {{moduleName}}.{{classname}} do
 
   ## Parameters
 
-  - connection ({{moduleName}}.Connection): Connection to server
+  - client ({{moduleName}}.Client): Client to make authenticated requests
 {{#requiredParams}}
   - {{#underscored}}{{paramName}}{{/underscored}} ({{dataType}}): {{description}}
 {{/requiredParams}}
@@ -29,11 +29,11 @@ defmodule {{moduleName}}.{{classname}} do
 {{/optionalParams}}
   ## Returns
 
-  {:ok, {{#isListContainer}}[%{{returnBaseType}}{}, ...]{{/isListContainer}}{{#isMapContainer}}%{}{{/isMapContainer}}{{^returnType}}%{}{{/returnType}}{{#returnSimpleType}}%{{#returnType}}{{#isMapContainer}}{{/isMapContainer}}{{{moduleName}}}.Model.{{{returnType}}}{{/returnType}}{}{{/returnSimpleType}}} on success
+  {:ok, {{#isListContainer}}[%{{returnBaseType}}{}, ...]{{/isListContainer}}{{#isMapContainer}}%{}{{/isMapContainer}}{{^returnType}}%{}{{/returnType}}{{#returnSimpleType}}%{{#returnType}}{{#isMapContainer}}{{/isMapContainer}}{{{moduleName}}}.{{{returnType}}}{{/returnType}}{}{{/returnSimpleType}}} on success
   {:error, info} on failure
   """
   {{{typespec}}}
-  def {{#underscored}}{{{operationId}}}{{/underscored}}(connection, {{#requiredParams}}{{#underscored}}{{{paramName}}}{{/underscored}}, {{/requiredParams}}{{^hasOptionalParams}}_{{/hasOptionalParams}}opts \\ []) do
+  def {{#underscored}}{{{operationId}}}{{/underscored}}(client, {{#requiredParams}}{{#underscored}}{{{paramName}}}{{/underscored}}, {{/requiredParams}}{{^hasOptionalParams}}_{{/hasOptionalParams}}opts \\ []) do
 {{#optionalParams}}
 {{#-first}}
     optional_params = %{
@@ -43,22 +43,24 @@ defmodule {{moduleName}}.{{classname}} do
     }
 {{/-last}}
 {{/optionalParams}}
-    %{}
-    |> method(:{{#underscored}}{{httpMethod}}{{/underscored}})
-    |> url("{{replacedPathName}}")
+
+    request =
+      %{}
+      |> method(:{{#underscored}}{{httpMethod}}{{/underscored}})
+      |> url("{{replacedPathName}}")
 {{#requiredParams}}
 {{^isPathParam}}
-    |> add_param({{#isBodyParam}}:body{{/isBodyParam}}{{#isFormParam}}{{#isMultipart}}{{#isFile}}:file{{/isFile}}{{^isFile}}:form{{/isFile}}{{/isMultipart}}{{^isMultipart}}:form{{/isMultipart}}{{/isFormParam}}{{#isQueryParam}}:query{{/isQueryParam}}{{#isHeaderParam}}:headers{{/isHeaderParam}}, :{{baseName}}, {{#underscored}}{{paramName}}{{/underscored}})
+      |> add_param({{#isBodyParam}}:body{{/isBodyParam}}{{#isFormParam}}{{#isMultipart}}{{#isFile}}:file{{/isFile}}{{^isFile}}:form{{/isFile}}{{/isMultipart}}{{^isMultipart}}:form{{/isMultipart}}{{/isFormParam}}{{#isQueryParam}}:query{{/isQueryParam}}{{#isHeaderParam}}:headers{{/isHeaderParam}}, :{{baseName}}, {{#underscored}}{{paramName}}{{/underscored}})
 {{/isPathParam}}
 {{/requiredParams}}
 {{#optionalParams}}
 {{#-first}}
-    |> add_optional_params(optional_params, opts)
+      |> add_optional_params(optional_params, opts)
 {{/-first}}
 {{/optionalParams}}
-    |> Enum.into([])
-    |> (&Connection.request(connection, &1)).()
-    |> decode({{decodedStruct}})
+      |> Enum.into([])
+
+    client |> Client.request(request) |> decode({{decodedStruct}})
   end
   {{/operation}}
 {{/operations}}

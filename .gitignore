@@ -6,3 +6,4 @@ erl_crash.dump
 *.ez
 /config/test.secret.exs
 .DS_Store
+/fixture

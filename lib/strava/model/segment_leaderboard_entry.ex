@@ -21,4 +21,14 @@ defmodule Strava.SegmentLeaderboardEntry do
           start_date_local: DateTime.t(),
           rank: integer()
         }
+
+  defimpl Poison.Decoder, for: Strava.SegmentLeaderboardEntry do
+    import Strava.Deserializer
+
+    def decode(value, options) do
+      value
+      |> deserialize(:start_date, :datetime, options)
+      |> deserialize(:start_date_local, :datetime, options)
+    end
+  end
 end

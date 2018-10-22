@@ -22,20 +22,20 @@ defmodule Strava.Route do
   ]
 
   @type t :: %__MODULE__{
-          athlete: Strava.SummaryAthlete,
+          athlete: Strava.SummaryAthlete.t(),
           description: String.t(),
           distance: float(),
           elevation_gain: float(),
           id: integer(),
-          map: Strava.PolylineMap,
+          map: Strava.PolylineMap.t(),
           name: String.t(),
           private: boolean(),
           starred: boolean(),
           timestamp: integer(),
           type: integer(),
           sub_type: integer(),
-          segments: [Strava.SummarySegment],
-          directions: [Strava.RouteDirection]
+          segments: [Strava.SummarySegment.t()],
+          directions: [Strava.RouteDirection.t()]
         }
 end
 

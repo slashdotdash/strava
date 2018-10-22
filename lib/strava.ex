@@ -45,9 +45,4 @@ defmodule Strava do
   Timeout used when receiving a connection. Default is 5,000ms.
   """
   def recv_timeout, do: Application.get_env(:strava, :recv_timeout, 5_000)
-
-  def max_page_size, do: Application.get_env(:strava, :max_page_size, 200)
-
-  def delay_between_requests_in_milliseconds,
-    do: Application.get_env(:strava, :delay_between_requests_in_milliseconds, 1_000)
 end

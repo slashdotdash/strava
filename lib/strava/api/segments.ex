@@ -21,7 +21,7 @@ defmodule Strava.Segments do
     - :activity_type (String.t): Desired activity type.
     - :min_cat (integer()): The minimum climbing category.
     - :max_cat (integer()): The maximum climbing category.
-    
+
   ## Returns
 
   {:ok, %Strava.ExplorerResponse{}} on success
@@ -40,7 +40,7 @@ defmodule Strava.Segments do
       %{}
       |> method(:get)
       |> url("/segments/explore")
-      |> add_param(:query, :bounds, bounds)
+      |> add_param(:query, :bounds, Enum.join(bounds, ","))
       |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 

@@ -7,12 +7,18 @@ defmodule Strava.ClubsTest do
       use_cassette "clubs/get_club_by_id", match_requests_on: [:query] do
         client = Strava.Client.new()
 
-        assert {:ok, %Strava.DetailedClub{} = club} = Strava.Clubs.get_club_by_id(client, 1)
+        {:ok,
+         %Strava.DetailedClub{
+           id: id,
+           name: name,
+           sport_type: sport_type,
+           member_count: member_count
+         }} = Strava.Clubs.get_club_by_id(client, 1)
 
-        assert club.id == 1
-        assert club.name == "Team Strava Cycling"
-        assert club.sport_type == "cycling"
-        assert is_number(club.member_count)
+        assert id == 1
+        assert name == "Team Strava Cycling"
+        assert sport_type == "cycling"
+        assert is_number(member_count)
       end
     end
 
@@ -20,8 +26,7 @@ defmodule Strava.ClubsTest do
       use_cassette "clubs/get_club_members_by_id", match_requests_on: [:query] do
         client = Strava.Client.new()
 
-        assert {:ok, members} =
-                 Strava.Clubs.get_club_members_by_id(client, 1, per_page: 5, page: 1)
+        {:ok, members} = Strava.Clubs.get_club_members_by_id(client, 1, per_page: 5, page: 1)
 
         assert length(members) == 5
 
@@ -36,8 +41,8 @@ defmodule Strava.ClubsTest do
         client = Strava.Client.new()
         club_id = club_id()
 
-        assert {:ok, activities} =
-                 Strava.Clubs.get_club_activities_by_id(client, club_id, per_page: 10, page: 3)
+        {:ok, activities} =
+          Strava.Clubs.get_club_activities_by_id(client, club_id, per_page: 10, page: 3)
 
         refute activities == []
 

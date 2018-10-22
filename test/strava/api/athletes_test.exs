@@ -9,17 +9,22 @@ defmodule Strava.AthletesTest do
       use_cassette "athletes/get_logged_in_athlete", match_requests_on: [:query] do
         client = Strava.Client.new()
 
-        assert {:ok, %Strava.DetailedAthlete{} = athlete} =
-                 Strava.Athletes.get_logged_in_athlete(client)
+        {:ok,
+         %Strava.DetailedAthlete{id: id, firstname: firstname, lastname: lastname, clubs: clubs}} =
+          Strava.Athletes.get_logged_in_athlete(client)
 
-        refute is_nil(athlete)
-        assert is_number(athlete.id)
-        assert_present(athlete.firstname)
-        assert_present(athlete.lastname)
+        assert is_number(id)
+        assert_present(firstname)
+        assert_present(lastname)
 
-        refute athlete.clubs == []
-        assert [%Strava.SummaryClub{} = club | _] = athlete.clubs
-        assert_present(club.name)
+        refute clubs == []
+
+        for club <- clubs do
+          %Strava.SummaryClub{id: id, name: name} = club
+
+          assert is_number(id)
+          assert_present(name)
+        end
       end
     end
 
@@ -27,19 +32,29 @@ defmodule Strava.AthletesTest do
       use_cassette "athletes/get_logged_in_athlete_zones", match_requests_on: [:query] do
         client = Strava.Client.new()
 
-        assert {:ok,
-                %Strava.Zones{
-                  heart_rate: %Strava.HeartRateZoneRanges{
-                    zones: [%Strava.ZoneRange{} = hr_z1 | _]
-                  },
-                  power: %Strava.PowerZoneRanges{zones: [%Strava.ZoneRange{} = pwr_z1 | _]}
-                } = zones} = Strava.Athletes.get_logged_in_athlete_zones(client)
+        {:ok,
+         %Strava.Zones{
+           heart_rate: %Strava.HeartRateZoneRanges{zones: heart_rate_zones},
+           power: %Strava.PowerZoneRanges{zones: power_zones}
+         }} = Strava.Athletes.get_logged_in_athlete_zones(client)
 
-        assert is_number(hr_z1.min)
-        assert is_number(hr_z1.max)
+        refute heart_rate_zones == []
 
-        assert is_number(pwr_z1.min)
-        assert is_number(pwr_z1.max)
+        for zone <- heart_rate_zones do
+          %Strava.ZoneRange{min: min, max: max} = zone
+
+          assert is_number(min)
+          assert is_number(max)
+        end
+
+        refute power_zones == []
+
+        for zone <- power_zones do
+          %Strava.ZoneRange{min: min, max: max} = zone
+
+          assert is_number(min)
+          assert is_number(max)
+        end
       end
     end
 
@@ -48,21 +63,23 @@ defmodule Strava.AthletesTest do
         client = Strava.Client.new()
         athlete_id = authenticated_athlete_id()
 
-        assert {:ok,
-                %Strava.ActivityStats{
-                  all_ride_totals: %Strava.ActivityTotal{},
-                  all_run_totals: %Strava.ActivityTotal{},
-                  all_swim_totals: %Strava.ActivityTotal{},
-                  recent_ride_totals: %Strava.ActivityTotal{},
-                  recent_swim_totals: %Strava.ActivityTotal{},
-                  ytd_ride_totals: %Strava.ActivityTotal{},
-                  ytd_run_totals: %Strava.ActivityTotal{},
-                  ytd_swim_totals: %Strava.ActivityTotal{}
-                } = stats} = Strava.Athletes.get_stats(client, athlete_id)
+        {:ok,
+         %Strava.ActivityStats{
+           all_ride_totals: %Strava.ActivityTotal{},
+           all_run_totals: %Strava.ActivityTotal{},
+           all_swim_totals: %Strava.ActivityTotal{},
+           recent_ride_totals: %Strava.ActivityTotal{},
+           recent_swim_totals: %Strava.ActivityTotal{},
+           ytd_ride_totals: %Strava.ActivityTotal{},
+           ytd_run_totals: %Strava.ActivityTotal{},
+           ytd_swim_totals: %Strava.ActivityTotal{},
+           biggest_climb_elevation_gain: biggest_climb_elevation_gain,
+           biggest_ride_distance: biggest_ride_distance
+         } = stats} = Strava.Athletes.get_stats(client, athlete_id)
 
         assert is_number(stats.all_ride_totals.count)
-        assert is_number(stats.biggest_climb_elevation_gain)
-        assert is_number(stats.biggest_ride_distance)
+        assert is_number(biggest_climb_elevation_gain)
+        assert is_number(biggest_ride_distance)
       end
     end
   end

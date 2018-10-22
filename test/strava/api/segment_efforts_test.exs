@@ -8,35 +8,14 @@ defmodule Strava.SegmentEffortsTest do
     test "#get_efforts_by_segment_id" do
       assert {:ok, segment_efforts} = get_efforts_by_segment_id()
 
-      for segment_effort <- segment_efforts do
-        assert %Strava.DetailedSegmentEffort{
-                 activity: %Strava.MetaActivity{},
-                 athlete: %Strava.MetaAthlete{},
-                 segment: %Strava.SummarySegment{}
-               } = segment_effort
-
-        assert_present(segment_effort.name)
-        assert is_number(segment_effort.id)
-        assert is_number(segment_effort.elapsed_time)
-        assert is_number(segment_effort.moving_time)
-        assert %DateTime{} = segment_effort.start_date
-        assert %DateTime{} = segment_effort.start_date_local
-
-        assert_present(segment_effort.segment.name)
-        assert [lat, long] = segment_effort.segment.start_latlng
-        assert is_number(lat)
-        assert is_number(long)
-
-        assert [lat, long] = segment_effort.segment.end_latlng
-        assert is_number(lat)
-        assert is_number(long)
-      end
+      assert_segment_efforts(segment_efforts)
     end
 
     test "#get_efforts_by_segment_id filtered by local start and end dates" do
-      {:ok,
-       [%Strava.DetailedSegmentEffort{start_date_local: start_date_local} = segment_effort | _]} =
-        get_efforts_by_segment_id()
+      {:ok, segment_efforts} = get_efforts_by_segment_id()
+
+      [%Strava.DetailedSegmentEffort{start_date_local: start_date_local} = segment_effort | _] =
+        segment_efforts
 
       use_cassette "segments/get_efforts_by_segment_id#filtered", match_requests_on: [:query] do
         client = Strava.Client.new()
@@ -62,12 +41,58 @@ defmodule Strava.SegmentEffortsTest do
     end
   end
 
+  test "stream segment efforts" do
+    use_cassette "stream_segment_efforts/get_efforts_by_segment_id", match_requests_on: [:query] do
+      client = Strava.Client.new()
+      segment_id = segment_id()
+
+      stream =
+        Strava.Paginator.stream(
+          fn pagination ->
+            Strava.SegmentEfforts.get_efforts_by_segment_id(client, segment_id, pagination)
+          end,
+          per_page: 5
+        )
+
+      segment_efforts = stream |> Stream.take(10) |> Enum.to_list()
+
+      assert_segment_efforts(segment_efforts)
+    end
+  end
+
   defp get_efforts_by_segment_id do
     use_cassette "segment_efforts/get_efforts_by_segment_id", match_requests_on: [:query] do
       client = Strava.Client.new()
       segment_id = segment_id()
 
       Strava.SegmentEfforts.get_efforts_by_segment_id(client, segment_id)
+    end
+  end
+
+  defp assert_segment_efforts(segment_efforts) do
+    for segment_effort <- segment_efforts do
+      %Strava.DetailedSegmentEffort{
+        id: id,
+        name: name,
+        elapsed_time: elapsed_time,
+        moving_time: moving_time,
+        start_date: start_date,
+        start_date_local: start_date_local,
+        activity: %Strava.MetaActivity{},
+        athlete: %Strava.MetaAthlete{},
+        segment: %Strava.SummarySegment{} = segment
+      } = segment_effort
+
+      assert_present(name)
+      assert is_number(id)
+      assert is_number(elapsed_time)
+      assert is_number(moving_time)
+      assert %DateTime{} = start_date
+      assert %DateTime{} = start_date_local
+
+      assert_present(segment.name)
+      assert_lat_long(segment.start_latlng)
+      assert_lat_long(segment.end_latlng)
     end
   end
 

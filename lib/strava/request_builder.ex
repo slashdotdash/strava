@@ -136,7 +136,7 @@ defmodule Strava.RequestBuilder do
     decoded =
       body
       |> Poison.Parser.parse!(options)
-      |> Poison.Decode.transform(options)
+      |> Strava.Deserializer.transform(options)
 
     {:ok, decoded}
   rescue

@@ -19,7 +19,7 @@ defmodule Strava.Deserializer do
     Map.update!(
       model,
       field,
-      &Poison.Decode.transform(&1, Map.put(options, :as, [struct(mod)]))
+      &transform(&1, Map.put(options, :as, [struct(mod)]))
     )
   end
 
@@ -27,7 +27,7 @@ defmodule Strava.Deserializer do
     Map.update!(
       model,
       field,
-      &Poison.Decode.transform(&1, Map.put(options, :as, struct(mod)))
+      &transform(&1, Map.put(options, :as, struct(mod)))
     )
   end
 
@@ -36,7 +36,7 @@ defmodule Strava.Deserializer do
       model,
       field,
       &Map.new(&1, fn {key, val} ->
-        {key, Poison.Decode.transform(val, Map.put(options, :as, struct(mod)))}
+        {key, transform(val, Map.put(options, :as, struct(mod)))}
       end)
     )
   end
@@ -56,6 +56,23 @@ defmodule Strava.Deserializer do
       Map.put(model, field, datetime)
     else
       _ -> model
+    end
+  end
+
+  if Code.ensure_loaded?(Poison.Decode) do
+    cond do
+      function_exported?(Poison.Decode, :transform, 2) ->
+        def transform(value, options) do
+          Poison.Decode.transform(value, options)
+        end
+
+      function_exported?(Poison.Decode, :decode, 2) ->
+        def transform(value, options) do
+          Poison.Decode.decode(value, options)
+        end
+
+      true ->
+        raise "No suitable `Poison.Decode.transform/2` or `Poison.Decode.decode/2` function found"
     end
   end
 end

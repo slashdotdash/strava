@@ -1,5 +1,13 @@
 # Changelog
 
+## Next release
+
+### Breaking changes
+
+- Generate API from [Strava's official Swagger](https://developers.strava.com/docs/#client-code) definition using [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
+
+  The client models, data types, and API requests now exactly match [Strava's API reference](https://developers.strava.com/docs/reference/). However, they are breaking changes and you will need to migrate your existing code.
+
 ## v0.7.0
 
 - Activity retrieve filters ([#24](https://github.com/slashdotdash/strava/pull/24)).

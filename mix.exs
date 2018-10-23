@@ -44,7 +44,7 @@ defmodule Strava.Mixfile do
 
       # Build & test tools
       {:credo, "~> 0.10", only: :dev},
-      {:dialyxir, "~> 0.5", only: [:dev]},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.19", only: :dev},
       {:exvcr, "~> 0.10", only: :test},
       {:mix_test_watch, "~> 0.9", only: :dev}

@@ -6,7 +6,13 @@ defmodule Strava.Deserializer do
   @doc """
   Update the provided model with a deserialization of a nested value.
   """
-  @spec deserialize(struct(), :atom, :atom, struct(), keyword()) :: struct()
+  @spec deserialize(
+          struct(),
+          atom(),
+          :list | :struct | :map | :date | :datetime,
+          module(),
+          map()
+        ) :: any()
   def deserialize(model, field, type, mod, options)
 
   def deserialize(model, field, :list, mod, options) do

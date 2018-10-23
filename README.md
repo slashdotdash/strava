@@ -4,7 +4,7 @@ Elixir wrapper for the [Strava API](https://developers.strava.com/) (V3).
 
 Client was generated from the [Strava API Swagger definition](https://developers.strava.com/docs/#client-code) using the [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
-All calls to the Strava API require an `access_token` defining the athlete and application making the call. Any registered Strava user can obtain an `access_token` by first creating an application at [strava.com/developers](http://www.strava.com/developers).
+All calls to the Strava API require an `access_token` defining the athlete and application making the call. Any registered Strava user can obtain an `access_token` by first creating an application at [developers.strava.com](https://developers.strava.com/).
 
 ---
 
@@ -43,111 +43,115 @@ config :strava,
   redirect_uri: "<redirect url>"
 ```
 
+### Client
+
+All requests to the Strava API require [authentication](https://developers.strava.com/docs/authentication/).
+
+Create a client to make requests as your own application:
+
+```elixir
+client = Strava.Client.new()
+```
+
+Provide an athlete's `access_token` to make requests on behalf of an authenticated athlete:
+
+```elixir
+client = Strava.Client.new("<<access_token>>")
+```
+
 ### Clubs
 
-#### Retrieve a club
+#### Get club by id
 
 ```elixir
-{:ok, club} = Strava.Club.retrieve(7289)
+{:ok, %Strava.DetailedClub{} = club} = Strava.Clubs.get_club_by_id(client, 1)
 ```
 
-#### List club members
+#### Get club members by id
 
 ```elixir
-members = Strava.Club.list_members(7289, %Strava.Pagination{per_page: 20, page: 1})
-```
-
-#### Stream club members
-
-```elixir
-member_stream = Strava.Club.stream_members(7289)
-member_list = member_stream |> Enum.to_list()
+{:ok, members} = Strava.Clubs.get_club_members_by_id(client, 1, per_page: 20, page: 1)
 ```
 
 ### Segments
 
-#### Retrieve a segment
+#### Get segment by id
 
 ```elixir
-segment = Strava.Segment.retrieve(229781)
+{:ok, %Strava.DetailedSegment{}} = Strava.Segments.get_segment_by_id(client, 229781)
 ```
 
-#### List segment efforts
+### Segment efforts
+
+#### Get efforts by segment id
 
 ```elixir
-segment_efforts = Strava.Segment.list_efforts(229781)
+{:ok, segment_efforts} = Strava.SegmentEfforts.get_efforts_by_segment_id(client, 229781)
 ```
 
-#### List segment efforts filtered by athlete
+Returns segment efforts for the authenticated athlete only.
+
+##### Get efforts by start and end dates
 
 ```elixir
-segment_efforts = Strava.Segment.list_efforts(229781, %{athlete_id: 5287})
-```
-
-#### List segment efforts filtered by start and end dates
-
-```elixir
-segment_efforts = Strava.Segment.list_efforts(229781, %{
+{:ok, segment_efforts} = Strava.SegmentEfforts.get_efforts_by_segment_id(client, 229781,
   start_date_local: "2014-01-01T00:00:00Z",
   end_date_local: "2014-01-01T23:59:59Z"
 })
 ```
 
-#### Stream segment efforts filtered by start and end dates
+Convert `DateTime` structs to an ISO 8601 formatted date time string using:
 
 ```elixir
-segment_efforts =
-  Strava.Segment.stream_efforts(229781, %{
-    start_date_local: "2014-01-01T00:00:00Z",
-    end_date_local: "2014-01-01T23:59:59Z"
-  })
-  |> Enum.to_list()
+DateTime.to_iso8601(start_date_local)
 ```
 
-### Segment efforts
-
-#### Retrieve segment effort
+#### Get segment effort by id
 
 ```elixir
-segment_effort = Strava.SegmentEffort.retrieve(269990681)
+{:ok, %Strava.DetailedSegmentEffort{} = segment_effort} =
+  Strava.SegmentEfforts.get_segment_effort_by_id(client, 269990681)
 ```
 
 ### Activities
 
-#### Retrieve an activity
+#### Get activity by id
 
 ```elixir
-activity = Strava.Activity.retrieve(746805584)
+{:ok, %Strava.DetailedActivity{} = activity} = Strava.Activities.get_activity_by_id(client, 746805584)
 ```
 
-#### List activities for current authenticated athlete
+#### Get logged in athlete's activities
 
 ```elixir
-activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 50, page: 1})
+{:ok, activities] = Strava.Activities.get_logged_in_athlete_activities(client, per_page: 50, page: 1)
 ```
 
-#### List activities for current authenticated athlete after a given datetime
+#### Stream paginated requests
+
+Any requests which take optional pagination params (`per_page` and `page`) can be converted to an Elixir `Stream` by using `Strava.Paginator.stream/2`.
+
+The first argument is a function which is provided the current pagination params to make the request to the Strava API.
 
 ```elixir
-activities = Strava.Activity.list_athlete_activities(%Strava.Pagination{per_page: 50, page: 1}, %{after: "2017-04-20T00:00:12Z"})
+stream =
+  Strava.Paginator.stream(
+    fn pagination ->
+      Strava.SegmentEfforts.get_efforts_by_segment_id(client, segment_id, pagination)
+    end,
+    per_page: 10
+  )
+
+segment_efforts = stream |> Stream.take(20) |> Enum.to_list()
 ```
 
-### Client
-
-The Strava API allows an application to make requests on the  behalf of an authenticated user by using an `access_token` unique to that user.
-
-Each of the above API functions supports providing an `Strava.Client` with a configured access token.
-
-```elixir
-client = Strava.Client.new("<access_token>")
-club = Strava.Club.retrieve(1, client)
-```
+A `Strava.Paginator.RequestError` error will be raised if the request returns an error tagged tuple.
 
 ### OAuth support
 
-You can use Strava as an authentication provider with the OAuth2 strategy provided. Use `Strava.Auth.authorize_url!/1` to generate the Strava URL to redirect unauthenticated users to.
+You can use Strava as an authentication provider with the OAuth2 strategy included in this library.
 
-After the user has successfully authenticated with Strava you can use `Strava.Auth.get_token!` to access their summary details and unique access token.
+Use `Strava.Auth.authorize_url!/1` to generate the Strava URL to redirect unauthenticated users to. After the user has successfully authenticated with Strava you can use `Strava.Auth.get_token!` to access their summary details and unique access token required to make authenticated requests on behalf of the user.
 
 An example Phoenix authentication controller is shown below:
 
@@ -166,8 +170,10 @@ defmodule Example.AuthController do
   end
 
   @doc """
-  This action is reached via `/auth/callback` and is the the callback URL that Strava will redirect the user back to with a `code` that will be used to request an access token.
-  The access token will then be used to access protected resources on behalf of the user.
+  This action is reached via `/auth/callback` and is the the callback URL that
+  Strava will redirect the user back to with a `code` that will be used to
+  request an access token. The access token will then be used to access
+  protected resources on behalf of the user.
   """
   def callback(conn, %{"code" => code}) do
     client = Strava.Auth.get_token!(code: code)
@@ -191,10 +197,18 @@ To run the entire test suite, create a file called `config/test.secret.exs` with
 # config/test.secret.exs
 use Mix.Config
 
-config :strava, access_token: "<access token>"
+config :strava,
+  access_token: "<access_token>",
+  test: [
+    athlete_id: "<athlete_id>",
+    club_id: "<club_id>",
+    segment_id: "<segment_id>"
+  ]
 ```
 
-and run:
+Replace the above placeholders with values appropriate for your own Strava application and athlete profile: your own athlete id; a club id you are a member of; and a segment you have made at least one attempt at.
+
+To run the test suite:
 
 ```
 $ mix test

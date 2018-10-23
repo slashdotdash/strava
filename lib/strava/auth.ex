@@ -23,7 +23,7 @@ defmodule Strava.Auth do
     "force" or "auto", use "force" to always show the authorization prompt even
     if the user has already authorized the current application, default is "auto"
 
-  - scope: string optional
+  - scope: string required
 
     Requested scopes, as a comma delimited string, e.g. "activity:read_all,activity:write".
     Applications should request only the scopes required for the application to function normally.
@@ -51,9 +51,7 @@ defmodule Strava.Auth do
 
   """
   def authorize_url!(params \\ []) do
-    new()
-    |> put_param(:response_type, "code")
-    |> OAuth2.Client.authorize_url!(params)
+    OAuth2.Client.authorize_url!(new(), params)
   end
 
   @doc """
@@ -77,7 +75,7 @@ defmodule Strava.Auth do
   def get_athlete!(%OAuth2.Client{token: access_token}), do: get_athlete!(access_token)
 
   def get_athlete!(%OAuth2.AccessToken{other_params: %{"athlete" => athlete}}) do
-    Poison.Decode.transform(athlete, %{:as => %Strava.DetailedAthlete{}})
+    Strava.Deserializer.transform(athlete, %{:as => %Strava.DetailedAthlete{}})
   end
 
   # OAuth2 strategy callbacks
@@ -86,9 +84,14 @@ defmodule Strava.Auth do
   The authorization URL endpoint of the provider.
 
   - `params` additional query parameters for the URL
+  
   """
   def authorize_url(client, params) do
-    OAuth2.Strategy.AuthCode.authorize_url(client, params)
+    client
+    |> put_param(:response_type, "code")
+    |> put_param(:client_id, client.client_id)
+    |> put_param(:redirect_uri, client.redirect_uri)
+    |> merge_params(params)
   end
 
   @doc """
@@ -96,13 +99,11 @@ defmodule Strava.Auth do
   """
   def get_token(client, params, headers) do
     {code, params} = Keyword.pop(params, :code, client.params["code"])
-
-    unless code do
-      raise OAuth2.Error, reason: "Missing required key `code` for `#{inspect(__MODULE__)}`"
-    end
+    {grant_type, params} = Keyword.pop(params, :grant_type)
 
     client
     |> put_param(:code, code)
+    |> put_param(:grant_type, grant_type)
     |> put_param(:client_id, client.client_id)
     |> put_param(:redirect_uri, client.redirect_uri)
     |> put_param(:client_secret, client.client_secret)

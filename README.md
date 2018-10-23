@@ -1,10 +1,8 @@
 # Strava
 
-Elixir wrapper for the [Strava API](https://developers.strava.com/) (V3).
+Elixir wrapper for the [Strava API](https://developers.strava.com/) (v3), generated from the official [Strava API Swagger definition](https://developers.strava.com/docs/#client-code) using the [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
-Client was generated from the [Strava API Swagger definition](https://developers.strava.com/docs/#client-code) using the [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
-
-All calls to the Strava API require an `access_token` defining the athlete and application making the call. Any registered Strava user can obtain an `access_token` by first creating an application at [developers.strava.com](https://developers.strava.com/).
+All calls to the Strava API require an `access_token` defining the athlete and application making the call. Any registered Strava user can create their own application at [developers.strava.com](https://developers.strava.com/).
 
 ---
 
@@ -153,6 +151,8 @@ You can use Strava as an authentication provider with the OAuth2 strategy includ
 
 Use `Strava.Auth.authorize_url!/1` to generate the Strava URL to redirect unauthenticated users to. After the user has successfully authenticated with Strava you can use `Strava.Auth.get_token!` to access their summary details and unique access token required to make authenticated requests on behalf of the user.
 
+Include the [access scopes](http://developers.strava.com/docs/authentication/#request-access) your application requires as a comma delimited string (e.g. `"activity:read_all,activity:write"`). Applications should request only the scopes required for the application to function normally.
+
 An example Phoenix authentication controller is shown below:
 
 ```elixir
@@ -160,7 +160,7 @@ defmodule Example.AuthController do
   use Example.Web, :controller
 
   def index(conn, _params) do
-    redirect conn, external: Strava.Auth.authorize_url!(scope: "public")
+    redirect(conn, external: Strava.Auth.authorize_url!(scope: "profile:read,activity:read"))
   end
 
   def delete(conn, _params) do
@@ -176,18 +176,34 @@ defmodule Example.AuthController do
   protected resources on behalf of the user.
   """
   def callback(conn, %{"code" => code}) do
-    client = Strava.Auth.get_token!(code: code)
+    client = Strava.Auth.get_token!(code: code, grant_type: "authorization_code")
     athlete = Strava.Auth.get_athlete!(client)
 
     conn
-      |> put_session(:current_athlete, athlete)
-      |> put_session(:access_token, client.token.access_token)
-      |> redirect(to: "/")
+    |> put_session(:current_athlete, athlete)
+    |> put_session(:access_token, client.token.access_token)
+    |> put_session(:refresh_token, client.token.refresh_token)
+    |> redirect(to: "/")
   end
 end
 ```
 
 With the `access_token` tracked against the user's session you can make requests to the Strava API on their behalf. Use `Strava.Client.new(access_token)` to create a client to use with each request for that user.
+
+#### Refresh expired access tokens
+
+Access tokens expire six hours after they are created, so they must be refreshed in order for an application to continuing making authenticated requests on behalf of an athlete.
+
+Use the refresh token returned from the initial token exchange to obtain a fresh access token.
+
+```elixir
+client = Strava.Auth.get_token!(grant_type: "refresh_token", refresh_token: "<refresh_token>")
+
+access_token = client.token.access_token
+refresh_token = client.token.refresh_token
+```
+
+Both the `access_token` and `refresh_token` tokens will need to be stored to ensure authenticated requests can be made and the token can be later refreshed after expiry.
 
 ## Testing
 

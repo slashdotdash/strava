@@ -62,6 +62,18 @@ defmodule Strava.Auth do
 
   You can pass options to the underlying http library via `options` parameter
   """
+  def get_token(params \\ [], headers \\ []) do
+    OAuth2.Client.get_token(new(), params, headers)
+  end
+
+  @doc """
+  Fetches an `OAuth2.AccessToken` struct by making a request to the token endpoint.
+
+  Returns the `OAuth2.Client` struct loaded with the access token which can then
+  be used to make authenticated requests to an OAuth2 provider's API.
+
+  You can pass options to the underlying http library via `options` parameter
+  """
   def get_token!(params \\ [], headers \\ []) do
     OAuth2.Client.get_token!(new(), params, headers)
   end
@@ -72,7 +84,8 @@ defmodule Strava.Auth do
   """
   def get_athlete!(client_or_access_token)
 
-  def get_athlete!(%OAuth2.Client{token: access_token}), do: get_athlete!(access_token)
+  def get_athlete!(%OAuth2.Client{token: %OAuth2.AccessToken{} = access_token}),
+    do: get_athlete!(access_token)
 
   def get_athlete!(%OAuth2.AccessToken{other_params: %{"athlete" => athlete}}) do
     Strava.Deserializer.transform(athlete, %{:as => %Strava.DetailedAthlete{}})
@@ -84,7 +97,7 @@ defmodule Strava.Auth do
   The authorization URL endpoint of the provider.
 
   - `params` additional query parameters for the URL
-  
+
   """
   def authorize_url(client, params) do
     client

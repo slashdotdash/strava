@@ -14,6 +14,9 @@ MIT License
 
 ---
 
+> This README and the following guides follow the `master` branch which may not be the currently published version.
+> [Read docs for the latest published version of Strava on Hex](https://hexdocs.pm/strava/).
+
 ## Installation
 
   1. Add `strava` to your list of dependencies in `mix.exs`:
@@ -56,6 +59,23 @@ Provide an athlete's `access_token` to make requests on behalf of an authenticat
 ```elixir
 client = Strava.Client.new("<<access_token>>")
 ```
+
+#### Refresh expired tokens
+
+Access tokens expire six hours after they are created, so they must be refreshed in order for an application to continuing making authenticated requests on behalf of an athlete.
+
+You can create a client with an optional refresh token, used to refresh an expired access token, and optional callback function invoked when the token is refreshed.
+
+```elixir
+client = Strava.Client.new("<access_token>",
+  refresh_token: "<refresh_token>",
+  token_refreshed: fn client -> IO.inspect(client, label: "client") end
+)
+```
+
+Using the above client, whenever a "401 Unauthorized" HTTP response status code is returned from an API request an attempt will be made to refresh the token and retry the original request.
+
+The `token_refreshed` callback function can be used to persist the refreshed `access_token` and `refresh_token` to be used for further requests for the athlete.
 
 ### Clubs
 

@@ -7,74 +7,71 @@ defmodule Strava.Client do
 
   adapter(Tesla.Adapter.Hackney)
 
-  # Add any middleware here (authentication)
   plug(Tesla.Middleware.BaseUrl, "https://www.strava.com/api/v3")
   plug(Tesla.Middleware.Headers, [{"User-Agent", "https://hex.pm/packages/strava"}])
   plug(Tesla.Middleware.EncodeJson, engine: Poison)
-
-  @scopes [
-    # Read public segments, public routes, public profile data, public posts, public events, club feeds, and leaderboards
-    "read",
-    # Read private routes, private segments, and private events for the user
-    "read_all",
-    # Read all profile information even if the user has set their profile visibility to Followers or Only You
-    "profile:read_all",
-    # Update the user's weight and Functional Threshold Power (FTP), and access to star or unstar segments on their behalf
-    "profile:write",
-    # Read the user's activity data for activities that are visible to Everyone and Followers, excluding privacy zone data
-    "activity:read",
-    # The same access as activity:read, plus privacy zone data and access to read the user's activities with visibility set to Only You
-    "activity:read_all",
-    # Access to create manual activities and uploads, and access to edit any activities that are visible to the app, based on activity read access level
-    "activity:write"
-  ]
 
   @doc """
   Configure a client connection using a provided OAuth2 token as a Bearer token
 
   ## Parameters
 
-  - token (String): Bearer token
+    - token (String) - Strava access token
+    - opts (Keyword) - Optional params
+      - `refresh_token` - Token used to refresh an expired access
+        token.
+      - `token_refreshed` - Single-arity callback function invoked
+        whenever the access token is refreshed. Will be passed a `OAuth2.Client`
+        containing the refreshed access token and refresh token.
 
   ## Returns
 
-  Tesla.Env.client
+  `Tesla.Env.client`
+
+  ## Examples
+
+  Create a client with an access token:
+
+      client = Strava.Client.new("<access_token>")
+
+  Create a client with an optional refresh token, used to refresh an expired
+  access token, and callback function invoked when the token is refreshed.
+
+      client = Strava.Client.new("<access_token>",
+        refresh_token: "<refresh_token>",
+        token_refreshed: fn client -> IO.inspect(client, label: "client") end
+      )
+
   """
   @spec new(String.t()) :: Tesla.Env.client()
-  def new(access_token) when is_binary(access_token) do
+  def new(access_token, opts \\ []) when is_binary(access_token) do
     Tesla.build_client([
-      {Tesla.Middleware.Headers, [{"Authorization", "Bearer #{access_token}"}]},
-      {Tesla.Middleware.Opts, request_opts()}
+      {Tesla.Middleware.Opts, request_opts()},
+      {Strava.Middleware.AccessToken, access_token},
+      {Strava.Middleware.RefreshToken, opts}
     ])
   end
 
   @doc """
-  Configure a client connection using a function which yields a Bearer token.
-
-  ## Parameters
-
-  - token_fetcher (function arity of 1): Callback which provides an OAuth2 token
-    given a list of scopes
-
-  ## Returns
-
-  Tesla.Env.client
-  """
-  @spec new((list(String.t()) -> String.t())) :: Tesla.Env.client()
-  def new(token_fetcher) when is_function(token_fetcher) do
-    token_fetcher.(@scopes) |> new()
-  end
-
-  @doc """
-  Configure an authless client connection
+  Configure a client using the default configured access token.
 
   # Returns
 
   Tesla.Env.client
+
+  ## Example
+
+      client = Strava.Client.new()
+
   """
   @spec new() :: Tesla.Env.client()
   def new do
-    new(Strava.access_token())
+    new(Strava.access_token(), refresh_token: Strava.refresh_token())
+  end
+
+  @doc false
+  def set_authorization_header(%Tesla.Env{} = env, access_token) do
+    %Tesla.Env{env | headers: [{"Authorization", "Bearer #{access_token}"}]}
   end
 
   defp request_opts do

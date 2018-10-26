@@ -40,7 +40,7 @@ defmodule Strava.Mixfile do
       {:hackney, ">= 0.0.0"},
       {:oauth2, "~> 0.9"},
       {:poison, "~> 3.1 or ~> 4.0"},
-      {:tesla, "~> 1.1"},
+      {:tesla, "~> 1.2"},
 
       # Build & test tools
       {:credo, "~> 0.10", only: :dev},

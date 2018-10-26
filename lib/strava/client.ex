@@ -16,7 +16,7 @@ defmodule Strava.Client do
 
   ## Parameters
 
-    - token (String) - Strava access token
+    - `access_token` (String) - Strava access token
     - opts (Keyword) - Optional params
       - `refresh_token` - Token used to refresh an expired access
         token.
@@ -45,7 +45,7 @@ defmodule Strava.Client do
   """
   @spec new(String.t()) :: Tesla.Env.client()
   def new(access_token, opts \\ []) when is_binary(access_token) do
-    Tesla.build_client([
+    Tesla.client([
       {Tesla.Middleware.Opts, request_opts()},
       {Strava.Middleware.AccessToken, access_token},
       {Strava.Middleware.RefreshToken, opts}

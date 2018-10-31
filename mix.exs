@@ -8,6 +8,7 @@ defmodule Strava.Mixfile do
       app: :strava,
       version: @version,
       elixir: "~> 1.5",
+      elixirc_paths: elixirc_paths(Mix.env()),
       name: "Strava",
       deps: deps(),
       description: description(),
@@ -36,15 +37,17 @@ defmodule Strava.Mixfile do
 
   defp deps do
     [
+      {:hackney, ">= 0.0.0"},
+      {:oauth2, "~> 0.9"},
+      {:poison, "~> 3.1 or ~> 4.0"},
+      {:tesla, "~> 1.2"},
+
+      # Build & test tools
       {:credo, "~> 0.10", only: :dev},
-      {:dialyxir, "~> 0.5", only: [:dev]},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.19", only: :dev},
       {:exvcr, "~> 0.10", only: :test},
-      {:httpoison, "~> 0.13"},
-      {:markdown, github: "devinus/markdown", only: :dev},
-      {:mix_test_watch, "~> 0.9", only: :dev},
-      {:oauth2, "~> 0.9"},
-      {:poison, "~> 3.1"}
+      {:mix_test_watch, "~> 0.9", only: :dev}
     ]
   end
 
@@ -55,6 +58,9 @@ defmodule Strava.Mixfile do
       source_ref: "v#{@version}"
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp package do
     [

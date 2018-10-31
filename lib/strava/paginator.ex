@@ -2,60 +2,57 @@ defmodule Strava.Paginator do
   @moduledoc """
   Requests that return multiple items will be paginated to 30 items by default.
 
-  The `page` parameter can be used to specify further pages or offsets. The
-  `per_page` parameter may also be used for custom page sizes up to 200.
-
-  More info: https://strava.github.io/api/#pagination
+  The `page` parameter can be used to specify further pages or offsets.
+  The `per_page` parameter may also be used for custom page sizes up to 200.
   """
 
   @type t :: %__MODULE__{
-    per_page: pos_integer,
-    page: pos_integer,
-    request_delay: non_neg_integer,
-    status: atom,
-  }
+          per_page: pos_integer,
+          page: pos_integer,
+          status: atom
+        }
+  defstruct [:per_page, :page, :status]
 
-  defstruct [
-    :per_page,
-    :page,
-    :request_delay,
-    :status,
-  ]
+  defmodule RequestError do
+    defexception message: "paginated request failed"
+  end
 
-  @spec stream((Strava.Pagination.t -> list), pos_integer, pos_integer, non_neg_integer) :: Enum.t
-  def stream(request, per_page \\ Strava.max_page_size(), first_page \\ 1, delay_between_requests_in_milliseconds \\ Strava.delay_between_requests_in_milliseconds())
-  def stream(request, per_page, first_page, delay_between_requests_in_milliseconds) do
+  @spec stream(
+          (keyword() -> {:ok, list} | {:error, term}),
+          [{:per_page, pos_integer} | {:first_page, pos_integer}]
+        ) :: Enum.t()
+  def stream(request, opts \\ [])
+
+  def stream(request, opts) do
+    per_page = Keyword.get(opts, :per_page, 200)
+    first_page = Keyword.get(opts, :first_page, 1)
+
     Stream.resource(
-      fn -> %Strava.Paginator{per_page: per_page, page: first_page, request_delay: delay_between_requests_in_milliseconds} end,
-      fn pagination -> fetch_page(pagination, request) end,
-      fn pagination -> pagination end
+      fn -> %Strava.Paginator{per_page: per_page, page: first_page} end,
+      &fetch_page(request, &1),
+      fn paginator -> paginator end
     )
   end
 
-  defp fetch_page(%Strava.Paginator{status: :halt} = pagination, _request),
-    do: {:halt, pagination}
+  defp fetch_page(_request, %Strava.Paginator{status: :halt} = paginator),
+    do: {:halt, paginator}
 
-  defp fetch_page(%Strava.Paginator{per_page: per_page, page: page} = pagination, request) do
-    sleep_between_requests(pagination)
+  defp fetch_page(request, %Strava.Paginator{} = paginator) do
+    %Strava.Paginator{per_page: per_page, page: page} = paginator
 
-    response = apply(request, [%Strava.Pagination{per_page: per_page, page: page}])
+    response = apply(request, [[per_page: per_page, page: page]])
 
-    case length(response) do
-      0 ->
-        # no items, halt pagination
-        {:halt, pagination}
+    case response do
+      {:error, error} ->
+        raise RequestError, message: "paginated request failed with error " <> inspect(error)
 
-      _ ->
-        # return response, then request next page
-        {response, %{pagination | page: page + 1}}
+      {:ok, []} ->
+        # No items, halt pagination
+        {:halt, paginator}
+
+      {:ok, items} ->
+        # Return items, then request next page
+        {items, %Strava.Paginator{paginator | page: page + 1}}
     end
-  end
-
-  @spec sleep_between_requests(Strava.Paginator.t) :: :ok
-  defp sleep_between_requests(pagination)
-  defp sleep_between_requests(%Strava.Paginator{page: 1}), do: :ok
-  defp sleep_between_requests(%Strava.Paginator{request_delay: 0}), do: :ok
-  defp sleep_between_requests(%Strava.Paginator{request_delay: delay_between_requests_in_milliseconds}) do
-    :timer.sleep(delay_between_requests_in_milliseconds)
   end
 end

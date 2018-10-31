@@ -8,20 +8,22 @@ defmodule Strava.Athletes do
 
   @doc """
   Get Authenticated Athlete
-  Returns the currently authenticated athlete. Tokens with profile:read_all scope will receive a detailed athlete representation; all others will receive a summary representation.
+  Returns the currently authenticated athlete. Tokens with profile:read_all
+  scope will receive a detailed athlete representation; all others will receive
+  a summary representation.
 
   ## Parameters
 
   - client (Strava.Client): Client to make authenticated requests
-  - opts (KeywordList): [optional] Optional parameters
+
   ## Returns
 
   {:ok, %Strava.DetailedAthlete{}} on success
   {:error, info} on failure
   """
-  @spec get_logged_in_athlete(Tesla.Env.client(), keyword()) ::
+  @spec get_logged_in_athlete(Tesla.Env.client()) ::
           {:ok, Strava.DetailedAthlete.t()} | {:error, Tesla.Env.t()}
-  def get_logged_in_athlete(client, _opts \\ []) do
+  def get_logged_in_athlete(client) do
     request =
       %{}
       |> method(:get)
@@ -33,20 +35,22 @@ defmodule Strava.Athletes do
 
   @doc """
   Get Zones
-  Returns the the authenticated athlete's heart rate and power zones. Requires profile:read_all.
+
+  Returns the the authenticated athlete's heart rate and power zones.
+  Requires `profile:read_all`.
 
   ## Parameters
 
   - client (Strava.Client): Client to make authenticated requests
-  - opts (KeywordList): [optional] Optional parameters
+
   ## Returns
 
   {:ok, %Strava.Zones{}} on success
   {:error, info} on failure
   """
-  @spec get_logged_in_athlete_zones(Tesla.Env.client(), keyword()) ::
+  @spec get_logged_in_athlete_zones(Tesla.Env.client()) ::
           {:ok, Strava.Zones.t()} | {:error, Tesla.Env.t()}
-  def get_logged_in_athlete_zones(client, _opts \\ []) do
+  def get_logged_in_athlete_zones(client) do
     request =
       %{}
       |> method(:get)
@@ -58,6 +62,7 @@ defmodule Strava.Athletes do
 
   @doc """
   Get Athlete Stats
+
   Returns the activity stats of an athlete.
 
   ## Parameters
@@ -67,6 +72,7 @@ defmodule Strava.Athletes do
   - opts (KeywordList): [optional] Optional parameters
     - :page (integer()): Page number.
     - :per_page (integer()): Number of items per page. Defaults to 30.
+
   ## Returns
 
   {:ok, %Strava.ActivityStats{}} on success
@@ -98,15 +104,15 @@ defmodule Strava.Athletes do
 
   - client (Strava.Client): Client to make authenticated requests
   - weight (float()): The weight of the athlete in kilograms.
-  - opts (KeywordList): [optional] Optional parameters
+
   ## Returns
 
   {:ok, %Strava.DetailedAthlete{}} on success
   {:error, info} on failure
   """
-  @spec update_logged_in_athlete(Tesla.Env.client(), float(), keyword()) ::
+  @spec update_logged_in_athlete(Tesla.Env.client(), float()) ::
           {:ok, Strava.DetailedAthlete.t()} | {:error, Tesla.Env.t()}
-  def update_logged_in_athlete(client, weight, _opts \\ []) do
+  def update_logged_in_athlete(client, weight) do
     request =
       %{}
       |> method(:put)

@@ -11,7 +11,7 @@ defmodule Strava.HeartRateZoneRanges do
 
   @type t :: %__MODULE__{
           custom_zones: boolean(),
-          zones: list(Strava.ZoneRange)
+          zones: list(Strava.ZoneRange.t())
         }
 end
 

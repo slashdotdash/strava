@@ -19,17 +19,17 @@ defmodule Strava.StreamSet do
   ]
 
   @type t :: %__MODULE__{
-          time: Strava.TimeStream,
-          distance: Strava.DistanceStream,
-          latlng: Strava.LatLngStream,
-          altitude: Strava.AltitudeStream,
-          velocity_smooth: Strava.SmoothVelocityStream,
-          heartrate: Strava.HeartrateStream,
-          cadence: Strava.CadenceStream,
-          watts: Strava.PowerStream,
-          temp: Strava.TemperatureStream,
-          moving: Strava.MovingStream,
-          grade_smooth: Strava.SmoothGradeStream
+          time: Strava.TimeStream.t(),
+          distance: Strava.DistanceStream.t(),
+          latlng: Strava.LatLngStream.t(),
+          altitude: Strava.AltitudeStream.t(),
+          velocity_smooth: Strava.SmoothVelocityStream.t(),
+          heartrate: Strava.HeartrateStream.t(),
+          cadence: Strava.CadenceStream.t(),
+          watts: Strava.PowerStream.t(),
+          temp: Strava.TemperatureStream.t(),
+          moving: Strava.MovingStream.t(),
+          grade_smooth: Strava.SmoothGradeStream.t()
         }
 end
 

@@ -21,15 +21,15 @@ defmodule Strava.ActivityStats do
   @type t :: %__MODULE__{
           biggest_ride_distance: float(),
           biggest_climb_elevation_gain: float(),
-          recent_ride_totals: ActivityTotal,
-          recent_run_totals: ActivityTotal,
-          recent_swim_totals: ActivityTotal,
-          ytd_ride_totals: ActivityTotal,
-          ytd_run_totals: ActivityTotal,
-          ytd_swim_totals: ActivityTotal,
-          all_ride_totals: ActivityTotal,
-          all_run_totals: ActivityTotal,
-          all_swim_totals: ActivityTotal
+          recent_ride_totals: Strava.ActivityTotal.t(),
+          recent_run_totals: Strava.ActivityTotal.t(),
+          recent_swim_totals: Strava.ActivityTotal.t(),
+          ytd_ride_totals: Strava.ActivityTotal.t(),
+          ytd_run_totals: Strava.ActivityTotal.t(),
+          ytd_swim_totals: Strava.ActivityTotal.t(),
+          all_ride_totals: Strava.ActivityTotal.t(),
+          all_run_totals: Strava.ActivityTotal.t(),
+          all_swim_totals: Strava.ActivityTotal.t()
         }
 end
 

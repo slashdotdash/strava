@@ -18,16 +18,7 @@ defmodule Strava.UpdatableActivity do
           trainer: boolean(),
           description: String.t(),
           name: String.t(),
-          type: ActivityType,
+          type: String.t(),
           gear_id: String.t()
         }
-end
-
-defimpl Poison.Decoder, for: Strava.UpdatableActivity do
-  import Strava.Deserializer
-
-  def decode(value, options) do
-    value
-    |> deserialize(:type, :struct, Strava.ActivityType, options)
-  end
 end

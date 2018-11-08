@@ -69,7 +69,7 @@ defmodule Strava.DetailedActivity do
           total_elevation_gain: float(),
           elev_high: float(),
           elev_low: float(),
-          type: Strava.ActivityType.t(),
+          type: String.t(),
           start_date: DateTime.t(),
           start_date_local: DateTime.t(),
           timezone: String.t(),
@@ -117,7 +117,6 @@ defimpl Poison.Decoder, for: Strava.DetailedActivity do
   def decode(value, options) do
     value
     |> deserialize(:athlete, :struct, Strava.MetaAthlete, options)
-    |> deserialize(:type, :struct, Strava.ActivityType, options)
     |> deserialize(:start_date, :datetime, options)
     |> deserialize(:start_date_local, :datetime, options)
     |> deserialize(:map, :struct, Strava.PolylineMap, options)

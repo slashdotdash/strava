@@ -27,8 +27,8 @@ defmodule Strava.Lap do
 
   @type t :: %__MODULE__{
           id: integer(),
-          activity: MetaActivity,
-          athlete: MetaAthlete,
+          activity: Strava.MetaActivity.t(),
+          athlete: Strava.MetaAthlete.t(),
           average_cadence: float(),
           average_speed: float(),
           distance: float(),

@@ -10,8 +10,8 @@ defmodule Strava.Zones do
   ]
 
   @type t :: %__MODULE__{
-          heart_rate: Strava.HeartRateZoneRanges,
-          power: Strava.PowerZoneRanges
+          heart_rate: Strava.HeartRateZoneRanges.t(),
+          power: Strava.PowerZoneRanges.t()
         }
 end
 

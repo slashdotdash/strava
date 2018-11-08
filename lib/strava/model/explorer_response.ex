@@ -9,7 +9,7 @@ defmodule Strava.ExplorerResponse do
   ]
 
   @type t :: %__MODULE__{
-          segments: [ExplorerSegment]
+          segments: [Strava.ExplorerSegment.t()]
         }
 end
 

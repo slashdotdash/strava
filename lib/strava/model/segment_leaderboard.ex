@@ -15,7 +15,7 @@ defmodule Strava.SegmentLeaderboard do
           entry_count: integer(),
           effort_count: integer(),
           kom_type: String.t(),
-          entries: [Strava.SegmentLeaderboardEntry]
+          entries: [Strava.SegmentLeaderboardEntry.t()]
         }
 end
 

@@ -16,7 +16,7 @@ defmodule Strava.Comment do
           id: integer(),
           activity_id: integer(),
           text: String.t(),
-          athlete: SummaryAthlete,
+          athlete: Strava.SummaryAthlete.t(),
           created_at: DateTime.t()
         }
 end

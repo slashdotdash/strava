@@ -10,7 +10,7 @@ defmodule Strava.Fault do
   ]
 
   @type t :: %__MODULE__{
-          errors: [Error],
+          errors: [Strava.Error.t()],
           message: String.t()
         }
 end

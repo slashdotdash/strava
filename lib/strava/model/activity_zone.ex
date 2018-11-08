@@ -16,7 +16,7 @@ defmodule Strava.ActivityZone do
 
   @type t :: %__MODULE__{
           score: integer(),
-          distribution_buckets: TimedZoneDistribution,
+          distribution_buckets: list(Strava.TimedZoneRange.t()),
           type: String.t(),
           sensor_based: boolean(),
           points: integer(),
@@ -30,6 +30,6 @@ defimpl Poison.Decoder, for: Strava.ActivityZone do
 
   def decode(value, options) do
     value
-    |> deserialize(:distribution_buckets, :struct, Strava.TimedZoneDistribution, options)
+    |> deserialize(:distribution_buckets, :list, Strava.TimedZoneRange, options)
   end
 end

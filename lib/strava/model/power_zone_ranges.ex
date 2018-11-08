@@ -9,7 +9,7 @@ defmodule Strava.PowerZoneRanges do
   ]
 
   @type t :: %__MODULE__{
-          zones: list(Strava.ZoneRange)
+          zones: list(Strava.ZoneRange.t())
         }
 end
 

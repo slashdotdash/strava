@@ -11,7 +11,7 @@ defmodule Strava.PhotosSummary do
 
   @type t :: %__MODULE__{
           count: integer(),
-          primary: PhotosSummaryPrimary
+          primary: Strava.PhotosSummaryPrimary.t()
         }
 end
 

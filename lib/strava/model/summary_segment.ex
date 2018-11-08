@@ -39,7 +39,7 @@ defmodule Strava.SummarySegment do
           state: String.t(),
           country: String.t(),
           private: boolean(),
-          athlete_pr_effort: Strava.SummarySegmentEffort
+          athlete_pr_effort: Strava.SummarySegmentEffort.t()
         }
 end
 

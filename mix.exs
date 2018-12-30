@@ -1,7 +1,7 @@
 defmodule Strava.Mixfile do
   use Mix.Project
 
-  @version "0.7.0"
+  @version "1.0.0"
 
   def project do
     [
@@ -43,7 +43,7 @@ defmodule Strava.Mixfile do
       {:tesla, "~> 1.2"},
 
       # Build & test tools
-      {:credo, "~> 0.10", only: :dev},
+      {:credo, "~> 1.0", only: :dev},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.19", only: :dev},
       {:exvcr, "~> 0.10", only: :test},

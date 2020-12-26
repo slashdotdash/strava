@@ -6,6 +6,7 @@ defmodule Strava.DetailedAthlete do
   @derive [Poison.Encoder]
   defstruct [
     :id,
+    :username,
     :resource_state,
     :firstname,
     :lastname,
@@ -35,6 +36,7 @@ defmodule Strava.DetailedAthlete do
 
   @type t :: %__MODULE__{
           id: integer(),
+          username: String.t(),
           resource_state: integer(),
           firstname: String.t(),
           lastname: String.t(),

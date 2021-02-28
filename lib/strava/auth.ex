@@ -14,6 +14,7 @@ defmodule Strava.Auth do
       authorize_url: "https://www.strava.com/oauth/authorize",
       token_url: "https://www.strava.com/oauth/token"
     )
+    |> OAuth2.Client.put_serializer("application/json", Poison)
   end
 
   @doc """

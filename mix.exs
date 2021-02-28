@@ -1,7 +1,7 @@
 defmodule Strava.Mixfile do
   use Mix.Project
 
-  @version "1.0.0"
+  @version "1.0.1"
 
   def project do
     [
@@ -38,7 +38,7 @@ defmodule Strava.Mixfile do
   defp deps do
     [
       {:hackney, ">= 0.0.0"},
-      {:oauth2, "~> 0.9"},
+      {:oauth2, "~> 2.0"},
       {:poison, "~> 3.1 or ~> 4.0"},
       {:tesla, "~> 1.2"},
 

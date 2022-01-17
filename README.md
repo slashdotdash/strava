@@ -142,7 +142,7 @@ DateTime.to_iso8601(start_date_local)
 #### Get logged in athlete's activities
 
 ```elixir
-{:ok, activities] = Strava.Activities.get_logged_in_athlete_activities(client, per_page: 50, page: 1)
+{:ok, activities} = Strava.Activities.get_logged_in_athlete_activities(client, per_page: 50, page: 1)
 ```
 
 #### Stream paginated requests

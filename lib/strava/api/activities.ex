@@ -219,7 +219,7 @@ defmodule Strava.Activities do
       |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
-    client |> Client.request(request) |> decode([%Strava.PhotosSummary{}])
+    client |> Client.request(request) |> decode([%Strava.Photo{}])
   end
 
   @doc """

@@ -186,6 +186,43 @@ defmodule Strava.Activities do
   end
 
   @doc """
+  List Activity Photos
+  Returns the photos on the given activity. Requires activity:read for Everyone and Followers activities. Requires activity:read_all for Only Me activities.
+
+  ## Parameters
+
+  - client (Strava.Client): Client to make authenticated requests
+  - id (integer()): The identifier of the activity.
+  - opts (KeywordList): [optional] Optional parameters
+    - :page (integer()): Page number.
+    - :per_page (integer()): Number of items per page. Defaults to 30.
+    - :size (integer()): The size of the images to be returned. Defaults to 1024.
+  ## Returns
+
+  {:ok, [%PhotoSummary{}, ...]} on success
+  {:error, info} on failure
+  """
+  @spec get_photos_by_activity_id(Tesla.Env.client(), integer(), keyword()) ::
+          {:ok, list(Strava.PhotosSummary.t())} | {:error, Tesla.Env.t()}
+  def get_photos_by_activity_id(client, id, opts \\ []) do
+    optional_params = %{
+      :page => :query,
+      :per_page => :query,
+      :size => :query
+    }
+    opts = Keyword.update(opts, :size, 1024, &(&1))
+
+    request =
+      %{}
+      |> method(:get)
+      |> url("/activities/#{id}/photos")
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    client |> Client.request(request) |> decode([%Strava.Photo{}])
+  end
+
+  @doc """
   List Athlete Activities
   Returns the activities of an athlete for a specific identifier. Requires activity:read. Only Me activities will be filtered out unless requested by a token with activity:read_all.
 

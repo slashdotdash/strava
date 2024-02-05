@@ -11,7 +11,7 @@ defmodule Strava.Middleware.RefreshToken do
   def call(env, next, opts) do
     refresh_token = Keyword.get(opts, :refresh_token)
 
-    with {:ok, %Tesla.Env{status: 401} = env} <- Tesla.run(env, next),
+    with {:ok, %Tesla.Env{status: status}} when status in [401, 403] <- Tesla.run(env, next),
          {:ok, %Tesla.Env{} = env} <- attempt_refresh_token(env, refresh_token, opts) do
       # Retry request with refreshed access token
       Tesla.run(env, next)
